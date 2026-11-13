@@ -382,10 +382,46 @@ async function translateWord() {
     return;
   }
 
-  if (!GOOGLE_API_KEY || GOOGLE_API_KEY === "YOUR_GOOGLE_TRANSLATE_API_KEY") {
-    message.textContent = "Google Translate API kaliti hali ulanmagan.";
+  async function translateWord() {
+  const input = document.getElementById("sourceWord").value.trim();
+  const direction = document.getElementById("direction").value;
+  const output = document.getElementById("translationResult");
+  const message = document.getElementById("translateMessage");
+
+  if (!input) {
+    message.textContent = "So‘z kiriting!";
     return;
   }
+
+  message.textContent = "Tarjima qilinmoqda...";
+  output.classList.add("hidden");
+
+  const [source, target] = direction.split("-");
+
+  try {
+    const { data, error } = await db.functions.invoke("translate", {
+      body: { q: input, source, target }
+    });
+
+    if (error) throw error;
+    if (data.error) throw new Error(data.error);
+
+    translated = {
+      original: input,
+      translation: data.translation,
+      direction
+    };
+
+    document.getElementById("translatedText").textContent =
+      data.translation;
+
+    output.classList.remove("hidden");
+    message.textContent = "Tarjima tayyor!";
+
+  } catch (error) {
+    message.textContent = "Xatolik: " + error.message;
+  }
+    }
 
   message.textContent = "Tarjima qilinmoqda...";
   output.classList.add("hidden");
