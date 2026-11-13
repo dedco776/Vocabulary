@@ -814,7 +814,37 @@ function stopSpeaking() {
 // =====================================
 // 16. MIKROFON — OVOZNI MATNGA AYLANTIRISH
 // =====================================
-function toggleMicrophone() {
+async function toggleMicrophone() {
+  setSpeakingStatus("Mikrofon tekshirilmoqda...");
+
+  if (!window.isSecureContext) {
+    setSpeakingStatus("Xatolik: sayt HTTPS orqali ochilishi kerak.");
+    return;
+  }
+
+  if (!navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia) {
+    setSpeakingStatus(
+      "Xatolik: APK WebView getUserMedia funksiyasini qo‘llamayapti."
+    );
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true
+    });
+
+    setSpeakingStatus("Mikrofon ishlayapti! Ruxsat muvaffaqiyatli olindi.");
+
+    stream.getTracks().forEach(track => track.stop());
+
+  } catch (error) {
+    setSpeakingStatus(
+      "Mikrofon xatosi: " + error.name + " — " + error.message
+    );
+  }
+  }
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
