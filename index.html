@@ -724,8 +724,7 @@ async function translateWord() {
 
   try {
 
-    const {data,error} = await db.functions.invoke(
-      "translate",
+    const {data,error} = await db.functions.invoke("swift-action",
       {
         body: {
           q:input,
