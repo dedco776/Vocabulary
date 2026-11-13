@@ -82,8 +82,6 @@ p{color:var(--muted);line-height:1.6}
 }
 .stat strong{display:block;font-size:25px;color:#c19aff}
 .stat span{font-size:12px;color:var(--muted)}
-.quiz-box{text-align:center;padding:20px 5px}
-.quiz-word{font-size:30px;font-weight:bold;color:#c19aff;margin:25px 0;overflow-wrap:anywhere}
 footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 
 /* AUTH */
@@ -165,6 +163,60 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 .saved-button{
   background:#164c3d!important;color:#7fffd0!important;
   border:1px solid #23785e!important;
+}
+
+/* QUIZ */
+.quiz-panel{
+  background:#100b1d;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:16px;
+  margin-top:22px;
+}
+.quiz-question{
+  font-size:23px;
+  font-weight:bold;
+  color:#c19aff;
+  text-align:center;
+  overflow-wrap:anywhere;
+  margin:25px 0;
+}
+.quiz-option{
+  display:block;
+  width:100%;
+  margin:9px 0;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  text-align:left;
+}
+.quiz-option.correct{
+  background:#164c3d;
+  border-color:var(--green);
+}
+.quiz-option.wrong{
+  background:#572033;
+  border-color:var(--red);
+}
+.quiz-feedback{
+  min-height:25px;
+  margin:15px 0;
+  text-align:center;
+  font-weight:bold;
+}
+.quiz-progress{
+  color:var(--muted);
+  text-align:center;
+  font-size:13px;
+}
+.quiz-result{
+  text-align:center;
+  padding:15px 5px;
+}
+.quiz-result-score{
+  font-size:38px;
+  font-weight:bold;
+  color:#c19aff;
+  margin:18px 0;
 }
 
 /* SPEAKING */
@@ -368,6 +420,42 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 
     <input id="searchWord" placeholder="Lug‘atdan qidirish..." oninput="renderDictionary()">
     <div id="dictionaryList">Hozircha so‘zlar yo‘q.</div>
+
+    <!-- QUIZ -->
+    <div class="quiz-panel">
+      <h3>🧠 Bilimingizni sinang</h3>
+      <p>Tanlangan lug‘at va guruhdagi so‘zlar bilan mashq qiling.</p>
+
+      <label>Test turini tanlang</label>
+      <select id="quizMode">
+        <option value="forward">So‘zni tarjima qilish</option>
+        <option value="reverse">Tarjimadan asl so‘zni topish</option>
+        <option value="choice">4 ta variantdan tanlash</option>
+        <option value="listen">Eshitib topish</option>
+        <option value="type">Javobni yozish</option>
+      </select>
+
+      <button onclick="startQuiz()" style="width:100%">
+        ▶ Testni boshlash
+      </button>
+
+      <div id="quizArea" class="hidden">
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div id="quizAnswers"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+
+        <button id="quizNext" onclick="nextQuizQuestion()"
+          class="hidden" style="width:100%">
+          Keyingi savol →
+        </button>
+
+        <button onclick="closeQuiz()" class="secondary"
+          style="width:100%;margin-top:9px">
+          Testni yopish
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -551,7 +639,6 @@ function findDuplicate(item){
   ) || null;
 }
 
-
 // =====================================
 // 2. AUTH
 // =====================================
@@ -639,7 +726,6 @@ async function logout(){
   location.reload();
 }
 
-
 // =====================================
 // 3. NAVIGATION
 // =====================================
@@ -658,7 +744,6 @@ function showPage(id,button){
 
   if(id==="dictionary") renderDictionary();
 }
-
 
 // =====================================
 // 4. LANGUAGE PICKER
@@ -698,7 +783,6 @@ function resetTranslation(){
   document.getElementById("translationResult").classList.add("hidden");
   document.getElementById("translateMessage").textContent = "";
 }
-
 
 // =====================================
 // 5. TRANSLATOR
@@ -754,7 +838,6 @@ async function translateWord(){
   }
 }
 
-
 // =====================================
 // 6. SAVE BUTTON / DUPLICATE CHECK
 // =====================================
@@ -802,7 +885,6 @@ function updateSaveGroupOptions(){
   }
 }
 
-
 // =====================================
 // 7. SAVE WORD
 // =====================================
@@ -823,7 +905,6 @@ async function saveWord(){
   saveBtn.textContent = "Saqlanmoqda...";
 
   try{
-    // Eski english/uzbek ustunlari bilan moslik saqlanadi.
     let english = "";
     let uzbek = "";
 
@@ -865,10 +946,10 @@ async function saveWord(){
     document.getElementById("translateMessage").textContent =
       "Xatolik: "+error.message;
     saveBtn.disabled = false;
+    saveBtn.classList.remove("saved-button");
     saveBtn.textContent = "＋ Lug‘atga kiritish";
   }
 }
-
 
 // =====================================
 // 8. LOAD WORDS
@@ -895,7 +976,6 @@ async function loadWords(){
       "Xatolik: "+error.message;
   }
 }
-
 
 // =====================================
 // 9. GROUPS: LOAD / CREATE
@@ -967,7 +1047,6 @@ async function createGroup(){
   }
 }
 
-
 // =====================================
 // 10. GROUPS: RENDER / SELECT
 // =====================================
@@ -1019,7 +1098,6 @@ function selectDictionaryLanguage(language,button){
   renderDictionary();
 }
 
-
 // =====================================
 // 11. GROUPS: RENAME / DELETE
 // =====================================
@@ -1069,6 +1147,13 @@ async function deleteGroup(){
   if(!confirmed) return;
 
   try{
+    const {error:wordError} = await db.from("words")
+      .update({group_id:null})
+      .eq("group_id",group.id)
+      .eq("user_id",currentUser.id);
+
+    if(wordError) throw wordError;
+
     const {error} = await db.from("word_groups")
       .delete()
       .eq("id",group.id)
@@ -1084,7 +1169,6 @@ async function deleteGroup(){
     alert("Guruhni o‘chirishda xatolik: "+error.message);
   }
 }
-
 
 // =====================================
 // 12. STATISTICS
@@ -1102,7 +1186,6 @@ function updateStats(){
 
   document.getElementById("todayWords").textContent = count;
 }
-
 
 // =====================================
 // 13. DICTIONARY
@@ -1184,9 +1267,309 @@ async function deleteWord(id){
   }
 }
 
+// =====================================
+// 14. QUIZ SYSTEM
+// =====================================
+let quizQuestions = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let quizFinished = false;
+
+function shuffleArray(array){
+  const result = [...array];
+
+  for(let i=result.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [result[i],result[j]]=[result[j],result[i]];
+  }
+
+  return result;
+}
+
+function getQuizWords(){
+  let available = words.filter(word=>
+    getWordLanguage(word)===dictionaryLanguage
+  );
+
+  if(selectedGroupId!=="all"){
+    available=available.filter(word=>
+      word.group_id===selectedGroupId
+    );
+  }
+
+  return available.filter(word=>
+    getWordOriginal(word).trim() &&
+    getWordTranslation(word).trim()
+  );
+}
+
+function startQuiz(){
+  const mode = document.getElementById("quizMode").value;
+  const available = getQuizWords();
+
+  if(available.length<1){
+    alert("Test boshlash uchun bu bo‘limda so‘zlar yo‘q.");
+    return;
+  }
+
+  if(mode==="choice" && available.length<2){
+    alert("Variantli test uchun kamida 2 ta so‘z kerak.");
+    return;
+  }
+
+  if(mode==="listen" && !("speechSynthesis" in window)){
+    alert("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");
+    return;
+  }
+
+  quizQuestions=shuffleArray(available);
+  quizIndex=0;
+  quizScore=0;
+  quizAnswered=false;
+  quizFinished=false;
+
+  document.getElementById("quizArea").classList.remove("hidden");
+
+  showQuizQuestion();
+}
+
+function showQuizQuestion(){
+  if(quizIndex>=quizQuestions.length){
+    finishQuiz();
+    return;
+  }
+
+  quizAnswered=false;
+  quizFinished=false;
+
+  const mode=document.getElementById("quizMode").value;
+  const word=quizQuestions[quizIndex];
+
+  const original=getWordOriginal(word);
+  const translation=getWordTranslation(word);
+
+  const question=document.getElementById("quizQuestion");
+  const answers=document.getElementById("quizAnswers");
+
+  answers.innerHTML="";
+  document.getElementById("quizFeedback").textContent="";
+  document.getElementById("quizNext").classList.add("hidden");
+
+  document.getElementById("quizProgress").textContent=
+    `Savol ${quizIndex+1} / ${quizQuestions.length} · Ball: ${quizScore}`;
+
+  if(mode==="reverse"){
+    question.textContent=translation;
+    createTypingAnswer(original);
+  }
+  else if(mode==="type"){
+    question.textContent=original;
+    createTypingAnswer(translation);
+  }
+  else if(mode==="listen"){
+    question.textContent="🔊 So‘zni tinglang va tarjimasini toping";
+    createChoiceAnswers(translation,word);
+
+    const utterance=new SpeechSynthesisUtterance(original);
+    utterance.lang=getSpeechLanguage(getWordSourceLanguage(word));
+    utterance.rate=0.85;
+
+    setTimeout(()=>{
+      if(!quizAnswered && !quizFinished){
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      }
+    },300);
+  }
+  else if(mode==="choice"){
+    question.textContent=original;
+    createChoiceAnswers(translation,word);
+  }
+  else{
+    question.textContent=original;
+    createTypingAnswer(translation);
+  }
+}
+
+function getSpeechLanguage(code){
+  const languages={
+    en:"en-US",
+    uz:"uz-UZ",
+    ru:"ru-RU"
+  };
+
+  return languages[code] || "en-US";
+}
+
+function createChoiceAnswers(correct,word){
+  const answers=document.getElementById("quizAnswers");
+
+  const others=quizQuestions
+    .filter(item=>item.id!==word.id)
+    .map(item=>getWordTranslation(item))
+    .filter(value=>value && normalizeText(value)!==normalizeText(correct));
+
+  const uniqueOthers=[...new Set(others)];
+  const options=shuffleArray([
+    correct,
+    ...shuffleArray(uniqueOthers).slice(0,3)
+  ]);
+
+  options.forEach(option=>{
+    const button=document.createElement("button");
+    button.className="quiz-option";
+    button.textContent=option;
+
+    button.onclick=()=>{
+      checkQuizAnswer(option,correct,button);
+    };
+
+    answers.append(button);
+  });
+}
+
+function createTypingAnswer(correct){
+  const answers=document.getElementById("quizAnswers");
+
+  const input=document.createElement("input");
+  input.placeholder="Javobingizni yozing...";
+  input.id="quizTypingInput";
+  input.autocomplete="off";
+
+  const button=document.createElement("button");
+  button.textContent="Tekshirish";
+  button.style.width="100%";
+
+  button.onclick=()=>{
+    checkQuizAnswer(input.value,correct,null);
+  };
+
+  input.addEventListener("keydown",event=>{
+    if(event.key==="Enter"){
+      button.click();
+    }
+  });
+
+  answers.append(input,button);
+  input.focus();
+}
+
+function checkQuizAnswer(answer,correct,selectedButton){
+  if(quizAnswered || quizFinished) return;
+
+  if(!String(answer || "").trim()){
+    document.getElementById("quizFeedback").textContent=
+      "Avval javob kiriting.";
+    return;
+  }
+
+  quizAnswered=true;
+
+  const feedback=document.getElementById("quizFeedback");
+  const next=document.getElementById("quizNext");
+
+  const isCorrect=
+    normalizeText(answer)===normalizeText(correct);
+
+  if(isCorrect){
+    quizScore++;
+    feedback.textContent="✓ To‘g‘ri javob!";
+    feedback.style.color="var(--green)";
+  }else{
+    feedback.textContent="✗ Noto‘g‘ri. To‘g‘ri javob: "+correct;
+    feedback.style.color="var(--red)";
+  }
+
+  document.querySelectorAll(".quiz-option").forEach(button=>{
+    button.disabled=true;
+
+    if(normalizeText(button.textContent)===normalizeText(correct)){
+      button.classList.add("correct");
+    }
+  });
+
+  if(selectedButton && !isCorrect){
+    selectedButton.classList.add("wrong");
+  }
+
+  const input=document.getElementById("quizTypingInput");
+  if(input) input.disabled=true;
+
+  document.querySelectorAll("#quizAnswers button").forEach(button=>{
+    button.disabled=true;
+  });
+
+  next.classList.remove("hidden");
+  next.textContent=quizIndex===quizQuestions.length-1
+    ? "Natijani ko‘rish"
+    : "Keyingi savol →";
+}
+
+function nextQuizQuestion(){
+  if(!quizAnswered) return;
+
+  quizIndex++;
+
+  if(quizIndex>=quizQuestions.length){
+    finishQuiz();
+  }else{
+    showQuizQuestion();
+  }
+}
+
+function finishQuiz(){
+  quizFinished=true;
+  quizAnswered=true;
+
+  if("speechSynthesis" in window){
+    window.speechSynthesis.cancel();
+  }
+
+  const total=quizQuestions.length;
+  const percent=total ? Math.round(quizScore/total*100) : 0;
+
+  document.getElementById("quizProgress").textContent=
+    "Test yakunlandi!";
+
+  document.getElementById("quizQuestion").innerHTML=
+    '<div class="quiz-result">🏆<div class="quiz-result-score">'+
+    quizScore+' / '+total+'</div><div>'+percent+'% to‘g‘ri javob</div></div>';
+
+  document.getElementById("quizAnswers").innerHTML="";
+
+  const feedback=document.getElementById("quizFeedback");
+
+  if(percent>=80){
+    feedback.textContent="Ajoyib natija! 🎉";
+    feedback.style.color="var(--green)";
+  }else if(percent>=50){
+    feedback.textContent="Yaxshi! Yana mashq qiling.";
+    feedback.style.color="#c19aff";
+  }else{
+    feedback.textContent="Ko‘proq takrorlash kerak. Davom eting!";
+    feedback.style.color="var(--red)";
+  }
+
+  document.getElementById("quizNext").classList.add("hidden");
+}
+
+function closeQuiz(){
+  document.getElementById("quizArea").classList.add("hidden");
+
+  if("speechSynthesis" in window){
+    window.speechSynthesis.cancel();
+  }
+
+  quizQuestions=[];
+  quizIndex=0;
+  quizScore=0;
+  quizAnswered=false;
+  quizFinished=false;
+}
 
 // =====================================
-// 14. SPEAKING LEVEL
+// 15. SPEAKING LEVEL
 // =====================================
 function selectLevel(level,button){
   selectedLevel = level;
@@ -1218,9 +1601,8 @@ function setSpeakingMode(mode){
   }
 }
 
-
 // =====================================
-// 15. CHAT MESSAGES
+// 16. CHAT MESSAGES
 // =====================================
 function addChatMessage(role,content){
   const box = document.getElementById("chatBox");
@@ -1244,9 +1626,8 @@ function setSpeakingStatus(message){
   document.getElementById("speakingStatus").textContent = message;
 }
 
-
 // =====================================
-// 16. AI CHAT
+// 17. AI CHAT
 // =====================================
 async function sendSpeakingMessage(voiceText){
   if(!currentUser){
@@ -1331,9 +1712,8 @@ async function sendSpeakingMessage(voiceText){
   }
 }
 
-
 // =====================================
-// 17. TEXT TO SPEECH
+// 18. TEXT TO SPEECH
 // =====================================
 function speakReply(text){
   if(!("speechSynthesis" in window)){
@@ -1355,9 +1735,8 @@ function speakReply(text){
   window.speechSynthesis.speak(utterance);
 }
 
-
 // =====================================
-// 18. STOP SPEAKING
+// 19. STOP SPEAKING
 // =====================================
 function stopSpeaking(){
   if("speechSynthesis" in window){
@@ -1378,9 +1757,8 @@ function stopSpeaking(){
   }
 }
 
-
 // =====================================
-// 19. MICROPHONE
+// 20. MICROPHONE
 // =====================================
 async function toggleMicrophone(){
   const SpeechRecognition =
@@ -1449,9 +1827,8 @@ async function toggleMicrophone(){
   }
 }
 
-
 // =====================================
-// 20. CLEAR CHAT
+// 21. CLEAR CHAT
 // =====================================
 function clearSpeakingChat(){
   stopSpeaking();
@@ -1468,13 +1845,12 @@ function clearSpeakingChat(){
   setSpeakingStatus("Yangi suhbat boshlandi.");
 }
 
-
 // =====================================
-// 21. START APP
+// 22. START APP
 // =====================================
 updateLanguageButtons();
 checkSession();
 
 </script>
 </body>
-        </html>
+  </html>
