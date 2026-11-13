@@ -3,217 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b20">
 <title>VocabMaster</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  --bg:#07111f;--panel:#101e32;--panel2:#142640;
-  --blue:#168bff;--cyan:#00d9ff;--text:#f2f7ff;
-  --muted:#91a7c2;--border:#203957;
+  --bg:#0c0817;
+  --panel:#171126;
+  --panel2:#211936;
+  --purple:#925cff;
+  --purple2:#7138df;
+  --text:#f7f2ff;
+  --muted:#a99bbf;
+  --border:#35264e;
+  --green:#27dba0;
+  --red:#e64c70;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;min-height:100vh;
+}
 button,input,select,textarea{font:inherit}
 button{
-  cursor:pointer;border:0;border-radius:11px;padding:13px 17px;
-  color:white;font-weight:bold;background:linear-gradient(120deg,#0879ef,#00bfff)
+  cursor:pointer;border:0;border-radius:12px;padding:13px 17px;
+  color:white;font-weight:bold;
+  background:linear-gradient(120deg,var(--purple2),var(--purple));
 }
 button:hover{filter:brightness(1.12)}
-button:disabled{opacity:.55;cursor:not-allowed}
+button:disabled{opacity:.5;cursor:not-allowed}
 input,select,textarea{
-  width:100%;padding:15px;border-radius:12px;border:1px solid var(--border);
-  background:#091729;color:white;outline:none;margin:8px 0 15px
+  width:100%;padding:14px;border-radius:12px;
+  border:1px solid var(--border);background:#100b1d;
+  color:white;outline:none;margin:8px 0 15px;
 }
-input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
-.app{max-width:1100px;margin:auto;padding:20px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px;gap:12px}
-.logo{font-size:28px;font-weight:900;color:var(--cyan);text-shadow:0 0 15px #008cff}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+label{color:var(--muted);font-size:13px}
+.app{max-width:1000px;margin:auto;padding:20px 20px 110px}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:25px;gap:12px;
+}
+.logo{font-size:25px;font-weight:900;color:var(--purple)}
 .logo span{color:white}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:25px;margin-bottom:20px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;padding:23px;margin-bottom:18px;
+}
 h1,h2,h3{margin-top:0}
 p{color:var(--muted);line-height:1.6}
 .secondary{background:var(--panel2);border:1px solid var(--border)}
 .danger{background:#a72b48}
 .small{padding:9px 12px;font-size:12px}
-nav{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:25px}
-nav button{flex:1;min-width:110px}
-nav button.active{outline:2px solid var(--cyan);box-shadow:0 0 15px #008cff70}
-.page{display:none}
-.page.active{display:block}
-.hero{background:linear-gradient(130deg,#073a75,#102c53,#073c5c);border:1px solid #1267a5;border-radius:20px;padding:30px;margin-bottom:20px}
-.hero h1{color:var(--cyan)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
-.stat{background:var(--panel2);padding:18px 8px;border-radius:13px;text-align:center}
-.stat strong{display:block;font-size:26px;color:var(--cyan)}
-.stat span{color:var(--muted);font-size:12px}
+.hidden{display:none!important}
 .row{display:flex;gap:10px}
 .row>*{flex:1;min-width:0}
-.word{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--border)}
+.page{display:none;animation:fade .2s ease}
+.page.active{display:block}
+@keyframes fade{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.page-title{font-size:25px;margin-bottom:8px}
+.page-subtitle{font-size:14px;margin-top:0}
+.message{color:var(--purple);min-height:22px;overflow-wrap:anywhere}
+.word{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:14px 0;border-bottom:1px solid var(--border);
+}
 .word:last-child{border:0}
-.word strong{color:var(--cyan)}
+.word strong{color:#c5a5ff}
 .word small{display:block;color:var(--muted);margin-top:5px}
-.hidden{display:none!important}
-.quiz-box{text-align:center;padding:25px 10px}
-.quiz-word{font-size:32px;font-weight:bold;color:var(--cyan);margin:25px 0;overflow-wrap:anywhere}
-#translateMessage,#authMessage{color:var(--cyan);min-height:22px;overflow-wrap:anywhere}
-footer{text-align:center;color:var(--muted);padding:30px 10px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.stat{
+  background:var(--panel2);padding:17px 8px;
+  border-radius:14px;text-align:center;
+}
+.stat strong{display:block;font-size:25px;color:#c19aff}
+.stat span{font-size:12px;color:var(--muted)}
+.quiz-box{text-align:center;padding:20px 5px}
+.quiz-word{font-size:30px;font-weight:bold;color:#c19aff;margin:25px 0;overflow-wrap:anywhere}
+footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 
-/* SPEAKING AI */
+/* AUTH */
+.auth-wrap{max-width:480px;margin:40px auto}
+.auth-logo{text-align:center;font-size:30px;font-weight:900;color:var(--purple);margin-bottom:25px}
+.auth-logo span{color:white}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:#130d20ed;backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-around;
+  padding:9px 5px calc(9px + env(safe-area-inset-bottom));
+}
+.nav-item{
+  background:transparent;color:var(--muted);
+  border-radius:12px;padding:7px 4px;min-width:0;flex:1;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:10px;font-weight:normal;
+}
+.nav-icon{font-size:21px;line-height:24px}
+.nav-item.active{
+  color:#c6a3ff;background:#35204f;
+}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 5px #a56bff)}
+
+/* SPEAKING */
 .level-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0 20px}
 .level-btn{background:var(--panel2);border:1px solid var(--border);padding:12px 5px}
-.level-btn.selected{background:#075b9c;border:1px solid var(--cyan);box-shadow:0 0 12px #008cff55}
+.level-btn.selected{background:#5830a0;border:1px solid #bd9aff}
 .mode-row{display:flex;gap:10px;margin:15px 0}
 .mode-row button{flex:1}
-.mode-row button.selected{outline:2px solid var(--cyan)}
+.mode-row button.selected{outline:2px solid #bd9aff}
 .chat-box{
-  background:#091729;border:1px solid var(--border);border-radius:15px;
-  padding:15px;height:390px;overflow-y:auto;margin:15px 0
+  background:#100b1d;border:1px solid var(--border);
+  border-radius:15px;padding:15px;height:360px;
+  overflow-y:auto;margin:15px 0;
 }
-.chat-message{max-width:88%;padding:12px 14px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
-.chat-message.user{background:#075b9c;margin-left:auto;color:white;border-bottom-right-radius:4px}
-.chat-message.assistant{background:#172b43;margin-right:auto;color:#f2f7ff;border-bottom-left-radius:4px}
-.chat-message .who{font-size:11px;color:#9cc8ed;margin-bottom:6px;font-weight:bold}
+.chat-message{
+  max-width:88%;padding:12px 14px;border-radius:14px;
+  margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;
+}
+.chat-message.user{
+  background:#5830a0;margin-left:auto;color:white;
+  border-bottom-right-radius:4px;
+}
+.chat-message.assistant{
+  background:#251b38;margin-right:auto;color:#f7f2ff;
+  border-bottom-left-radius:4px;
+}
+.chat-message .who{font-size:11px;color:#c5a5ff;margin-bottom:6px;font-weight:bold}
 .chat-input-row{display:flex;gap:8px;align-items:stretch}
-.chat-input-row textarea{resize:vertical;min-height:52px;max-height:130px;margin:0;flex:1}
+.chat-input-row textarea{
+  resize:vertical;min-height:52px;max-height:130px;margin:0;flex:1;
+}
 .chat-input-row button{white-space:nowrap}
-.mic-button{min-width:54px;padding:10px}
+.mic-button{min-width:52px;padding:10px}
 .mic-button.listening{background:#b52c48;animation:pulse 1.2s infinite}
 @keyframes pulse{50%{opacity:.65}}
-.chat-status{min-height:24px;color:var(--cyan);font-size:13px;margin-top:10px}
+.chat-status{min-height:24px;color:#c5a5ff;font-size:13px;margin-top:10px}
 .voice-note{font-size:12px;color:var(--muted)}
+
+/* PLACEHOLDER */
+.feature-icon{
+  width:58px;height:58px;border-radius:18px;
+  display:grid;place-items:center;font-size:28px;
+  background:#302047;margin-bottom:18px;
+}
+.feature-card{
+  background:linear-gradient(135deg,#26173d,#171126);
+  border:1px solid var(--border);border-radius:18px;padding:22px;
+}
+.feature-card h3{margin-bottom:8px}
+.tag{
+  display:inline-block;background:#34204d;color:#c9a9ff;
+  border-radius:20px;padding:6px 11px;font-size:11px;
+}
+
 @media(max-width:600px){
-  .app{padding:13px}.logo{font-size:23px}.card{padding:20px}.hero{padding:22px}
-  h1{font-size:25px}
-  nav button{min-width:90px;padding:12px 7px;font-size:12px}
-  .stats{gap:7px}.stat{padding:13px 5px}.stat strong{font-size:21px}
+  .app{padding:13px 13px 105px}
+  .logo{font-size:22px}
+  .card{padding:19px}
+  .page-title{font-size:23px}
   .row{flex-direction:column}
+  .stats{gap:7px}
+  .stat{padding:13px 5px}
+  .stat strong{font-size:21px}
   .level-grid{grid-template-columns:repeat(3,1fr)}
-  .chat-box{height:360px;padding:10px}
+  .chat-box{height:340px;padding:10px}
   .chat-message{max-width:95%}
   .chat-input-row{flex-wrap:wrap}
   .chat-input-row textarea{flex-basis:100%}
   .chat-input-row button{flex:1}
+  .nav-item{font-size:9px}
+  .nav-icon{font-size:19px}
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
+
 <header>
   <div class="logo">VOCAB<span>MASTER.</span></div>
   <button id="logoutBtn" class="secondary small hidden" onclick="logout()">Chiqish</button>
 </header>
 
+<!-- AUTH -->
 <section id="auth">
-  <div class="card">
-    <h1>Welcome to VocabMaster</h1>
-    <p>Ingliz tilidagi so‘z boyligingizni oshiring!</p>
-    <div id="registerFields">
-      <label>Ismingiz</label>
-      <input id="name" placeholder="Ismingiz">
+  <div class="auth-wrap">
+    <div class="auth-logo">VOCAB<span>MASTER.</span></div>
+    <div class="card">
+      <h1>Welcome!</h1>
+      <p>Ingliz tilini yangi bosqichga olib chiqing.</p>
+
+      <div id="registerFields">
+        <label>Ismingiz</label>
+        <input id="name" placeholder="Ismingiz">
+      </div>
+
+      <label>Email</label>
+      <input id="email" type="email" placeholder="example@gmail.com">
+
+      <label>Parol</label>
+      <input id="password" type="password" placeholder="Parolingiz">
+
+      <button id="authBtn" onclick="authenticate()">Ro‘yxatdan o‘tish</button>
+      <button class="secondary" onclick="toggleAuth()" id="toggleBtn" style="width:100%;margin-top:10px">
+        Akkauntingiz bormi? Kirish
+      </button>
+      <p id="authMessage" class="message"></p>
     </div>
-    <label>Email</label>
-    <input id="email" type="email" placeholder="example@gmail.com">
-    <label>Parol</label>
-    <input id="password" type="password" placeholder="Parolingiz">
-    <button id="authBtn" onclick="authenticate()">Ro‘yxatdan o‘tish</button>
-    <button class="secondary" onclick="toggleAuth()" id="toggleBtn">Akkauntingiz bormi? Kirish</button>
-    <p id="authMessage"></p>
   </div>
 </section>
 
+<!-- APP -->
 <main id="main" class="hidden">
-<nav>
-  <button class="active" onclick="showPage('home',this)">⌂ Bosh sahifa</button>
-  <button onclick="showPage('translate',this)">⇄ Tarjimon</button>
-  <button onclick="showPage('dictionary',this)">▤ Lug‘atim</button>
-  <button onclick="showPage('quiz',this)">✦ Mashq</button>
-  <button onclick="showPage('speaking',this)">🎙 Speaking AI</button>
-</nav>
 
-<section id="home" class="page active">
-  <div class="hero">
-    <h1>So‘z boyligingizni oshiring!</h1>
-    <p>Har kuni yangi so‘zlar o‘rganing. O‘zingizning shaxsiy lug‘atingizni yarating.</p>
-    <button onclick="openTranslator()">Yangi so‘z qo‘shish →</button>
-  </div>
-  <div class="stats">
-    <div class="stat"><strong id="totalWords">0</strong><span>Jami so‘zlar</span></div>
-    <div class="stat"><strong id="todayWords">0</strong><span>Bugun qo‘shildi</span></div>
-    <div class="stat"><strong id="learnedWords">0</strong><span>Lug‘atdagi so‘zlar</span></div>
-  </div>
-  <div class="card">
-    <h2>Oxirgi qo‘shilgan so‘zlar</h2>
-    <div id="recentWords">Hozircha so‘zlar yo‘q.</div>
-  </div>
-</section>
+<!-- TRANSLATOR -->
+<section id="translate" class="page active">
+  <h1 class="page-title">Tarjimon</h1>
+  <p class="page-subtitle">So‘z va gaplarni tarjima qiling.</p>
 
-<section id="translate" class="page">
   <div class="card">
-    <h2>🌐 Tarjimon</h2>
-    <p>Tarjima qilmoqchi bo‘lgan so‘zingizni kiriting.</p>
     <label>Tarjima yo‘nalishi</label>
     <select id="direction">
-      <option value="en-uz">Inglizcha → O‘zbekcha</option>
-      <option value="uz-en">O‘zbekcha → Inglizcha</option>
+      <option value="en-uz">🇬🇧 Inglizcha → 🇺🇿 O‘zbekcha</option>
+      <option value="uz-en">🇺🇿 O‘zbekcha → 🇬🇧 Inglizcha</option>
+      <option value="en-ru">🇬🇧 Inglizcha → 🇷🇺 Ruscha</option>
+      <option value="ru-en">🇷🇺 Ruscha → 🇬🇧 Inglizcha</option>
+      <option value="uz-ru">🇺🇿 O‘zbekcha → 🇷🇺 Ruscha</option>
+      <option value="ru-uz">🇷🇺 Ruscha → 🇺🇿 O‘zbekcha</option>
     </select>
-    <input id="sourceWord" placeholder="So‘z kiriting...">
-    <button id="translateBtn" onclick="translateWord()">Tarjima qilish</button>
-    <div class="card hidden" id="translationResult">
+
+    <textarea id="sourceWord" rows="4" placeholder="Tarjima qilmoqchi bo‘lgan matningizni kiriting..."></textarea>
+    <button id="translateBtn" onclick="translateWord()" style="width:100%">Tarjima qilish</button>
+
+    <div class="card hidden" id="translationResult" style="margin-top:18px;margin-bottom:0">
       <p>Tarjima natijasi:</p>
       <h2 id="translatedText"></h2>
       <button id="saveBtn" onclick="saveWord()">＋ Lug‘atga kiritish</button>
     </div>
-    <p id="translateMessage"></p>
+    <p id="translateMessage" class="message"></p>
   </div>
 </section>
 
+<!-- DICTIONARY -->
 <section id="dictionary" class="page">
+  <h1 class="page-title">Mening lug‘atim</h1>
+  <p class="page-subtitle">Saqlangan so‘zlaringiz shu yerda.</p>
+
   <div class="card">
-    <h2>📚 Mening lug‘atim</h2>
+    <div class="stats">
+      <div class="stat"><strong id="totalWords">0</strong><span>Jami so‘zlar</span></div>
+      <div class="stat"><strong id="todayWords">0</strong><span>Bugun qo‘shildi</span></div>
+      <div class="stat"><strong id="learnedWords">0</strong><span>Saqlangan</span></div>
+    </div>
+
     <input id="searchWord" placeholder="Lug‘atdan qidirish..." oninput="renderDictionary()">
     <div id="dictionaryList">Hozircha so‘zlar yo‘q.</div>
   </div>
 </section>
 
-<section id="quiz" class="page">
-  <div class="card">
-    <h2>🧠 Lug‘at so‘rash</h2>
-    <p>Qaysi usulda bilimlaringizni sinab ko‘rmoqchisiz?</p>
-    <div class="row">
-      <button onclick="startQuiz('uz-en')">O‘zbekchasini so‘rash</button>
-      <button onclick="startQuiz('en-uz')">Inglizchasini so‘rash</button>
-    </div>
-    <button class="secondary" style="width:100%;margin-top:12px" onclick="startQuiz('mix')">🔀 Mix — Aralash</button>
-  </div>
-  <div class="card hidden" id="quizArea">
-    <div class="quiz-box">
-      <p id="quizProgress"></p>
-      <div class="quiz-word" id="quizQuestion"></div>
-      <input id="quizInput" placeholder="Javobingizni yozing...">
-      <button id="checkBtn" onclick="checkAnswer()">Tekshirish</button>
-      <p id="quizFeedback"></p>
-      <button id="nextQuestion" class="secondary hidden" onclick="nextQuiz()">Keyingi so‘z →</button>
-      <button id="restartQuiz" class="hidden" onclick="startQuiz(quizMode)">Qayta boshlash</button>
-    </div>
-  </div>
-</section>
-
-<!-- SPEAKING AI -->
+<!-- SPEAKING -->
 <section id="speaking" class="page">
-  <div class="card">
-    <h2>🎙 VocabMaster Speaking AI</h2>
-    <p>Ingliz tilida suhbat qiling. AI xatolaringizni aniqlaydi, to‘g‘rilaydi va tushuntiradi.</p>
+  <h1 class="page-title">Speaking AI</h1>
+  <p class="page-subtitle">AI bilan ingliz tilida suhbat qiling.</p>
 
+  <div class="card">
     <label>Ingliz tili darajangiz</label>
     <div class="level-grid">
-      <button class="level-btn selected" data-level="A1" onclick="selectLevel('A1',this)">A1</button>
-      <button class="level-btn" data-level="A2" onclick="selectLevel('A2',this)">A2</button>
-      <button class="level-btn" data-level="B1" onclick="selectLevel('B1',this)">B1</button>
-      <button class="level-btn" data-level="B2" onclick="selectLevel('B2',this)">B2</button>
-      <button class="level-btn" data-level="C1" onclick="selectLevel('C1',this)">C1</button>
-      <button class="level-btn" data-level="C2" onclick="selectLevel('C2',this)">C2</button>
+      <button class="level-btn selected" onclick="selectLevel('A1',this)">A1</button>
+      <button class="level-btn" onclick="selectLevel('A2',this)">A2</button>
+      <button class="level-btn" onclick="selectLevel('B1',this)">B1</button>
+      <button class="level-btn" onclick="selectLevel('B2',this)">B2</button>
+      <button class="level-btn" onclick="selectLevel('C1',this)">C1</button>
+      <button class="level-btn" onclick="selectLevel('C2',this)">C2</button>
     </div>
 
     <label>Suhbat turi</label>
@@ -223,7 +292,7 @@ footer{text-align:center;color:var(--muted);padding:30px 10px;font-size:12px}
     </div>
 
     <div class="row">
-      <button class="secondary" onclick="clearSpeakingChat()">Suhbatni tozalash</button>
+      <button class="secondary" onclick="clearSpeakingChat()">Yangi suhbat</button>
       <button class="secondary" onclick="stopSpeaking()">Ovozni to‘xtatish</button>
     </div>
 
@@ -239,18 +308,89 @@ footer{text-align:center;color:var(--muted);padding:30px 10px;font-size:12px}
       <button id="micBtn" class="secondary mic-button hidden" onclick="toggleMicrophone()">🎙</button>
       <button id="sendSpeakingBtn" onclick="sendSpeakingMessage()">Yuborish</button>
     </div>
+
     <div id="speakingStatus" class="chat-status"></div>
-    <p class="voice-note">Eslatma: mikrofon funksiyasi brauzer qo‘llab-quvvatlashiga va ruxsat berilganiga bog‘liq. Matnli suhbat undan mustaqil ishlaydi.</p>
+    <p class="voice-note">Ovozli suhbat mikrofon ruxsati va brauzer imkoniyatlariga bog‘liq. Hozirgi ovozli rejim nutqni matnga aylantirib, AI javobini ovoz chiqarib o‘qiydi.</p>
   </div>
 </section>
+
+<!-- PROGRESS -->
+<section id="progress" class="page">
+  <h1 class="page-title">Progress</h1>
+  <p class="page-subtitle">O‘rganish natijalaringiz.</p>
+  <div class="feature-card">
+    <div class="feature-icon">📈</div>
+    <h3>O‘sish sari!</h3>
+    <p>Bu bo‘limda o‘rgangan so‘zlaringiz, test natijalaringiz, Speaking mashg‘ulotlaringiz, XP va darajangiz ko‘rsatiladi.</p>
+    <span class="tag">Keyingi bosqichda ishlab chiqiladi</span>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community" class="page">
+  <h1 class="page-title">Community</h1>
+  <p class="page-subtitle">Do‘stlaringiz bilan ingliz tilini o‘rganing.</p>
+  <div class="feature-card">
+    <div class="feature-icon">👥</div>
+    <h3>Birgalikda o‘rganamiz</h3>
+    <p>Do‘st qidirish, matnli chat, ovozli Speaking, musobaqalar va reytinglar shu bo‘limda bo‘ladi.</p>
+    <span class="tag">Keyingi bosqichda ishlab chiqiladi</span>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+  <h1 class="page-title">Sozlamalar</h1>
+  <p class="page-subtitle">Ilova va profilingiz sozlamalari.</p>
+  <div class="card">
+    <h3>Hisob</h3>
+    <p id="profileEmail">Email</p>
+    <button class="danger" onclick="logout()">Akkauntdan chiqish</button>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">⚙️</div>
+    <h3>Shaxsiy sozlamalar</h3>
+    <p>Ilova tili, mavzu, bildirishnomalar, profil, xavfsizlik va boshqa sozlamalar keyingi bosqichlarda qo‘shiladi.</p>
+    <span class="tag">Keyingi bosqichda ishlab chiqiladi</span>
+  </div>
+</section>
+
 </main>
 
 <footer>VOCABMASTER © 2026 — Learn something new every day.</footer>
 </div>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav hidden" id="bottomNav">
+  <button class="nav-item active" onclick="showPage('translate',this)">
+    <span class="nav-icon">⇄</span>
+    <span>Tarjimon</span>
+  </button>
+  <button class="nav-item" onclick="showPage('dictionary',this)">
+    <span class="nav-icon">📚</span>
+    <span>Lug‘at</span>
+  </button>
+  <button class="nav-item" onclick="showPage('speaking',this)">
+    <span class="nav-icon">🎙</span>
+    <span>Speaking</span>
+  </button>
+  <button class="nav-item" onclick="showPage('progress',this)">
+    <span class="nav-icon">📈</span>
+    <span>Progress</span>
+  </button>
+  <button class="nav-item" onclick="showPage('community',this)">
+    <span class="nav-icon">👥</span>
+    <span>Community</span>
+  </button>
+  <button class="nav-item" onclick="showPage('settings',this)">
+    <span class="nav-icon">⚙️</span>
+    <span>Sozlama</span>
+  </button>
+</nav>
+
 <script>
 // =====================================
-// 1. SUPABASE SOZLAMALARI
+// 1. SUPABASE
 // =====================================
 const SUPABASE_URL = "https://rmcewweppablchrtctkw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AK9tPpB7kLB8AV9Y1sVANQ_63M8Iu4n";
@@ -262,13 +402,6 @@ let isLogin = false;
 let words = [];
 let translated = null;
 
-let quizWords = [];
-let quizIndex = 0;
-let quizMode = "mix";
-let quizScore = 0;
-let quizAnswered = false;
-
-// Speaking AI state
 let selectedLevel = "A1";
 let speakingMode = "text";
 let speakingHistory = [];
@@ -280,69 +413,83 @@ let speakingBusy = false;
 // =====================================
 // 2. AUTH
 // =====================================
-function toggleAuth() {
+function toggleAuth(){
   isLogin = !isLogin;
   document.getElementById("registerFields").classList.toggle("hidden",isLogin);
   document.getElementById("authBtn").textContent = isLogin ? "Kirish" : "Ro‘yxatdan o‘tish";
   document.getElementById("toggleBtn").textContent = isLogin ? "Yangi akkaunt ochish" : "Akkauntingiz bormi? Kirish";
-  document.getElementById("authMessage").textContent = "";
+  authMessage("");
 }
 
-async function authenticate() {
+function authMessage(message){
+  document.getElementById("authMessage").textContent = message;
+}
+
+async function authenticate(){
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const name = document.getElementById("name").value.trim();
 
-  if (!email || !password || (!isLogin && !name)) return authMessage("Barcha maydonlarni to‘ldiring.");
-  if (password.length < 6) return authMessage("Parol kamida 6 ta belgidan iborat bo‘lsin.");
+  if(!email || !password || (!isLogin && !name))
+    return authMessage("Barcha maydonlarni to‘ldiring.");
+
+  if(password.length < 6)
+    return authMessage("Parol kamida 6 ta belgidan iborat bo‘lsin.");
 
   authMessage("Kutib turing...");
 
-  try {
+  try{
     let result;
-    if (isLogin) {
+
+    if(isLogin){
       result = await db.auth.signInWithPassword({email,password});
-    } else {
+    }else{
       result = await db.auth.signUp({
         email,password,options:{data:{full_name:name}}
       });
     }
 
-    if (result.error) throw result.error;
-    if (!result.data.session) return authMessage("Emailingizni tasdiqlang, keyin tizimga kiring.");
+    if(result.error) throw result.error;
+
+    if(!result.data.session)
+      return authMessage("Emailingizni tasdiqlang, keyin tizimga kiring.");
 
     currentUser = result.data.user;
     await openApp();
-  } catch(error) {
-    authMessage("Xatolik: " + error.message);
+
+  }catch(error){
+    authMessage("Xatolik: "+error.message);
   }
 }
 
-function authMessage(message) {
-  document.getElementById("authMessage").textContent = message;
-}
-
-async function checkSession() {
-  try {
+async function checkSession(){
+  try{
     const {data,error} = await db.auth.getSession();
-    if (error) throw error;
-    if (data.session) {
+    if(error) throw error;
+
+    if(data.session){
       currentUser = data.session.user;
       await openApp();
     }
-  } catch(error) {
-    authMessage("Xatolik: " + error.message);
+  }catch(error){
+    authMessage("Xatolik: "+error.message);
   }
 }
 
-async function openApp() {
+async function openApp(){
   document.getElementById("auth").classList.add("hidden");
   document.getElementById("main").classList.remove("hidden");
   document.getElementById("logoutBtn").classList.remove("hidden");
+  document.getElementById("bottomNav").classList.remove("hidden");
+
+  document.getElementById("profileEmail").textContent =
+    currentUser?.email || "Email ko‘rsatilmagan";
+
+  showPage("translate",document.querySelector(".nav-item"));
   await loadWords();
 }
 
-async function logout() {
+async function logout(){
   stopSpeaking();
   await db.auth.signOut();
   location.reload();
@@ -350,32 +497,35 @@ async function logout() {
 
 
 // =====================================
-// 3. MENYULAR
+// 3. NAVIGATION
 // =====================================
-function showPage(id,button) {
-  document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+function showPage(id,button){
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.remove("active");
+  });
+
   document.getElementById(id).classList.add("active");
-  document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-  button.classList.add("active");
-}
 
-function openTranslator() {
-  showPage("translate",document.querySelectorAll("nav button")[1]);
+  document.querySelectorAll(".nav-item").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  if(button) button.classList.add("active");
 }
 
 
 // =====================================
-// 4. MYMEMORY TARJIMA
+// 4. TRANSLATOR
 // =====================================
-async function translateWord() {
+async function translateWord(){
   const input = document.getElementById("sourceWord").value.trim();
   const direction = document.getElementById("direction").value;
   const output = document.getElementById("translationResult");
   const message = document.getElementById("translateMessage");
   const button = document.getElementById("translateBtn");
 
-  if (!input) return message.textContent = "Avval so‘z kiriting!";
-  if (!currentUser) return message.textContent = "Avval tizimga kiring!";
+  if(!input) return message.textContent = "Avval matn kiriting!";
+  if(!currentUser) return message.textContent = "Avval tizimga kiring!";
 
   button.disabled = true;
   button.textContent = "Tarjima qilinmoqda...";
@@ -384,23 +534,25 @@ async function translateWord() {
 
   const [source,target] = direction.split("-");
 
-  try {
+  try{
     const {data,error} = await db.functions.invoke("swift-action",{
       body:{q:input,source,target}
     });
 
-    if (error) throw error;
-    if (data?.error) throw new Error(data.error);
-    if (!data?.translation) throw new Error("Tarjima natijasi kelmadi.");
+    if(error) throw error;
+    if(data?.error) throw new Error(data.error);
+    if(!data?.translation) throw new Error("Tarjima natijasi kelmadi.");
 
     translated = {original:input,translation:data.translation,direction};
+
     document.getElementById("translatedText").textContent = data.translation;
     output.classList.remove("hidden");
     message.textContent = "✓ Tarjima tayyor!";
-  } catch(error) {
+
+  }catch(error){
     console.error(error);
-    message.textContent = "Xatolik: " + (error.message || "Tarjima amalga oshmadi.");
-  } finally {
+    message.textContent = "Xatolik: "+(error.message || "Tarjima amalga oshmadi.");
+  }finally{
     button.disabled = false;
     button.textContent = "Tarjima qilish";
   }
@@ -408,29 +560,40 @@ async function translateWord() {
 
 
 // =====================================
-// 5. LUG‘ATGA SAQLASH
+// 5. SAVE WORD
 // =====================================
-async function saveWord() {
-  if (!currentUser || !translated) return;
+async function saveWord(){
+  if(!currentUser || !translated) return;
 
-  const english = translated.direction === "en-uz" ? translated.original : translated.translation;
-  const uzbek = translated.direction === "en-uz" ? translated.translation : translated.original;
+  const english = translated.direction === "en-uz"
+    ? translated.original
+    : translated.translation;
+
+  const uzbek = translated.direction === "en-uz"
+    ? translated.translation
+    : translated.original;
+
   const saveBtn = document.getElementById("saveBtn");
 
   saveBtn.disabled = true;
   saveBtn.textContent = "Saqlanmoqda...";
 
-  try {
+  try{
     const {error} = await db.from("words").insert({
       user_id:currentUser.id,english,uzbek
     });
-    if (error) throw error;
 
-    document.getElementById("translateMessage").textContent = "✓ So‘z lug‘atingizga saqlandi!";
+    if(error) throw error;
+
+    document.getElementById("translateMessage").textContent =
+      "✓ So‘z lug‘atingizga saqlandi!";
+
     await loadWords();
-  } catch(error) {
-    document.getElementById("translateMessage").textContent = "Xatolik: " + error.message;
-  } finally {
+
+  }catch(error){
+    document.getElementById("translateMessage").textContent =
+      "Xatolik: "+error.message;
+  }finally{
     saveBtn.disabled = false;
     saveBtn.textContent = "＋ Lug‘atga kiritish";
   }
@@ -438,242 +601,152 @@ async function saveWord() {
 
 
 // =====================================
-// 6. LUG‘ATNI YUKLASH
+// 6. LOAD WORDS
 // =====================================
-async function loadWords() {
-  if (!currentUser) return;
+async function loadWords(){
+  if(!currentUser) return;
 
-  try {
+  try{
     const {data,error} = await db.from("words")
       .select("*")
       .eq("user_id",currentUser.id)
       .order("created_at",{ascending:false});
 
-    if (error) throw error;
+    if(error) throw error;
+
     words = data || [];
     updateStats();
     renderDictionary();
-    renderRecent();
-  } catch(error) {
-    document.getElementById("dictionaryList").textContent = "Xatolik: " + error.message;
+
+  }catch(error){
+    document.getElementById("dictionaryList").textContent =
+      "Xatolik: "+error.message;
   }
 }
 
 
 // =====================================
-// 7. STATISTIKA
+// 7. STATISTICS
 // =====================================
-function updateStats() {
+function updateStats(){
   document.getElementById("totalWords").textContent = words.length;
   document.getElementById("learnedWords").textContent = words.length;
 
   const today = new Date().toDateString();
-  const count = words.filter(word => new Date(word.created_at).toDateString() === today).length;
+
+  const count = words.filter(word=>
+    word.created_at &&
+    new Date(word.created_at).toDateString() === today
+  ).length;
+
   document.getElementById("todayWords").textContent = count;
 }
 
 
 // =====================================
-// 8. LUG‘ATNI KO‘RSATISH
+// 8. DICTIONARY
 // =====================================
-function renderDictionary() {
+function renderDictionary(){
   const search = document.getElementById("searchWord").value.toLowerCase().trim();
   const list = document.getElementById("dictionaryList");
+
   list.innerHTML = "";
 
-  const filtered = words.filter(word =>
+  const filtered = words.filter(word=>
     (word.english || "").toLowerCase().includes(search) ||
     (word.uzbek || "").toLowerCase().includes(search)
   );
 
-  if (!filtered.length) {
+  if(!filtered.length){
     list.textContent = "Hozircha so‘z topilmadi.";
     return;
   }
 
-  filtered.forEach(word => {
+  filtered.forEach(word=>{
     const div = document.createElement("div");
     div.className = "word";
 
     const info = document.createElement("div");
     const strong = document.createElement("strong");
     strong.textContent = word.english;
+
     const small = document.createElement("small");
     small.textContent = word.uzbek;
+
     info.append(strong,small);
 
     const del = document.createElement("button");
     del.className = "danger small";
     del.textContent = "O‘chirish";
-    del.onclick = () => deleteWord(word.id);
+    del.onclick = ()=>deleteWord(word.id);
 
     div.append(info,del);
     list.append(div);
   });
 }
 
+async function deleteWord(id){
+  if(!confirm("Bu so‘zni lug‘atdan o‘chirasizmi?")) return;
 
-// =====================================
-// 9. OXIRGI SO‘ZLAR
-// =====================================
-function renderRecent() {
-  const recent = document.getElementById("recentWords");
-  recent.innerHTML = "";
-
-  if (!words.length) {
-    recent.textContent = "Hozircha so‘zlar yo‘q.";
-    return;
-  }
-
-  words.slice(0,5).forEach(word => {
-    const div = document.createElement("div");
-    div.className = "word";
-
-    const info = document.createElement("div");
-    const strong = document.createElement("strong");
-    strong.textContent = word.english;
-    const small = document.createElement("small");
-    small.textContent = word.uzbek;
-
-    info.append(strong,small);
-    div.append(info);
-    recent.append(div);
-  });
-}
-
-
-// =====================================
-// 10. SO‘ZNI O‘CHIRISH
-// =====================================
-async function deleteWord(id) {
-  if (!confirm("Bu so‘zni lug‘atdan o‘chirasizmi?")) return;
-
-  try {
+  try{
     const {error} = await db.from("words").delete()
       .eq("id",id).eq("user_id",currentUser.id);
-    if (error) throw error;
+
+    if(error) throw error;
     await loadWords();
-  } catch(error) {
-    alert("Xatolik: " + error.message);
+
+  }catch(error){
+    alert("Xatolik: "+error.message);
   }
 }
 
 
 // =====================================
-// 11. LUG‘AT MASHQI
+// 9. SPEAKING LEVEL
 // =====================================
-function startQuiz(mode) {
-  if (words.length < 1) {
-    alert("Avval lug‘atingizga so‘z kiriting!");
-    return;
-  }
-
-  quizMode = mode;
-  quizWords = [...words].sort(() => Math.random() - 0.5);
-  quizIndex = 0;
-  quizScore = 0;
-
-  document.getElementById("quizArea").classList.remove("hidden");
-  document.getElementById("restartQuiz").classList.add("hidden");
-  nextQuiz();
-}
-
-function nextQuiz() {
-  if (quizIndex >= quizWords.length) {
-    document.getElementById("quizQuestion").textContent = "Mashq tugadi!";
-    document.getElementById("quizProgress").textContent = `Natija: ${quizScore}/${quizWords.length}`;
-    document.getElementById("quizInput").classList.add("hidden");
-    document.getElementById("checkBtn").classList.add("hidden");
-    document.getElementById("nextQuestion").classList.add("hidden");
-    document.getElementById("restartQuiz").classList.remove("hidden");
-    return;
-  }
-
-  const item = quizWords[quizIndex];
-  let mode = quizMode;
-  if (mode === "mix") mode = Math.random() > 0.5 ? "uz-en" : "en-uz";
-
-  item._answer = mode === "uz-en" ? item.english : item.uzbek;
-  const question = mode === "uz-en" ? item.uzbek : item.english;
-
-  document.getElementById("quizQuestion").textContent = question;
-  document.getElementById("quizProgress").textContent = `${quizIndex+1} / ${quizWords.length}`;
-  document.getElementById("quizInput").value = "";
-  document.getElementById("quizInput").classList.remove("hidden");
-  document.getElementById("checkBtn").classList.remove("hidden");
-  document.getElementById("nextQuestion").classList.add("hidden");
-  document.getElementById("restartQuiz").classList.add("hidden");
-  document.getElementById("quizFeedback").textContent = "";
-  quizAnswered = false;
-  document.getElementById("quizInput").focus();
-}
-
-function checkAnswer() {
-  if (quizAnswered) return;
-
-  const answer = document.getElementById("quizInput").value.trim();
-  if (!answer) return;
-
-  const correct = quizWords[quizIndex]._answer;
-  const feedback = document.getElementById("quizFeedback");
-
-  if (answer.toLowerCase() === correct.toLowerCase()) {
-    feedback.textContent = "✓ To‘g‘ri javob!";
-    feedback.style.color = "#00e6a0";
-    quizScore++;
-  } else {
-    feedback.textContent = "To‘g‘ri javob: " + correct;
-    feedback.style.color = "#ffb35c";
-  }
-
-  quizAnswered = true;
-  document.getElementById("quizInput").classList.add("hidden");
-  document.getElementById("checkBtn").classList.add("hidden");
-  document.getElementById("nextQuestion").classList.remove("hidden");
-  quizIndex++;
-}
-
-
-// =====================================
-// 12. SPEAKING AI — DARAJA
-// =====================================
-function selectLevel(level,button) {
+function selectLevel(level,button){
   selectedLevel = level;
-  document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("selected"));
+
+  document.querySelectorAll(".level-btn").forEach(btn=>{
+    btn.classList.remove("selected");
+  });
+
   button.classList.add("selected");
-  setSpeakingStatus("Daraja: " + level);
+  setSpeakingStatus("Daraja: "+level);
 }
 
-function setSpeakingMode(mode) {
+function setSpeakingMode(mode){
   speakingMode = mode;
 
-  document.getElementById("textModeBtn").classList.toggle("selected",mode === "text");
-  document.getElementById("voiceModeBtn").classList.toggle("selected",mode === "voice");
-  document.getElementById("textModeBtn").classList.toggle("secondary",mode !== "text");
-  document.getElementById("voiceModeBtn").classList.toggle("secondary",mode !== "voice");
+  document.getElementById("textModeBtn").classList.toggle("selected",mode==="text");
+  document.getElementById("voiceModeBtn").classList.toggle("selected",mode==="voice");
 
-  document.getElementById("micBtn").classList.toggle("hidden",mode !== "voice");
+  document.getElementById("textModeBtn").classList.toggle("secondary",mode!=="text");
+  document.getElementById("voiceModeBtn").classList.toggle("secondary",mode!=="voice");
 
-  if (mode === "text") {
+  document.getElementById("micBtn").classList.toggle("hidden",mode!=="voice");
+
+  if(mode==="text"){
     stopSpeaking();
     setSpeakingStatus("Matnli suhbat rejimi.");
-  } else {
+  }else{
     setSpeakingStatus("Ovozli suhbat rejimi. Mikrofon tugmasini bosing.");
   }
 }
 
 
 // =====================================
-// 13. SPEAKING AI — XABARLARNI CHIQARISH
+// 10. CHAT MESSAGES
 // =====================================
-function addChatMessage(role,content) {
+function addChatMessage(role,content){
   const box = document.getElementById("chatBox");
+
   const message = document.createElement("div");
-  message.className = "chat-message " + role;
+  message.className = "chat-message "+role;
 
   const who = document.createElement("div");
   who.className = "who";
-  who.textContent = role === "user" ? "SIZ" : "VOCABMASTER AI";
+  who.textContent = role==="user" ? "SIZ" : "VOCABMASTER AI";
 
   const body = document.createElement("div");
   body.textContent = content;
@@ -683,31 +756,31 @@ function addChatMessage(role,content) {
   box.scrollTop = box.scrollHeight;
 }
 
-function setSpeakingStatus(message) {
+function setSpeakingStatus(message){
   document.getElementById("speakingStatus").textContent = message;
 }
 
 
 // =====================================
-// 14. SPEAKING AI — AI BILAN SUHBAT
+// 11. AI CHAT
 // =====================================
-async function sendSpeakingMessage(voiceText) {
-  if (!currentUser) {
+async function sendSpeakingMessage(voiceText){
+  if(!currentUser){
     setSpeakingStatus("Avval tizimga kiring.");
     return;
   }
 
-  if (speakingBusy) return;
+  if(speakingBusy) return;
 
   const input = document.getElementById("speakingInput");
-  const message = (typeof voiceText === "string" ? voiceText : input.value).trim();
+  const message = (typeof voiceText==="string" ? voiceText : input.value).trim();
 
-  if (!message) {
+  if(!message){
     setSpeakingStatus("Avval xabar yozing yoki mikrofon orqali gapiring.");
     return;
   }
 
-  if (message.length > 1200) {
+  if(message.length>1200){
     setSpeakingStatus("Xabar 1200 belgidan oshmasligi kerak.");
     return;
   }
@@ -723,7 +796,7 @@ async function sendSpeakingMessage(voiceText) {
   addChatMessage("user",message);
   setSpeakingStatus("AI javob tayyorlamoqda...");
 
-  try {
+  try{
     const {data,error} = await db.functions.invoke("speaking-chat",{
       body:{
         message,
@@ -732,19 +805,21 @@ async function sendSpeakingMessage(voiceText) {
       }
     });
 
-    if (error) {
+    if(error){
       let detail = error.message || "Server bilan bog‘lanib bo‘lmadi.";
-      try {
-        if (error.context && typeof error.context.json === "function") {
+
+      try{
+        if(error.context && typeof error.context.json==="function"){
           const body = await error.context.json();
-          if (body.error) detail = body.error;
+          if(body.error) detail = body.error;
         }
-      } catch (_) {}
+      }catch(_){}
+
       throw new Error(detail);
     }
 
-    if (data?.error) throw new Error(data.error);
-    if (!data?.reply) throw new Error("AI javobi kelmadi.");
+    if(data?.error) throw new Error(data.error);
+    if(!data?.reply) throw new Error("AI javobi kelmadi.");
 
     const reply = data.reply;
     addChatMessage("assistant",reply);
@@ -756,15 +831,14 @@ async function sendSpeakingMessage(voiceText) {
 
     speakingHistory = speakingHistory.slice(-10);
 
-    if (speakingMode === "voice") {
-      speakReply(reply);
-    }
+    if(speakingMode==="voice") speakReply(reply);
 
     setSpeakingStatus("Javob tayyor.");
-  } catch(error) {
+
+  }catch(error){
     console.error("Speaking AI error:",error);
-    setSpeakingStatus("Xatolik: " + (error.message || "AI bilan bog‘lanib bo‘lmadi."));
-  } finally {
+    setSpeakingStatus("Xatolik: "+(error.message || "AI bilan bog‘lanib bo‘lmadi."));
+  }finally{
     speakingBusy = false;
     input.disabled = false;
     sendBtn.disabled = false;
@@ -775,10 +849,10 @@ async function sendSpeakingMessage(voiceText) {
 
 
 // =====================================
-// 15. OVOZ CHIQARISH
+// 12. TEXT TO SPEECH
 // =====================================
-function speakReply(text) {
-  if (!("speechSynthesis" in window)) {
+function speakReply(text){
+  if(!("speechSynthesis" in window)){
     setSpeakingStatus("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");
     return;
   }
@@ -790,21 +864,31 @@ function speakReply(text) {
   utterance.rate = 0.9;
   utterance.pitch = 1;
 
-  utterance.onerror = () => setSpeakingStatus("Ovoz chiqarishda xatolik yuz berdi.");
+  utterance.onerror = ()=>{
+    setSpeakingStatus("Ovoz chiqarishda xatolik yuz berdi.");
+  };
+
   window.speechSynthesis.speak(utterance);
 }
 
-function stopSpeaking() {
-  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 
-  if (recognition && isListening) {
-    try { recognition.stop(); } catch (_) {}
+// =====================================
+// 13. STOP SPEAKING
+// =====================================
+function stopSpeaking(){
+  if("speechSynthesis" in window){
+    window.speechSynthesis.cancel();
+  }
+
+  if(recognition && isListening){
+    try{recognition.stop();}catch(_){}
   }
 
   isListening = false;
 
   const mic = document.getElementById("micBtn");
-  if (mic) {
+
+  if(mic){
     mic.classList.remove("listening");
     mic.textContent = "🎙";
   }
@@ -812,116 +896,100 @@ function stopSpeaking() {
 
 
 // =====================================
-// 16. MIKROFON — OVOZNI MATNGA AYLANTIRISH
+// 14. MICROPHONE
 // =====================================
-async function toggleMicrophone() {
-  setSpeakingStatus("Mikrofon tekshirilmoqda...");
+async function toggleMicrophone(){
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  if (!window.isSecureContext) {
-    setSpeakingStatus("Xatolik: sayt HTTPS orqali ochilishi kerak.");
-    return;
-  }
-
-  if (!navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia) {
+  if(!SpeechRecognition){
     setSpeakingStatus(
-      "Xatolik: APK WebView getUserMedia funksiyasini qo‘llamayapti."
+      "Bu brauzer nutqni matnga aylantirishni qo‘llab-quvvatlamaydi. Chrome brauzerida sinab ko‘ring."
     );
     return;
   }
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true
-    });
-
-    setSpeakingStatus("Mikrofon ishlayapti! Ruxsat muvaffaqiyatli olindi.");
-
-    stream.getTracks().forEach(track => track.stop());
-
-  } catch (error) {
-    setSpeakingStatus(
-      "Mikrofon xatosi: " + error.name + " — " + error.message
-    );
-  }
-  }
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    setSpeakingStatus("Bu brauzer nutqni matnga aylantirishni qo‘llab-quvvatlamaydi. Chrome brauzerida sinab ko‘ring yoki matnli rejimdan foydalaning.");
-    return;
-  }
-
-  if (isListening && recognition) {
-    recognition.stop();
-    return;
-  }
-
-  if (!window.isSecureContext) {
+  if(!window.isSecureContext){
     setSpeakingStatus("Mikrofon uchun sayt HTTPS orqali ochilishi kerak.");
     return;
   }
 
-  try {
+  if(isListening && recognition){
+    recognition.stop();
+    return;
+  }
+
+  try{
     recognition = new SpeechRecognition();
+
     recognition.lang = "en-US";
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.onstart = () => {
+    recognition.onstart = ()=>{
       isListening = true;
+
       const mic = document.getElementById("micBtn");
       mic.classList.add("listening");
       mic.textContent = "⏹";
+
       setSpeakingStatus("Tinglayapman... Ingliz tilida gapiring.");
     };
 
-    recognition.onresult = event => {
+    recognition.onresult = event=>{
       const transcript = event.results[0][0].transcript;
+
       document.getElementById("speakingInput").value = transcript;
-      setSpeakingStatus("Siz aytdingiz: " + transcript);
+      setSpeakingStatus("Siz aytdingiz: "+transcript);
+
       sendSpeakingMessage(transcript);
     };
 
-    recognition.onerror = event => {
-      setSpeakingStatus("Mikrofon xatosi: " + event.error);
+    recognition.onerror = event=>{
+      setSpeakingStatus("Mikrofon xatosi: "+event.error);
     };
 
-    recognition.onend = () => {
+    recognition.onend = ()=>{
       isListening = false;
+
       const mic = document.getElementById("micBtn");
       mic.classList.remove("listening");
       mic.textContent = "🎙";
     };
 
     recognition.start();
-  } catch(error) {
-    setSpeakingStatus("Mikrofonni ishga tushirib bo‘lmadi: " + error.message);
+
+  }catch(error){
+    setSpeakingStatus("Mikrofonni ishga tushirib bo‘lmadi: "+error.message);
   }
 }
 
 
 // =====================================
-// 17. SUHBATNI TOZALASH
+// 15. CLEAR CHAT
 // =====================================
-function clearSpeakingChat() {
+function clearSpeakingChat(){
   stopSpeaking();
   speakingHistory = [];
 
   const box = document.getElementById("chatBox");
   box.innerHTML = "";
 
-  addChatMessage("assistant","Hello! Let's practice English together. What did you do today?");
+  addChatMessage(
+    "assistant",
+    "Hello! Let's practice English together. What did you do today?"
+  );
+
   setSpeakingStatus("Yangi suhbat boshlandi.");
 }
 
 
 // =====================================
-// 18. SAYTNI ISHGA TUSHIRISH
+// 16. START APP
 // =====================================
 checkSession();
 
 </script>
 </body>
-</html>
+  </html>
