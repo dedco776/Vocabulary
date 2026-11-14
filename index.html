@@ -8,49 +8,25 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-  --bg:#0c0817;
-  --panel:#171126;
-  --panel2:#211936;
-  --purple:#925cff;
-  --purple2:#7138df;
-  --text:#f7f2ff;
-  --muted:#a99bbf;
-  --border:#35264e;
-  --green:#27dba0;
-  --red:#e64c70;
+:root{
+  --bg:#0c0817;--panel:#171126;--panel2:#211936;
+  --purple:#925cff;--purple2:#7138df;--text:#f7f2ff;
+  --muted:#a99bbf;--border:#35264e;--green:#27dba0;--red:#e64c70;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100vh;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
 button,input,select,textarea{font:inherit}
-button{
-  cursor:pointer;border:0;border-radius:12px;padding:13px 17px;
-  color:white;font-weight:bold;
-  background:linear-gradient(120deg,var(--purple2),var(--purple));
-}
+button{cursor:pointer;border:0;border-radius:12px;padding:13px 17px;color:white;font-weight:bold;background:linear-gradient(120deg,var(--purple2),var(--purple))}
 button:hover{filter:brightness(1.12)}
 button:disabled{opacity:.5;cursor:not-allowed}
-input,select,textarea{
-  width:100%;padding:14px;border-radius:12px;
-  border:1px solid var(--border);background:#100b1d;
-  color:white;outline:none;margin:8px 0 15px;
-}
+input,select,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid var(--border);background:#100b1d;color:white;outline:none;margin:8px 0 15px}
 input:focus,select:focus,textarea:focus{border-color:var(--purple)}
 label{color:var(--muted);font-size:13px}
 .app{max-width:1000px;margin:auto;padding:20px 20px 110px}
-header{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:25px;gap:12px;
-}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:12px}
 .logo{font-size:25px;font-weight:900;color:var(--purple)}
 .logo span{color:white}
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:20px;padding:23px;margin-bottom:18px;
-}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:23px;margin-bottom:18px}
 h1,h2,h3{margin-top:0}
 p{color:var(--muted);line-height:1.6}
 .secondary{background:var(--panel2);border:1px solid var(--border)}
@@ -61,235 +37,89 @@ p{color:var(--muted);line-height:1.6}
 .row>*{flex:1;min-width:0}
 .page{display:none;animation:fade .2s ease}
 .page.active{display:block}
-@keyframes fade{
-  from{opacity:0;transform:translateY(7px)}
-  to{opacity:1;transform:translateY(0)}
-}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 .page-title{font-size:25px;margin-bottom:8px}
 .page-subtitle{font-size:14px;margin-top:0}
 .message{color:var(--purple);min-height:22px;overflow-wrap:anywhere}
-.word{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;padding:14px 0;border-bottom:1px solid var(--border);
-}
+.word{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
 .word:last-child{border:0}
 .word strong{color:#c5a5ff;overflow-wrap:anywhere}
 .word small{display:block;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
-.stat{
-  background:var(--panel2);padding:17px 8px;
-  border-radius:14px;text-align:center;
-}
+.stat{background:var(--panel2);padding:17px 8px;border-radius:14px;text-align:center}
 .stat strong{display:block;font-size:25px;color:#c19aff}
 .stat span{font-size:12px;color:var(--muted)}
 footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
-
-/* AUTH */
 .auth-wrap{max-width:480px;margin:40px auto}
 .auth-logo{text-align:center;font-size:30px;font-weight:900;color:var(--purple);margin-bottom:25px}
 .auth-logo span{color:white}
-
-/* BOTTOM NAVIGATION */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:#130d20ed;backdrop-filter:blur(18px);
-  border-top:1px solid var(--border);
-  display:flex;justify-content:space-around;
-  padding:9px 5px calc(9px + env(safe-area-inset-bottom));
-}
-.nav-item{
-  background:transparent;color:var(--muted);
-  border-radius:12px;padding:7px 4px;min-width:0;flex:1;
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  font-size:10px;font-weight:normal;
-}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#130d20ed;backdrop-filter:blur(18px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom))}
+.nav-item{background:transparent;color:var(--muted);border-radius:12px;padding:7px 4px;min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:normal}
 .nav-icon{font-size:21px;line-height:24px}
 .nav-item.active{color:#c6a3ff;background:#35204f}
 .nav-item.active .nav-icon{filter:drop-shadow(0 0 5px #a56bff)}
-
-/* LANGUAGE PICKER */
 .language-label{font-size:12px;color:var(--muted);margin-bottom:9px}
-.language-picker{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;margin-bottom:15px;
-}
-.language-option{
-  background:#100b1d;border:1px solid var(--border);
-  color:var(--muted);padding:13px 5px;border-radius:13px;
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  font-size:12px;
-}
+.language-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:15px}
+.language-option{background:#100b1d;border:1px solid var(--border);color:var(--muted);padding:13px 5px;border-radius:13px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:12px}
 .language-option .flag{font-size:22px}
-.language-option.selected{
-  background:#35204f;border:1px solid var(--purple);
-  color:white;box-shadow:0 0 12px #925cff25;
-}
-.direction-arrow{
-  text-align:center;color:#c5a5ff;font-size:20px;
-  margin:-4px 0 10px;
-}
+.language-option.selected{background:#35204f;border:1px solid var(--purple);color:white;box-shadow:0 0 12px #925cff25}
+.direction-arrow{text-align:center;color:#c5a5ff;font-size:20px;margin:-4px 0 10px}
 .language-section{margin-bottom:16px}
-
-/* DICTIONARY GROUPS */
-.language-tabs,.group-tabs{
-  display:flex;gap:8px;overflow-x:auto;padding:3px 1px 10px;
-  scrollbar-width:thin;
-}
-.language-tab,.group-tab{
-  flex:0 0 auto;background:var(--panel2);
-  border:1px solid var(--border);color:var(--muted);
-  padding:11px 15px;font-size:12px;border-radius:12px;
-}
-.language-tab.selected,.group-tab.selected{
-  background:#43256b;border-color:var(--purple);color:white;
-}
-.group-heading{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin:15px 0 8px;
-}
+.language-tabs,.group-tabs{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 10px;scrollbar-width:thin}
+.language-tab,.group-tab{flex:0 0 auto;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:11px 15px;font-size:12px;border-radius:12px}
+.language-tab.selected,.group-tab.selected{background:#43256b;border-color:var(--purple);color:white}
+.group-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:15px 0 8px}
 .group-heading h3{font-size:15px;margin:0}
 .group-actions{display:flex;gap:6px}
 .group-actions button{padding:8px 10px;font-size:11px}
-.group-empty{
-  text-align:center;padding:20px 10px;color:var(--muted);
-  background:#100b1d;border-radius:13px;margin-top:10px;
-}
-.save-panel{
-  background:#100b1d;border:1px solid var(--border);
-  border-radius:14px;padding:14px;margin-top:14px;
-}
+.group-empty{text-align:center;padding:20px 10px;color:var(--muted);background:#100b1d;border-radius:13px;margin-top:10px}
+.save-panel{background:#100b1d;border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:14px}
 .save-panel p{font-size:12px;margin:0 0 8px}
 .save-panel select{margin:5px 0 10px}
-.saved-button{
-  background:#164c3d!important;color:#7fffd0!important;
-  border:1px solid #23785e!important;
-}
+.saved-button{background:#164c3d!important;color:#7fffd0!important;border:1px solid #23785e!important}
 
 /* DAILY WORD */
-.daily-word-card{
-  background:linear-gradient(135deg,#2b1948,#171126 75%);
-  border:1px solid #7045a8;
-  border-radius:20px;
-  padding:20px;
-  margin:18px 0;
-  position:relative;
-  overflow:hidden;
-}
-.daily-word-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:17px;
-}
-.daily-word-label{
-  color:#d4baff;
-  font-size:12px;
-  font-weight:bold;
-  letter-spacing:1px;
-}
-.daily-word-date{
-  font-size:11px;
-  color:var(--muted);
-}
-.daily-word-title{
-  font-size:32px;
-  color:#d2b4ff;
-  margin:8px 0;
-  overflow-wrap:anywhere;
-}
-.daily-word-translation{
-  font-size:18px;
-  color:white;
-  margin:0 0 18px;
-}
-.daily-word-example{
-  background:#100b1d;
-  border:1px solid var(--border);
-  padding:13px;
-  border-radius:13px;
-  margin:12px 0;
-}
-.daily-word-example strong{
-  display:block;
-  color:#d2b4ff;
-  font-size:13px;
-  margin-bottom:7px;
-}
-.daily-word-example p{
-  margin:0;
-  color:#f7f2ff;
-  font-size:14px;
-}
-.daily-word-example small{
-  display:block;
-  color:var(--muted);
-  margin-top:7px;
-  line-height:1.5;
-}
-.daily-word-actions{
-  display:flex;
-  gap:9px;
-  margin-top:15px;
-}
-.daily-word-actions button{
-  flex:1;
-  min-width:0;
-}
+.daily-word-card{background:linear-gradient(135deg,#2b1948,#171126 75%);border:1px solid #7045a8;border-radius:20px;padding:20px;margin:18px 0;position:relative;overflow:hidden}
+.daily-word-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}
+.daily-word-label{color:#d4baff;font-size:12px;font-weight:bold;letter-spacing:1px}
+.daily-word-date{font-size:11px;color:var(--muted)}
+.daily-word-title{font-size:32px;color:#d2b4ff;margin:8px 0;overflow-wrap:anywhere}
+.daily-word-translation{font-size:18px;color:white;margin:0 0 18px}
+.daily-word-example{background:#100b1d;border:1px solid var(--border);padding:13px;border-radius:13px;margin:12px 0}
+.daily-word-example strong{display:block;color:#d2b4ff;font-size:13px;margin-bottom:7px}
+.daily-word-example p{margin:0;color:#f7f2ff;font-size:14px}
+.daily-word-example small{display:block;color:var(--muted);margin-top:7px;line-height:1.5}
+.daily-word-actions{display:flex;gap:9px;margin-top:15px}
+.daily-word-actions button{flex:1;min-width:0}
+
+/* SMART REVIEW */
+.review-card{background:linear-gradient(135deg,#201638,#171126);border:1px solid #63418e;border-radius:18px;padding:18px;margin:20px 0}
+.review-header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.review-count{background:#39245b;color:#d7c0ff;padding:7px 11px;border-radius:20px;font-size:12px;white-space:nowrap}
+.review-word{font-size:28px;color:#d2b4ff;text-align:center;margin:25px 0 8px;overflow-wrap:anywhere}
+.review-translation{font-size:18px;text-align:center;color:white;margin:10px 0 20px}
+.review-rating{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:15px}
+.review-rating button{padding:13px 8px}
+.review-rating .again{background:#8e2948}
+.review-rating .hard{background:#8a5723}
+.review-rating .good{background:#245d4b}
+.review-rating .easy{background:#354b8d}
+.review-status{text-align:center;min-height:24px;color:#c5a5ff;font-size:13px;margin-top:12px}
+.review-info{font-size:12px;text-align:center;margin:8px 0}
+.review-show{width:100%;margin-top:12px}
+.review-actions{display:flex;gap:8px;margin-top:12px}
+.review-actions button{flex:1}
 
 /* QUIZ */
-.quiz-panel{
-  background:#100b1d;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:16px;
-  margin-top:22px;
-}
-.quiz-question{
-  font-size:23px;
-  font-weight:bold;
-  color:#c19aff;
-  text-align:center;
-  overflow-wrap:anywhere;
-  margin:25px 0;
-}
-.quiz-option{
-  display:block;
-  width:100%;
-  margin:9px 0;
-  background:var(--panel2);
-  border:1px solid var(--border);
-  text-align:left;
-}
-.quiz-option.correct{
-  background:#164c3d;
-  border-color:var(--green);
-}
-.quiz-option.wrong{
-  background:#572033;
-  border-color:var(--red);
-}
-.quiz-feedback{
-  min-height:25px;
-  margin:15px 0;
-  text-align:center;
-  font-weight:bold;
-}
-.quiz-progress{
-  color:var(--muted);
-  text-align:center;
-  font-size:13px;
-}
-.quiz-result{
-  text-align:center;
-  padding:15px 5px;
-}
-.quiz-result-score{
-  font-size:38px;
-  font-weight:bold;
-  color:#c19aff;
-  margin:18px 0;
-}
+.quiz-panel{background:#100b1d;border:1px solid var(--border);border-radius:15px;padding:16px;margin-top:22px}
+.quiz-question{font-size:23px;font-weight:bold;color:#c19aff;text-align:center;overflow-wrap:anywhere;margin:25px 0}
+.quiz-option{display:block;width:100%;margin:9px 0;background:var(--panel2);border:1px solid var(--border);text-align:left}
+.quiz-option.correct{background:#164c3d;border-color:var(--green)}
+.quiz-option.wrong{background:#572033;border-color:var(--red)}
+.quiz-feedback{min-height:25px;margin:15px 0;text-align:center;font-weight:bold}
+.quiz-progress{color:var(--muted);text-align:center;font-size:13px}
+.quiz-result{text-align:center;padding:15px 5px}
+.quiz-result-score{font-size:38px;font-weight:bold;color:#c19aff;margin:18px 0}
 
 /* SPEAKING */
 .level-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0 20px}
@@ -298,77 +128,39 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 .mode-row{display:flex;gap:10px;margin:15px 0}
 .mode-row button{flex:1}
 .mode-row button.selected{outline:2px solid #bd9aff}
-.chat-box{
-  background:#100b1d;border:1px solid var(--border);
-  border-radius:15px;padding:15px;height:360px;
-  overflow-y:auto;margin:15px 0;
-}
-.chat-message{
-  max-width:88%;padding:12px 14px;border-radius:14px;
-  margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;
-}
-.chat-message.user{
-  background:#5830a0;margin-left:auto;color:white;
-  border-bottom-right-radius:4px;
-}
-.chat-message.assistant{
-  background:#251b38;margin-right:auto;color:#f7f2ff;
-  border-bottom-left-radius:4px;
-}
+.chat-box{background:#100b1d;border:1px solid var(--border);border-radius:15px;padding:15px;height:360px;overflow-y:auto;margin:15px 0}
+.chat-message{max-width:88%;padding:12px 14px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.chat-message.user{background:#5830a0;margin-left:auto;color:white;border-bottom-right-radius:4px}
+.chat-message.assistant{background:#251b38;margin-right:auto;color:#f7f2ff;border-bottom-left-radius:4px}
 .chat-message .who{font-size:11px;color:#c5a5ff;margin-bottom:6px;font-weight:bold}
 .chat-input-row{display:flex;gap:8px;align-items:stretch}
-.chat-input-row textarea{
-  resize:vertical;min-height:52px;max-height:130px;margin:0;flex:1;
-}
+.chat-input-row textarea{resize:vertical;min-height:52px;max-height:130px;margin:0;flex:1}
 .chat-input-row button{white-space:nowrap}
 .mic-button{min-width:52px;padding:10px}
 .mic-button.listening{background:#b52c48;animation:pulse 1.2s infinite}
 @keyframes pulse{50%{opacity:.65}}
 .chat-status{min-height:24px;color:#c5a5ff;font-size:13px;margin-top:10px}
 .voice-note{font-size:12px;color:var(--muted)}
-
-/* PLACEHOLDER */
-.feature-icon{
-  width:58px;height:58px;border-radius:18px;
-  display:grid;place-items:center;font-size:28px;
-  background:#302047;margin-bottom:18px;
-}
-.feature-card{
-  background:linear-gradient(135deg,#26173d,#171126);
-  border:1px solid var(--border);border-radius:18px;padding:22px;
-}
+.feature-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:28px;background:#302047;margin-bottom:18px}
+.feature-card{background:linear-gradient(135deg,#26173d,#171126);border:1px solid var(--border);border-radius:18px;padding:22px}
 .feature-card h3{margin-bottom:8px}
-.tag{
-  display:inline-block;background:#34204d;color:#c9a9ff;
-  border-radius:20px;padding:6px 11px;font-size:11px;
-}
+.tag{display:inline-block;background:#34204d;color:#c9a9ff;border-radius:20px;padding:6px 11px;font-size:11px}
 
 @media(max-width:600px){
-  .app{padding:13px 13px 105px}
-  .logo{font-size:22px}
-  .card{padding:19px}
-  .page-title{font-size:23px}
-  .row{flex-direction:column}
-  .stats{gap:7px}
-  .stat{padding:13px 5px}
-  .stat strong{font-size:21px}
+  .app{padding:13px 13px 105px}.logo{font-size:22px}.card{padding:19px}
+  .page-title{font-size:23px}.row{flex-direction:column}.stats{gap:7px}
+  .stat{padding:13px 5px}.stat strong{font-size:21px}
   .level-grid{grid-template-columns:repeat(3,1fr)}
-  .chat-box{height:340px;padding:10px}
-  .chat-message{max-width:95%}
-  .chat-input-row{flex-wrap:wrap}
-  .chat-input-row textarea{flex-basis:100%}
-  .chat-input-row button{flex:1}
-  .nav-item{font-size:9px}
-  .nav-icon{font-size:19px}
-  .daily-word-title{font-size:28px}
-  .daily-word-actions{flex-direction:column}
+  .chat-box{height:340px;padding:10px}.chat-message{max-width:95%}
+  .chat-input-row{flex-wrap:wrap}.chat-input-row textarea{flex-basis:100%}
+  .chat-input-row button{flex:1}.nav-item{font-size:9px}.nav-icon{font-size:19px}
+  .daily-word-title{font-size:28px}.daily-word-actions{flex-direction:column}
 }
 </style>
 </head>
 
 <body>
 <div class="app">
-
 <header>
   <div class="logo">VOCAB<span>MASTER.</span></div>
   <button id="logoutBtn" class="secondary small hidden" onclick="logout()">Chiqish</button>
@@ -381,28 +173,21 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
     <div class="card">
       <h1>Welcome!</h1>
       <p>Ingliz tilini yangi bosqichga olib chiqing.</p>
-
       <div id="registerFields">
         <label>Ismingiz</label>
         <input id="name" placeholder="Ismingiz">
       </div>
-
       <label>Email</label>
       <input id="email" type="email" placeholder="example@gmail.com">
-
       <label>Parol</label>
       <input id="password" type="password" placeholder="Parolingiz">
-
       <button id="authBtn" onclick="authenticate()">Ro‘yxatdan o‘tish</button>
-      <button class="secondary" onclick="toggleAuth()" id="toggleBtn" style="width:100%;margin-top:10px">
-        Akkauntingiz bormi? Kirish
-      </button>
+      <button class="secondary" onclick="toggleAuth()" id="toggleBtn" style="width:100%;margin-top:10px">Akkauntingiz bormi? Kirish</button>
       <p id="authMessage" class="message"></p>
     </div>
   </div>
 </section>
 
-<!-- APP -->
 <main id="main" class="hidden">
 
 <!-- TRANSLATOR -->
@@ -410,22 +195,18 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
   <h1 class="page-title">Tarjimon</h1>
   <p class="page-subtitle">So‘z va gaplarni tarjima qiling.</p>
 
-  <!-- DAILY WORD -->
   <div class="daily-word-card">
     <div class="daily-word-top">
       <span class="daily-word-label">✨ KUN SO‘ZI</span>
       <span class="daily-word-date" id="dailyWordDate"></span>
     </div>
-
     <h2 class="daily-word-title" id="dailyWordTitle">Improve</h2>
     <p class="daily-word-translation" id="dailyWordTranslation">Yaxshilamoq</p>
-
     <div class="daily-word-example">
       <strong>📖 Misol</strong>
       <p id="dailyWordExample">I want to improve my English.</p>
       <small id="dailyWordExampleTranslation">Men ingliz tilimni yaxshilamoqchiman.</small>
     </div>
-
     <div class="daily-word-actions">
       <button class="secondary" onclick="speakDailyWord()">🔊 Eshitish</button>
       <button id="dailyWordSaveBtn" onclick="saveDailyWord()">＋ Lug‘atga saqlash</button>
@@ -436,47 +217,28 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
     <div class="language-section">
       <div class="language-label">Qaysi tildan tarjima qilamiz?</div>
       <div class="language-picker" id="sourceLanguages">
-        <button class="language-option selected" data-lang="en" onclick="setSourceLanguage('en')">
-          <span class="flag">🇬🇧</span><span>English</span>
-        </button>
-        <button class="language-option" data-lang="uz" onclick="setSourceLanguage('uz')">
-          <span class="flag">🇺🇿</span><span>O‘zbekcha</span>
-        </button>
-        <button class="language-option" data-lang="ru" onclick="setSourceLanguage('ru')">
-          <span class="flag">🇷🇺</span><span>Русский</span>
-        </button>
+        <button class="language-option selected" data-lang="en" onclick="setSourceLanguage('en')"><span class="flag">🇬🇧</span><span>English</span></button>
+        <button class="language-option" data-lang="uz" onclick="setSourceLanguage('uz')"><span class="flag">🇺🇿</span><span>O‘zbekcha</span></button>
+        <button class="language-option" data-lang="ru" onclick="setSourceLanguage('ru')"><span class="flag">🇷🇺</span><span>Русский</span></button>
       </div>
     </div>
-
     <div class="direction-arrow">↓</div>
-
     <div class="language-section">
       <div class="language-label">Qaysi tilga tarjima qilamiz?</div>
       <div class="language-picker" id="targetLanguages">
-        <button class="language-option" data-lang="en" onclick="setTargetLanguage('en')">
-          <span class="flag">🇬🇧</span><span>English</span>
-        </button>
-        <button class="language-option selected" data-lang="uz" onclick="setTargetLanguage('uz')">
-          <span class="flag">🇺🇿</span><span>O‘zbekcha</span>
-        </button>
-        <button class="language-option" data-lang="ru" onclick="setTargetLanguage('ru')">
-          <span class="flag">🇷🇺</span><span>Русский</span>
-        </button>
+        <button class="language-option" data-lang="en" onclick="setTargetLanguage('en')"><span class="flag">🇬🇧</span><span>English</span></button>
+        <button class="language-option selected" data-lang="uz" onclick="setTargetLanguage('uz')"><span class="flag">🇺🇿</span><span>O‘zbekcha</span></button>
+        <button class="language-option" data-lang="ru" onclick="setTargetLanguage('ru')"><span class="flag">🇷🇺</span><span>Русский</span></button>
       </div>
     </div>
-
     <textarea id="sourceWord" rows="4" placeholder="Tarjima qilmoqchi bo‘lgan matningizni kiriting..."></textarea>
     <button id="translateBtn" onclick="translateWord()" style="width:100%">Tarjima qilish</button>
-
     <div class="card hidden" id="translationResult" style="margin-top:18px;margin-bottom:0">
       <p>Tarjima natijasi:</p>
       <h2 id="translatedText"></h2>
-
       <div id="savePanel" class="save-panel">
         <p>Qaysi guruhga saqlaysiz?</p>
-        <select id="saveGroupSelect">
-          <option value="">Guruhsiz saqlash</option>
-        </select>
+        <select id="saveGroupSelect"><option value="">Guruhsiz saqlash</option></select>
         <button id="saveBtn" onclick="saveWord()" style="width:100%">＋ Lug‘atga kiritish</button>
       </div>
     </div>
@@ -484,7 +246,7 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
   </div>
 </section>
 
-<!-- DICTIONARY -->
+<!-- DICTIONARY + SMART REVIEW -->
 <section id="dictionary" class="page">
   <h1 class="page-title">Mening lug‘atim</h1>
   <p class="page-subtitle">Har bir til uchun alohida lug‘at va guruhlar.</p>
@@ -496,32 +258,57 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
       <div class="stat"><strong id="learnedWords">0</strong><span>Saqlangan</span></div>
     </div>
 
+    <!-- SMART REVIEW -->
+    <div class="review-card">
+      <div class="review-header">
+        <h3>🧠 Smart Review</h3>
+        <span class="review-count" id="reviewCount">0 ta so‘z</span>
+      </div>
+      <p>Unutayotgan so‘zlaringizni aqlli takrorlash orqali mustahkamlang.</p>
+      <div id="reviewStartArea">
+        <button onclick="startSmartReview()" style="width:100%">▶ Takrorlashni boshlash</button>
+      </div>
+      <div id="reviewSession" class="hidden">
+        <div class="review-info" id="reviewProgress"></div>
+        <div class="review-word" id="reviewWord"></div>
+        <div id="reviewAnswerArea" class="hidden">
+          <div class="review-translation" id="reviewTranslation"></div>
+          <div class="review-rating">
+            <button class="again" onclick="rateReview('again')">Bilmayman</button>
+            <button class="hard" onclick="rateReview('hard')">Qiyin</button>
+            <button class="good" onclick="rateReview('good')">Bildim</button>
+            <button class="easy" onclick="rateReview('easy')">Oson</button>
+          </div>
+        </div>
+        <button id="reviewShowBtn" class="review-show" onclick="showReviewAnswer()">Javobni ko‘rsatish</button>
+        <div class="review-status" id="reviewStatus"></div>
+        <div class="review-actions">
+          <button class="secondary small" onclick="endSmartReview()">Mashqni tugatish</button>
+        </div>
+      </div>
+    </div>
+
     <div class="language-label">Lug‘at tilini tanlang</div>
     <div class="language-tabs">
       <button class="language-tab selected" onclick="selectDictionaryLanguage('en',this)">🇬🇧 English</button>
       <button class="language-tab" onclick="selectDictionaryLanguage('uz',this)">🇺🇿 O‘zbekcha</button>
       <button class="language-tab" onclick="selectDictionaryLanguage('ru',this)">🇷🇺 Русский</button>
     </div>
-
     <div class="group-heading">
       <h3>Guruhlar</h3>
       <button class="small" onclick="createGroup()">＋ Guruh yaratish</button>
     </div>
-
     <div id="groupTabs" class="group-tabs"></div>
     <div id="groupActions" class="group-actions hidden">
       <button class="secondary small" onclick="renameGroup()">✎ Nomini o‘zgartirish</button>
       <button class="danger small" onclick="deleteGroup()">O‘chirish</button>
     </div>
-
     <input id="searchWord" placeholder="Lug‘atdan qidirish..." oninput="renderDictionary()">
     <div id="dictionaryList">Hozircha so‘zlar yo‘q.</div>
 
-    <!-- QUIZ -->
     <div class="quiz-panel">
       <h3>🧠 Bilimingizni sinang</h3>
       <p>Tanlangan lug‘at va guruhdagi so‘zlar bilan mashq qiling.</p>
-
       <label>Test turini tanlang</label>
       <select id="quizMode">
         <option value="forward">So‘zni tarjima qilish</option>
@@ -530,26 +317,14 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
         <option value="listen">Eshitib topish</option>
         <option value="type">Javobni yozish</option>
       </select>
-
-      <button onclick="startQuiz()" style="width:100%">
-        ▶ Testni boshlash
-      </button>
-
+      <button onclick="startQuiz()" style="width:100%">▶ Testni boshlash</button>
       <div id="quizArea" class="hidden">
         <div class="quiz-progress" id="quizProgress"></div>
         <div class="quiz-question" id="quizQuestion"></div>
         <div id="quizAnswers"></div>
         <div class="quiz-feedback" id="quizFeedback"></div>
-
-        <button id="quizNext" onclick="nextQuizQuestion()"
-          class="hidden" style="width:100%">
-          Keyingi savol →
-        </button>
-
-        <button onclick="closeQuiz()" class="secondary"
-          style="width:100%;margin-top:9px">
-          Testni yopish
-        </button>
+        <button id="quizNext" onclick="nextQuizQuestion()" class="hidden" style="width:100%">Keyingi savol →</button>
+        <button onclick="closeQuiz()" class="secondary" style="width:100%;margin-top:9px">Testni yopish</button>
       </div>
     </div>
   </div>
@@ -559,7 +334,6 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <section id="speaking" class="page">
   <h1 class="page-title">Speaking AI</h1>
   <p class="page-subtitle">AI bilan ingliz tilida suhbat qiling.</p>
-
   <div class="card">
     <label>Ingliz tili darajangiz</label>
     <div class="level-grid">
@@ -570,31 +344,23 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
       <button class="level-btn" onclick="selectLevel('C1',this)">C1</button>
       <button class="level-btn" onclick="selectLevel('C2',this)">C2</button>
     </div>
-
     <label>Suhbat turi</label>
     <div class="mode-row">
       <button id="textModeBtn" class="selected" onclick="setSpeakingMode('text')">⌨ Matnli</button>
       <button id="voiceModeBtn" class="secondary" onclick="setSpeakingMode('voice')">🎙 Ovozli</button>
     </div>
-
     <div class="row">
       <button class="secondary" onclick="clearSpeakingChat()">Yangi suhbat</button>
       <button class="secondary" onclick="stopSpeaking()">Ovozni to‘xtatish</button>
     </div>
-
     <div class="chat-box" id="chatBox" aria-live="polite">
-      <div class="chat-message assistant">
-        <div class="who">VOCABMASTER AI</div>
-        Hello! Let's practice English together. What did you do today?
-      </div>
+      <div class="chat-message assistant"><div class="who">VOCABMASTER AI</div>Hello! Let's practice English together. What did you do today?</div>
     </div>
-
     <div class="chat-input-row">
       <textarea id="speakingInput" placeholder="Inglizcha xabar yozing..."></textarea>
       <button id="micBtn" class="secondary mic-button hidden" onclick="toggleMicrophone()">🎙</button>
       <button id="sendSpeakingBtn" onclick="sendSpeakingMessage()">Yuborish</button>
     </div>
-
     <div id="speakingStatus" class="chat-status"></div>
     <p class="voice-note">Ovozli suhbat mikrofon ruxsati va brauzer imkoniyatlariga bog‘liq. Hozirgi ovozli rejim nutqni matnga aylantirib, AI javobini ovoz chiqarib o‘qiydi.</p>
   </div>
@@ -640,509 +406,368 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
     <span class="tag">Keyingi bosqichda ishlab chiqiladi</span>
   </div>
 </section>
-
 </main>
 
 <footer>VOCABMASTER © 2026 — Learn something new every day.</footer>
 </div>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav hidden" id="bottomNav">
-  <button class="nav-item active" onclick="showPage('translate',this)">
-    <span class="nav-icon">⇄</span><span>Tarjimon</span>
-  </button>
-  <button class="nav-item" onclick="showPage('dictionary',this)">
-    <span class="nav-icon">📚</span><span>Lug‘at</span>
-  </button>
-  <button class="nav-item" onclick="showPage('speaking',this)">
-    <span class="nav-icon">🎙</span><span>Speaking</span>
-  </button>
-  <button class="nav-item" onclick="showPage('progress',this)">
-    <span class="nav-icon">📈</span><span>Progress</span>
-  </button>
-  <button class="nav-item" onclick="showPage('community',this)">
-    <span class="nav-icon">👥</span><span>Community</span>
-  </button>
-  <button class="nav-item" onclick="showPage('settings',this)">
-    <span class="nav-icon">⚙️</span><span>Sozlama</span>
-  </button>
+  <button class="nav-item active" onclick="showPage('translate',this)"><span class="nav-icon">⇄</span><span>Tarjimon</span></button>
+  <button class="nav-item" onclick="showPage('dictionary',this)"><span class="nav-icon">📚</span><span>Lug‘at</span></button>
+  <button class="nav-item" onclick="showPage('speaking',this)"><span class="nav-icon">🎙</span><span>Speaking</span></button>
+  <button class="nav-item" onclick="showPage('progress',this)"><span class="nav-icon">📈</span><span>Progress</span></button>
+  <button class="nav-item" onclick="showPage('community',this)"><span class="nav-icon">👥</span><span>Community</span></button>
+  <button class="nav-item" onclick="showPage('settings',this)"><span class="nav-icon">⚙️</span><span>Sozlama</span></button>
 </nav>
 
 <script>
 // =====================================
 // 1. SUPABASE
 // =====================================
-const SUPABASE_URL = "https://rmcewweppablchrtctkw.supabase.co";
-const SUPABASE_KEY = "sb_publishable_AK9tPpB7kLB8AV9Y1sVANQ_63M8Iu4n";
+const SUPABASE_URL="https://rmcewweppablchrtctkw.supabase.co";
+const SUPABASE_KEY="sb_publishable_AK9tPpB7kLB8AV9Y1sVANQ_63M8Iu4n";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,isLogin=false,words=[],groups=[],translated=null;
+let sourceLanguage="en",targetLanguage="uz",dictionaryLanguage="en",selectedGroupId="all";
+let selectedLevel="A1",speakingMode="text",speakingHistory=[],recognition=null,isListening=false,speakingBusy=false;
 
-let currentUser = null;
-let isLogin = false;
-let words = [];
-let groups = [];
-let translated = null;
-
-let sourceLanguage = "en";
-let targetLanguage = "uz";
-let dictionaryLanguage = "en";
-let selectedGroupId = "all";
-
-let selectedLevel = "A1";
-let speakingMode = "text";
-let speakingHistory = [];
-let recognition = null;
-let isListening = false;
-let speakingBusy = false;
-
-const LANGUAGES = {
+const LANGUAGES={
   en:{name:"English",flag:"🇬🇧"},
   uz:{name:"O‘zbekcha",flag:"🇺🇿"},
   ru:{name:"Русский",flag:"🇷🇺"}
 };
 
-function normalizeText(value){
-  return String(value || "").trim().toLocaleLowerCase();
-}
-
-function getWordOriginal(word){
-  return word.original_text || word.english || "";
-}
-
-function getWordTranslation(word){
-  return word.translated_text || word.uzbek || "";
-}
-
-function getWordLanguage(word){
-  return word.target_language || "uz";
-}
-
-function getWordSourceLanguage(word){
-  return word.source_language || "en";
-}
+function normalizeText(value){return String(value||"").trim().toLocaleLowerCase()}
+function getWordOriginal(word){return word.original_text||word.english||""}
+function getWordTranslation(word){return word.translated_text||word.uzbek||""}
+function getWordLanguage(word){return word.target_language||"uz"}
+function getWordSourceLanguage(word){return word.source_language||"en"}
 
 function findDuplicate(item){
-  if(!item) return null;
-
-  const original = normalizeText(item.original);
-  const translation = normalizeText(item.translation);
-
+  if(!item)return null;
+  const original=normalizeText(item.original);
+  const translation=normalizeText(item.translation);
   return words.find(word=>
-    getWordSourceLanguage(word) === item.source &&
-    getWordLanguage(word) === item.target &&
-    normalizeText(getWordOriginal(word)) === original &&
-    normalizeText(getWordTranslation(word)) === translation
-  ) || null;
+    getWordSourceLanguage(word)===item.source&&
+    getWordLanguage(word)===item.target&&
+    normalizeText(getWordOriginal(word))===original&&
+    normalizeText(getWordTranslation(word))===translation
+  )||null;
 }
 
 // =====================================
 // 2. DAILY WORD
 // =====================================
-const DAILY_WORDS = [
-  {
-    word:"Improve",
-    translation:"Yaxshilamoq",
-    example:"I want to improve my English.",
-    exampleTranslation:"Men ingliz tilimni yaxshilamoqchiman."
-  },
-  {
-    word:"Achieve",
-    translation:"Erishmoq",
-    example:"You can achieve your goals.",
-    exampleTranslation:"Siz maqsadlaringizga erisha olasiz."
-  },
-  {
-    word:"Brave",
-    translation:"Jasur",
-    example:"She is a brave girl.",
-    exampleTranslation:"U jasur qiz."
-  },
-  {
-    word:"Careful",
-    translation:"Ehtiyotkor",
-    example:"Be careful when you cross the road.",
-    exampleTranslation:"Yo‘lni kesib o‘tayotganda ehtiyot bo‘ling."
-  },
-  {
-    word:"Discover",
-    translation:"Kashf qilmoq",
-    example:"I want to discover new places.",
-    exampleTranslation:"Men yangi joylarni kashf qilmoqchiman."
-  },
-  {
-    word:"Effort",
-    translation:"Harakat, sa'y-harakat",
-    example:"Success needs effort.",
-    exampleTranslation:"Muvaffaqiyat uchun harakat kerak."
-  },
-  {
-    word:"Freedom",
-    translation:"Erkinlik",
-    example:"Everyone wants freedom.",
-    exampleTranslation:"Har kim erkinlikni xohlaydi."
-  },
-  {
-    word:"Generous",
-    translation:"Saxiy",
-    example:"My friend is very generous.",
-    exampleTranslation:"Do‘stim juda saxiy."
-  },
-  {
-    word:"Honest",
-    translation:"Halol, rostgo‘y",
-    example:"Always be honest.",
-    exampleTranslation:"Har doim rostgo‘y bo‘ling."
-  },
-  {
-    word:"Knowledge",
-    translation:"Bilim",
-    example:"Knowledge is important.",
-    exampleTranslation:"Bilim muhim."
-  },
-  {
-    word:"Opportunity",
-    translation:"Imkoniyat",
-    example:"This is a good opportunity.",
-    exampleTranslation:"Bu yaxshi imkoniyat."
-  },
-  {
-    word:"Patient",
-    translation:"Sabrli",
-    example:"Be patient and keep learning.",
-    exampleTranslation:"Sabrli bo‘ling va o‘rganishda davom eting."
-  },
-  {
-    word:"Purpose",
-    translation:"Maqsad",
-    example:"What is your purpose?",
-    exampleTranslation:"Maqsadingiz nima?"
-  },
-  {
-    word:"Reliable",
-    translation:"Ishonchli",
-    example:"He is a reliable person.",
-    exampleTranslation:"U ishonchli inson."
-  },
-  {
-    word:"Success",
-    translation:"Muvaffaqiyat",
-    example:"Hard work brings success.",
-    exampleTranslation:"Qattiq mehnat muvaffaqiyat olib keladi."
-  },
-  {
-    word:"Thought",
-    translation:"Fikr, o‘y",
-    example:"That is an interesting thought.",
-    exampleTranslation:"Bu qiziqarli fikr."
-  },
-  {
-    word:"Understand",
-    translation:"Tushunmoq",
-    example:"I understand the lesson.",
-    exampleTranslation:"Men darsni tushunaman."
-  },
-  {
-    word:"Valuable",
-    translation:"Qimmatli",
-    example:"Time is valuable.",
-    exampleTranslation:"Vaqt qimmatli."
-  },
-  {
-    word:"Wisdom",
-    translation:"Donolik",
-    example:"Wisdom comes with experience.",
-    exampleTranslation:"Donolik tajriba bilan keladi."
-  },
-  {
-    word:"Wonder",
-    translation:"Hayron bo‘lmoq",
-    example:"I wonder why he is late.",
-    exampleTranslation:"Nega u kechikayotganiga hayronman."
-  },
-  {
-    word:"Challenge",
-    translation:"Qiyinchilik, sinov",
-    example:"Learning a language is a challenge.",
-    exampleTranslation:"Til o‘rganish bir sinovdir."
-  },
-  {
-    word:"Confident",
-    translation:"O‘ziga ishongan",
-    example:"Be confident when you speak.",
-    exampleTranslation:"Gapirganingizda o‘zingizga ishoning."
-  },
-  {
-    word:"Develop",
-    translation:"Rivojlantirmoq",
-    example:"I want to develop my skills.",
-    exampleTranslation:"Men ko‘nikmalarimni rivojlantirmoqchiman."
-  },
-  {
-    word:"Encourage",
-    translation:"Ruhlantirmoq",
-    example:"My teacher encourages me.",
-    exampleTranslation:"O‘qituvchim meni ruhlantiradi."
-  },
-  {
-    word:"Experience",
-    translation:"Tajriba",
-    example:"Experience helps us learn.",
-    exampleTranslation:"Tajriba bizga o‘rganishga yordam beradi."
-  },
-  {
-    word:"Focus",
-    translation:"Diqqatni jamlamoq",
-    example:"Focus on your studies.",
-    exampleTranslation:"O‘qishingizga diqqat qarating."
-  },
-  {
-    word:"Habit",
-    translation:"Odat",
-    example:"Reading is a good habit.",
-    exampleTranslation:"Kitob o‘qish yaxshi odat."
-  },
-  {
-    word:"Imagine",
-    translation:"Tasavvur qilmoq",
-    example:"Imagine your future.",
-    exampleTranslation:"Kelajagingizni tasavvur qiling."
-  },
-  {
-    word:"Progress",
-    translation:"Rivojlanish",
-    example:"I can see your progress.",
-    exampleTranslation:"Men sizning rivojlanishingizni ko‘ryapman."
-  },
-  {
-    word:"Successful",
-    translation:"Muvaffaqiyatli",
-    example:"She is a successful student.",
-    exampleTranslation:"U muvaffaqiyatli o‘quvchi."
-  }
+const DAILY_WORDS=[
+{word:"Improve",translation:"Yaxshilamoq",example:"I want to improve my English.",exampleTranslation:"Men ingliz tilimni yaxshilamoqchiman."},
+{word:"Achieve",translation:"Erishmoq",example:"You can achieve your goals.",exampleTranslation:"Siz maqsadlaringizga erisha olasiz."},
+{word:"Brave",translation:"Jasur",example:"She is a brave girl.",exampleTranslation:"U jasur qiz."},
+{word:"Careful",translation:"Ehtiyotkor",example:"Be careful when you cross the road.",exampleTranslation:"Yo‘lni kesib o‘tayotganda ehtiyot bo‘ling."},
+{word:"Discover",translation:"Kashf qilmoq",example:"I want to discover new places.",exampleTranslation:"Men yangi joylarni kashf qilmoqchiman."},
+{word:"Effort",translation:"Harakat, sa'y-harakat",example:"Success needs effort.",exampleTranslation:"Muvaffaqiyat uchun harakat kerak."},
+{word:"Freedom",translation:"Erkinlik",example:"Everyone wants freedom.",exampleTranslation:"Har kim erkinlikni xohlaydi."},
+{word:"Generous",translation:"Saxiy",example:"My friend is very generous.",exampleTranslation:"Do‘stim juda saxiy."},
+{word:"Honest",translation:"Halol, rostgo‘y",example:"Always be honest.",exampleTranslation:"Har doim rostgo‘y bo‘ling."},
+{word:"Knowledge",translation:"Bilim",example:"Knowledge is important.",exampleTranslation:"Bilim muhim."},
+{word:"Opportunity",translation:"Imkoniyat",example:"This is a good opportunity.",exampleTranslation:"Bu yaxshi imkoniyat."},
+{word:"Patient",translation:"Sabrli",example:"Be patient and keep learning.",exampleTranslation:"Sabrli bo‘ling va o‘rganishda davom eting."},
+{word:"Purpose",translation:"Maqsad",example:"What is your purpose?",exampleTranslation:"Maqsadingiz nima?"},
+{word:"Reliable",translation:"Ishonchli",example:"He is a reliable person.",exampleTranslation:"U ishonchli inson."},
+{word:"Success",translation:"Muvaffaqiyat",example:"Hard work brings success.",exampleTranslation:"Qattiq mehnat muvaffaqiyat olib keladi."},
+{word:"Thought",translation:"Fikr, o‘y",example:"That is an interesting thought.",exampleTranslation:"Bu qiziqarli fikr."},
+{word:"Understand",translation:"Tushunmoq",example:"I understand the lesson.",exampleTranslation:"Men darsni tushunaman."},
+{word:"Valuable",translation:"Qimmatli",example:"Time is valuable.",exampleTranslation:"Vaqt qimmatli."},
+{word:"Wisdom",translation:"Donolik",example:"Wisdom comes with experience.",exampleTranslation:"Donolik tajriba bilan keladi."},
+{word:"Wonder",translation:"Hayron bo‘lmoq",example:"I wonder why he is late.",exampleTranslation:"Nega u kechikayotganiga hayronman."},
+{word:"Challenge",translation:"Qiyinchilik, sinov",example:"Learning a language is a challenge.",exampleTranslation:"Til o‘rganish bir sinovdir."},
+{word:"Confident",translation:"O‘ziga ishongan",example:"Be confident when you speak.",exampleTranslation:"Gapirganingizda o‘zingizga ishoning."},
+{word:"Develop",translation:"Rivojlantirmoq",example:"I want to develop my skills.",exampleTranslation:"Men ko‘nikmalarimni rivojlantirmoqchiman."},
+{word:"Encourage",translation:"Ruhlantirmoq",example:"My teacher encourages me.",exampleTranslation:"O‘qituvchim meni ruhlantiradi."},
+{word:"Experience",translation:"Tajriba",example:"Experience helps us learn.",exampleTranslation:"Tajriba bizga o‘rganishga yordam beradi."},
+{word:"Focus",translation:"Diqqatni jamlamoq",example:"Focus on your studies.",exampleTranslation:"O‘qishingizga diqqat qarating."},
+{word:"Habit",translation:"Odat",example:"Reading is a good habit.",exampleTranslation:"Kitob o‘qish yaxshi odat."},
+{word:"Imagine",translation:"Tasavvur qilmoq",example:"Imagine your future.",exampleTranslation:"Kelajagingizni tasavvur qiling."},
+{word:"Progress",translation:"Rivojlanish",example:"I can see your progress.",exampleTranslation:"Men sizning rivojlanishingizni ko‘ryapman."},
+{word:"Successful",translation:"Muvaffaqiyatli",example:"She is a successful student.",exampleTranslation:"U muvaffaqiyatli o‘quvchi."}
 ];
 
-let currentDailyWord = null;
+let currentDailyWord=null;
 
 function getDailyWordIndex(){
-  const now = new Date();
-  const start = new Date(now.getFullYear(),0,0);
-  const difference = now - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(difference / oneDay);
-
-  return dayOfYear % DAILY_WORDS.length;
+  const now=new Date();
+  const start=new Date(now.getFullYear(),0,0);
+  return Math.floor((now-start)/86400000)%DAILY_WORDS.length;
 }
-
 function renderDailyWord(){
-  currentDailyWord = DAILY_WORDS[getDailyWordIndex()];
-
-  const now = new Date();
-
-  document.getElementById("dailyWordDate").textContent =
-    now.toLocaleDateString("uz-UZ",{
-      day:"numeric",
-      month:"long",
-      year:"numeric"
-    });
-
-  document.getElementById("dailyWordTitle").textContent =
-    currentDailyWord.word;
-
-  document.getElementById("dailyWordTranslation").textContent =
-    currentDailyWord.translation;
-
-  document.getElementById("dailyWordExample").textContent =
-    currentDailyWord.example;
-
-  document.getElementById("dailyWordExampleTranslation").textContent =
-    currentDailyWord.exampleTranslation;
-
+  currentDailyWord=DAILY_WORDS[getDailyWordIndex()];
+  const now=new Date();
+  document.getElementById("dailyWordDate").textContent=now.toLocaleDateString("uz-UZ",{day:"numeric",month:"long",year:"numeric"});
+  document.getElementById("dailyWordTitle").textContent=currentDailyWord.word;
+  document.getElementById("dailyWordTranslation").textContent=currentDailyWord.translation;
+  document.getElementById("dailyWordExample").textContent=currentDailyWord.example;
+  document.getElementById("dailyWordExampleTranslation").textContent=currentDailyWord.exampleTranslation;
   updateDailyWordButton();
 }
-
 function getDailyWordItem(){
-  if(!currentDailyWord) return null;
+  if(!currentDailyWord)return null;
+  return{original:currentDailyWord.translation,translation:currentDailyWord.word,source:"uz",target:"en"};
+}
+function updateDailyWordButton(){
+  const button=document.getElementById("dailyWordSaveBtn");
+  if(!button)return;
+  const item=getDailyWordItem();
+  if(!item){button.disabled=true;return}
+  if(findDuplicate(item)){
+    button.disabled=true;button.classList.add("saved-button");button.textContent="✓ Lug‘atga kiritilgan";
+  }else{
+    button.disabled=false;button.classList.remove("saved-button");button.textContent="＋ Lug‘atga saqlash";
+  }
+}
+function speakDailyWord(){
+  if(!currentDailyWord)return;
+  if(!("speechSynthesis"in window)){alert("Brauzeringiz ovoz chiqarishni qo‘llab-quvvatlamaydi.");return}
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(currentDailyWord.word);
+  utterance.lang="en-US";utterance.rate=.85;
+  window.speechSynthesis.speak(utterance);
+}
+async function saveDailyWord(){
+  if(!currentUser||!currentDailyWord){alert("Avval akkauntingizga kiring.");return}
+  const item=getDailyWordItem();
+  if(findDuplicate(item)){updateDailyWordButton();return}
+  const button=document.getElementById("dailyWordSaveBtn");
+  button.disabled=true;button.textContent="Saqlanmoqda...";
+  try{
+    const {error}=await db.from("words").insert({
+      user_id:currentUser.id,english:currentDailyWord.word,uzbek:currentDailyWord.translation,
+      source_language:"uz",target_language:"en",original_text:currentDailyWord.translation,
+      translated_text:currentDailyWord.word,group_id:null
+    });
+    if(error)throw error;
+    await loadWords();updateDailyWordButton();
+  }catch(error){
+    console.error("Daily Word save error:",error);
+    alert("So‘zni saqlashda xatolik: "+error.message);
+    button.disabled=false;button.textContent="＋ Lug‘atga saqlash";
+  }
+}
 
-  return {
-    original:currentDailyWord.translation,
-    translation:currentDailyWord.word,
-    source:"uz",
-    target:"en"
+// =====================================
+// 3. SMART REVIEW
+// =====================================
+let reviewQueue=[];
+let reviewIndex=0;
+let reviewAnswerShown=false;
+let reviewBusy=false;
+
+function isReviewDue(word){
+  if(!word.next_review_at)return true;
+  const date=new Date(word.next_review_at);
+  return Number.isNaN(date.getTime())||date<=new Date();
+}
+
+function getReviewWords(){
+  return words
+    .filter(word=>getWordOriginal(word).trim()&&getWordTranslation(word).trim()&&isReviewDue(word))
+    .sort((a,b)=>{
+      const da=a.next_review_at?new Date(a.next_review_at).getTime():0;
+      const dbb=b.next_review_at?new Date(b.next_review_at).getTime():0;
+      return da-dbb;
+    });
+}
+
+function updateReviewCount(){
+  const due=getReviewWords().length;
+  document.getElementById("reviewCount").textContent=due+" ta so‘z";
+}
+
+function startSmartReview(){
+  if(!currentUser)return;
+  reviewQueue=getReviewWords();
+  reviewIndex=0;
+  reviewAnswerShown=false;
+  document.getElementById("reviewStatus").textContent="";
+  document.getElementById("reviewStartArea").classList.add("hidden");
+  document.getElementById("reviewSession").classList.remove("hidden");
+
+  if(!reviewQueue.length){
+    document.getElementById("reviewProgress").textContent="Hozircha takrorlash kerak bo‘lgan so‘z yo‘q.";
+    document.getElementById("reviewWord").textContent="🎉 Barakalla!";
+    document.getElementById("reviewAnswerArea").classList.add("hidden");
+    document.getElementById("reviewShowBtn").classList.add("hidden");
+    return;
+  }
+  showReviewQuestion();
+}
+
+function showReviewQuestion(){
+  if(reviewIndex>=reviewQueue.length){
+    finishSmartReview();
+    return;
+  }
+  const word=reviewQueue[reviewIndex];
+  reviewAnswerShown=false;
+  document.getElementById("reviewProgress").textContent=
+    "So‘z "+(reviewIndex+1)+" / "+reviewQueue.length;
+  document.getElementById("reviewWord").textContent=getWordOriginal(word);
+  document.getElementById("reviewTranslation").textContent=getWordTranslation(word);
+  document.getElementById("reviewAnswerArea").classList.add("hidden");
+  document.getElementById("reviewShowBtn").classList.remove("hidden");
+  document.getElementById("reviewStatus").textContent="";
+}
+
+function showReviewAnswer(){
+  if(reviewAnswerShown)return;
+  reviewAnswerShown=true;
+  document.getElementById("reviewAnswerArea").classList.remove("hidden");
+  document.getElementById("reviewShowBtn").classList.add("hidden");
+}
+
+function getReviewSchedule(word,rating){
+  const stage=Number(word.review_stage)||0;
+  const intervals={
+    again:10*60*1000,
+    hard:24*60*60*1000,
+    good:3*24*60*60*1000,
+    easy:7*24*60*60*1000
+  };
+  let nextStage=stage;
+  let correct=Number(word.review_correct)||0;
+
+  if(rating==="again"){
+    nextStage=0;
+  }else if(rating==="hard"){
+    nextStage=Math.max(0,stage);
+  }else if(rating==="good"){
+    nextStage=stage+1;
+    correct++;
+  }else if(rating==="easy"){
+    nextStage=stage+2;
+    correct++;
+  }
+
+  return{
+    review_stage:nextStage,
+    review_correct:correct,
+    last_reviewed_at:new Date().toISOString(),
+    next_review_at:new Date(Date.now()+intervals[rating]).toISOString()
   };
 }
 
-function updateDailyWordButton(){
-  const button = document.getElementById("dailyWordSaveBtn");
-  if(!button) return;
+async function rateReview(rating){
+  if(reviewBusy||!reviewAnswerShown)return;
+  const word=reviewQueue[reviewIndex];
+  if(!word)return;
 
-  const item = getDailyWordItem();
-
-  if(!item){
-    button.disabled = true;
-    return;
-  }
-
-  const duplicate = findDuplicate(item);
-
-  if(duplicate){
-    button.disabled = true;
-    button.classList.add("saved-button");
-    button.textContent = "✓ Lug‘atga kiritilgan";
-  }else{
-    button.disabled = false;
-    button.classList.remove("saved-button");
-    button.textContent = "＋ Lug‘atga saqlash";
-  }
-}
-
-function speakDailyWord(){
-  if(!currentDailyWord) return;
-
-  if(!("speechSynthesis" in window)){
-    alert("Brauzeringiz ovoz chiqarishni qo‘llab-quvvatlamaydi.");
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(
-    currentDailyWord.word
-  );
-
-  utterance.lang = "en-US";
-  utterance.rate = 0.85;
-
-  window.speechSynthesis.speak(utterance);
-}
-
-async function saveDailyWord(){
-  if(!currentUser || !currentDailyWord){
-    alert("Avval akkauntingizga kiring.");
-    return;
-  }
-
-  const item = getDailyWordItem();
-
-  if(findDuplicate(item)){
-    updateDailyWordButton();
-    return;
-  }
-
-  const button = document.getElementById("dailyWordSaveBtn");
-
-  button.disabled = true;
-  button.textContent = "Saqlanmoqda...";
+  reviewBusy=true;
+  document.querySelectorAll(".review-rating button").forEach(button=>button.disabled=true);
+  document.getElementById("reviewStatus").textContent="Natija saqlanmoqda...";
 
   try{
-    const record = {
-      user_id:currentUser.id,
-      english:currentDailyWord.word,
-      uzbek:currentDailyWord.translation,
-      source_language:"uz",
-      target_language:"en",
-      original_text:currentDailyWord.translation,
-      translated_text:currentDailyWord.word,
-      group_id:null
+    const update=getReviewSchedule(word,rating);
+    const {error}=await db.from("words")
+      .update(update)
+      .eq("id",word.id)
+      .eq("user_id",currentUser.id);
+
+    if(error)throw error;
+
+    const messages={
+      again:"Bu so‘z 10 daqiqadan keyin yana chiqadi.",
+      hard:"Bu so‘z ertaga yana takrorlanadi.",
+      good:"Ajoyib! 3 kundan keyin yana ko‘rasiz.",
+      easy:"Zo‘r! 7 kundan keyin takrorlanadi."
     };
 
-    const {error} = await db.from("words").insert(record);
+    document.getElementById("reviewStatus").textContent=messages[rating];
+    word.review_stage=update.review_stage;
+    word.review_correct=update.review_correct;
+    word.last_reviewed_at=update.last_reviewed_at;
+    word.next_review_at=update.next_review_at;
 
-    if(error) throw error;
+    updateReviewCount();
 
-    await loadWords();
-    updateDailyWordButton();
+    setTimeout(()=>{
+      reviewIndex++;
+      reviewBusy=false;
+      showReviewQuestion();
+    },700);
 
   }catch(error){
-    console.error("Daily Word save error:",error);
-
-    alert("So‘zni saqlashda xatolik: "+error.message);
-
-    button.disabled = false;
-    button.textContent = "＋ Lug‘atga saqlash";
+    console.error("Review update error:",error);
+    document.getElementById("reviewStatus").textContent="Saqlashda xatolik: "+error.message;
+    document.querySelectorAll(".review-rating button").forEach(button=>button.disabled=false);
+    reviewBusy=false;
   }
 }
 
+function finishSmartReview(){
+  document.getElementById("reviewProgress").textContent="Mashq yakunlandi!";
+  document.getElementById("reviewWord").textContent="🏆 Barakalla!";
+  document.getElementById("reviewAnswerArea").classList.add("hidden");
+  document.getElementById("reviewShowBtn").classList.add("hidden");
+  document.getElementById("reviewStatus").textContent="Bugungi takrorlash topshirig‘ini bajardingiz.";
+  updateReviewCount();
+}
+
+function endSmartReview(){
+  reviewQueue=[];
+  reviewIndex=0;
+  reviewAnswerShown=false;
+  reviewBusy=false;
+  document.getElementById("reviewSession").classList.add("hidden");
+  document.getElementById("reviewStartArea").classList.remove("hidden");
+  document.getElementById("reviewStatus").textContent="";
+  updateReviewCount();
+}
+
 // =====================================
-// 3. AUTH
+// 4. AUTH
 // =====================================
 function toggleAuth(){
-  isLogin = !isLogin;
+  isLogin=!isLogin;
   document.getElementById("registerFields").classList.toggle("hidden",isLogin);
-  document.getElementById("authBtn").textContent = isLogin ? "Kirish" : "Ro‘yxatdan o‘tish";
-  document.getElementById("toggleBtn").textContent = isLogin ? "Yangi akkaunt ochish" : "Akkauntingiz bormi? Kirish";
+  document.getElementById("authBtn").textContent=isLogin?"Kirish":"Ro‘yxatdan o‘tish";
+  document.getElementById("toggleBtn").textContent=isLogin?"Yangi akkaunt ochish":"Akkauntingiz bormi? Kirish";
   authMessage("");
 }
-
-function authMessage(message){
-  document.getElementById("authMessage").textContent = message;
-}
+function authMessage(message){document.getElementById("authMessage").textContent=message}
 
 async function authenticate(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const name = document.getElementById("name").value.trim();
-
-  if(!email || !password || (!isLogin && !name))
-    return authMessage("Barcha maydonlarni to‘ldiring.");
-
-  if(password.length < 6)
-    return authMessage("Parol kamida 6 ta belgidan iborat bo‘lsin.");
-
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const name=document.getElementById("name").value.trim();
+  if(!email||!password||(!isLogin&&!name))return authMessage("Barcha maydonlarni to‘ldiring.");
+  if(password.length<6)return authMessage("Parol kamida 6 ta belgidan iborat bo‘lsin.");
   authMessage("Kutib turing...");
-
   try{
     let result;
-
-    if(isLogin){
-      result = await db.auth.signInWithPassword({email,password});
-    }else{
-      result = await db.auth.signUp({
-        email,password,options:{data:{full_name:name}}
-      });
-    }
-
-    if(result.error) throw result.error;
-
-    if(!result.data.session)
-      return authMessage("Emailingizni tasdiqlang, keyin tizimga kiring.");
-
-    currentUser = result.data.user;
+    if(isLogin)result=await db.auth.signInWithPassword({email,password});
+    else result=await db.auth.signUp({email,password,options:{data:{full_name:name}}});
+    if(result.error)throw result.error;
+    if(!result.data.session)return authMessage("Emailingizni tasdiqlang, keyin tizimga kiring.");
+    currentUser=result.data.user;
     await openApp();
-
-  }catch(error){
-    authMessage("Xatolik: "+error.message);
-  }
+  }catch(error){authMessage("Xatolik: "+error.message)}
 }
-
 async function checkSession(){
   try{
-    const {data,error} = await db.auth.getSession();
-    if(error) throw error;
-
-    if(data.session){
-      currentUser = data.session.user;
-      await openApp();
-    }
-  }catch(error){
-    authMessage("Xatolik: "+error.message);
-  }
+    const {data,error}=await db.auth.getSession();
+    if(error)throw error;
+    if(data.session){currentUser=data.session.user;await openApp()}
+  }catch(error){authMessage("Xatolik: "+error.message)}
 }
-
 async function openApp(){
   document.getElementById("auth").classList.add("hidden");
   document.getElementById("main").classList.remove("hidden");
   document.getElementById("logoutBtn").classList.remove("hidden");
   document.getElementById("bottomNav").classList.remove("hidden");
-
-  document.getElementById("profileEmail").textContent =
-    currentUser?.email || "Email ko‘rsatilmagan";
-
+  document.getElementById("profileEmail").textContent=currentUser?.email||"Email ko‘rsatilmagan";
   showPage("translate",document.querySelector(".nav-item"));
-
   await loadWords();
   await loadGroups();
 }
-
 async function logout(){
   stopSpeaking();
   await db.auth.signOut();
@@ -1150,1132 +775,528 @@ async function logout(){
 }
 
 // =====================================
-// 4. NAVIGATION
+// 5. NAVIGATION
 // =====================================
 function showPage(id,button){
-  document.querySelectorAll(".page").forEach(page=>{
-    page.classList.remove("active");
-  });
-
+  document.querySelectorAll(".page").forEach(page=>page.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll(".nav-item").forEach(btn=>{
-    btn.classList.remove("active");
-  });
-
-  if(button) button.classList.add("active");
-
-  if(id==="dictionary") renderDictionary();
+  document.querySelectorAll(".nav-item").forEach(btn=>btn.classList.remove("active"));
+  if(button)button.classList.add("active");
+  if(id==="dictionary"){renderDictionary();updateReviewCount()}
 }
 
 // =====================================
-// 5. LANGUAGE PICKER
+// 6. LANGUAGE PICKER
 // =====================================
 function updateLanguageButtons(){
   document.querySelectorAll("#sourceLanguages .language-option").forEach(btn=>{
     btn.classList.toggle("selected",btn.dataset.lang===sourceLanguage);
-    btn.disabled = btn.dataset.lang===targetLanguage;
+    btn.disabled=btn.dataset.lang===targetLanguage;
   });
-
   document.querySelectorAll("#targetLanguages .language-option").forEach(btn=>{
     btn.classList.toggle("selected",btn.dataset.lang===targetLanguage);
-    btn.disabled = btn.dataset.lang===sourceLanguage;
+    btn.disabled=btn.dataset.lang===sourceLanguage;
   });
 }
-
 function setSourceLanguage(language){
-  if(language===targetLanguage){
-    targetLanguage = sourceLanguage;
-  }
-  sourceLanguage = language;
-  updateLanguageButtons();
-  resetTranslation();
+  if(language===targetLanguage)targetLanguage=sourceLanguage;
+  sourceLanguage=language;updateLanguageButtons();resetTranslation();
 }
-
 function setTargetLanguage(language){
-  if(language===sourceLanguage){
-    sourceLanguage = targetLanguage;
-  }
-  targetLanguage = language;
-  updateLanguageButtons();
-  resetTranslation();
+  if(language===sourceLanguage)sourceLanguage=targetLanguage;
+  targetLanguage=language;updateLanguageButtons();resetTranslation();
 }
-
 function resetTranslation(){
-  translated = null;
+  translated=null;
   document.getElementById("translationResult").classList.add("hidden");
-  document.getElementById("translateMessage").textContent = "";
+  document.getElementById("translateMessage").textContent="";
 }
 
 // =====================================
-// 6. TRANSLATOR
+// 7. TRANSLATOR
 // =====================================
 async function translateWord(){
-  const input = document.getElementById("sourceWord").value.trim();
-  const output = document.getElementById("translationResult");
-  const message = document.getElementById("translateMessage");
-  const button = document.getElementById("translateBtn");
-
-  if(!input) return message.textContent = "Avval matn kiriting!";
-  if(!currentUser) return message.textContent = "Avval tizimga kiring!";
-
-  button.disabled = true;
-  button.textContent = "Tarjima qilinmoqda...";
-  message.textContent = "";
-  output.classList.add("hidden");
-
+  const input=document.getElementById("sourceWord").value.trim();
+  const output=document.getElementById("translationResult");
+  const message=document.getElementById("translateMessage");
+  const button=document.getElementById("translateBtn");
+  if(!input)return message.textContent="Avval matn kiriting!";
+  if(!currentUser)return message.textContent="Avval tizimga kiring!";
+  button.disabled=true;button.textContent="Tarjima qilinmoqda...";
+  message.textContent="";output.classList.add("hidden");
   try{
-    const {data,error} = await db.functions.invoke("swift-action",{
-      body:{
-        q:input,
-        source:sourceLanguage,
-        target:targetLanguage
-      }
-    });
-
-    if(error) throw error;
-    if(data?.error) throw new Error(data.error);
-    if(!data?.translation) throw new Error("Tarjima natijasi kelmadi.");
-
-    translated = {
-      original:input,
-      translation:data.translation,
-      source:sourceLanguage,
-      target:targetLanguage
-    };
-
-    document.getElementById("translatedText").textContent = data.translation;
+    const {data,error}=await db.functions.invoke("swift-action",{body:{q:input,source:sourceLanguage,target:targetLanguage}});
+    if(error)throw error;
+    if(data?.error)throw new Error(data.error);
+    if(!data?.translation)throw new Error("Tarjima natijasi kelmadi.");
+    translated={original:input,translation:data.translation,source:sourceLanguage,target:targetLanguage};
+    document.getElementById("translatedText").textContent=data.translation;
     output.classList.remove("hidden");
-
-    updateSaveButton();
-    updateSaveGroupOptions();
-
-    message.textContent = "✓ Tarjima tayyor!";
-
+    updateSaveButton();updateSaveGroupOptions();
+    message.textContent="✓ Tarjima tayyor!";
   }catch(error){
     console.error(error);
-    message.textContent = "Xatolik: "+(error.message || "Tarjima amalga oshmadi.");
-  }finally{
-    button.disabled = false;
-    button.textContent = "Tarjima qilish";
-  }
+    message.textContent="Xatolik: "+(error.message||"Tarjima amalga oshmadi.");
+  }finally{button.disabled=false;button.textContent="Tarjima qilish"}
 }
 
 // =====================================
-// 7. SAVE BUTTON / DUPLICATE CHECK
+// 8. SAVE BUTTON / DUPLICATE CHECK
 // =====================================
 function updateSaveButton(){
-  const button = document.getElementById("saveBtn");
-  const panel = document.getElementById("savePanel");
-
-  if(!translated){
-    panel.classList.add("hidden");
-    return;
-  }
-
+  const button=document.getElementById("saveBtn");
+  const panel=document.getElementById("savePanel");
+  if(!translated){panel.classList.add("hidden");return}
   panel.classList.remove("hidden");
-
-  const duplicate = findDuplicate(translated);
-
-  if(duplicate){
-    button.disabled = true;
-    button.classList.add("saved-button");
-    button.textContent = "✓ Lug‘atga kiritilgan";
+  if(findDuplicate(translated)){
+    button.disabled=true;button.classList.add("saved-button");button.textContent="✓ Lug‘atga kiritilgan";
   }else{
-    button.disabled = false;
-    button.classList.remove("saved-button");
-    button.textContent = "＋ Lug‘atga kiritish";
+    button.disabled=false;button.classList.remove("saved-button");button.textContent="＋ Lug‘atga kiritish";
   }
 }
-
 function updateSaveGroupOptions(){
-  const select = document.getElementById("saveGroupSelect");
-  const previous = select.value;
-
-  select.innerHTML = '<option value="">Guruhsiz saqlash</option>';
-
-  groups
-    .filter(group=>group.language===targetLanguage)
-    .forEach(group=>{
-      const option = document.createElement("option");
-      option.value = group.id;
-      option.textContent = group.name;
-      select.append(option);
-    });
-
-  if(previous && [...select.options].some(option=>option.value===previous)){
-    select.value = previous;
-  }
+  const select=document.getElementById("saveGroupSelect");
+  const previous=select.value;
+  select.innerHTML='<option value="">Guruhsiz saqlash</option>';
+  groups.filter(group=>group.language===targetLanguage).forEach(group=>{
+    const option=document.createElement("option");
+    option.value=group.id;option.textContent=group.name;select.append(option);
+  });
+  if(previous&&[...select.options].some(option=>option.value===previous))select.value=previous;
 }
 
 // =====================================
-// 8. SAVE WORD
+// 9. SAVE WORD
 // =====================================
 async function saveWord(){
-  if(!currentUser || !translated) return;
-
-  const duplicate = findDuplicate(translated);
-
-  if(duplicate){
-    updateSaveButton();
-    return;
-  }
-
-  const saveBtn = document.getElementById("saveBtn");
-  const selectedGroup = document.getElementById("saveGroupSelect").value;
-
-  saveBtn.disabled = true;
-  saveBtn.textContent = "Saqlanmoqda...";
-
+  if(!currentUser||!translated)return;
+  if(findDuplicate(translated)){updateSaveButton();return}
+  const saveBtn=document.getElementById("saveBtn");
+  const selectedGroup=document.getElementById("saveGroupSelect").value;
+  saveBtn.disabled=true;saveBtn.textContent="Saqlanmoqda...";
   try{
-    let english = "";
-    let uzbek = "";
-
-    if(translated.source==="en"){
-      english = translated.original;
-    }else if(translated.target==="en"){
-      english = translated.translation;
-    }
-
-    if(translated.source==="uz"){
-      uzbek = translated.original;
-    }else if(translated.target==="uz"){
-      uzbek = translated.translation;
-    }
-
-    const record = {
-      user_id:currentUser.id,
-      english,
-      uzbek,
-      source_language:translated.source,
-      target_language:translated.target,
-      original_text:translated.original,
-      translated_text:translated.translation,
-      group_id:selectedGroup || null
+    let english="",uzbek="";
+    if(translated.source==="en")english=translated.original;
+    else if(translated.target==="en")english=translated.translation;
+    if(translated.source==="uz")uzbek=translated.original;
+    else if(translated.target==="uz")uzbek=translated.translation;
+    const record={
+      user_id:currentUser.id,english,uzbek,
+      source_language:translated.source,target_language:translated.target,
+      original_text:translated.original,translated_text:translated.translation,
+      group_id:selectedGroup||null
     };
-
-    const {error} = await db.from("words").insert(record);
-
-    if(error) throw error;
-
-    document.getElementById("translateMessage").textContent =
-      "✓ So‘z lug‘atingizga saqlandi!";
-
-    await loadWords();
-    updateSaveButton();
-
+    const {error}=await db.from("words").insert(record);
+    if(error)throw error;
+    document.getElementById("translateMessage").textContent="✓ So‘z lug‘atingizga saqlandi!";
+    await loadWords();updateSaveButton();
   }catch(error){
     console.error(error);
-    document.getElementById("translateMessage").textContent =
-      "Xatolik: "+error.message;
-    saveBtn.disabled = false;
-    saveBtn.classList.remove("saved-button");
-    saveBtn.textContent = "＋ Lug‘atga kiritish";
+    document.getElementById("translateMessage").textContent="Xatolik: "+error.message;
+    saveBtn.disabled=false;saveBtn.classList.remove("saved-button");saveBtn.textContent="＋ Lug‘atga kiritish";
   }
 }
 
 // =====================================
-// 9. LOAD WORDS
+// 10. LOAD WORDS
 // =====================================
 async function loadWords(){
-  if(!currentUser) return;
-
+  if(!currentUser)return;
   try{
-    const {data,error} = await db.from("words")
-      .select("*")
-      .eq("user_id",currentUser.id)
-      .order("created_at",{ascending:false});
-
-    if(error) throw error;
-
-    words = data || [];
-    updateStats();
-    renderDictionary();
-    updateSaveButton();
-    updateDailyWordButton();
-
+    const {data,error}=await db.from("words").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false});
+    if(error)throw error;
+    words=data||[];
+    updateStats();renderDictionary();updateSaveButton();updateDailyWordButton();updateReviewCount();
   }catch(error){
     console.error(error);
-    document.getElementById("dictionaryList").textContent =
-      "Xatolik: "+error.message;
+    document.getElementById("dictionaryList").textContent="Xatolik: "+error.message;
   }
 }
 
 // =====================================
-// 10. GROUPS: LOAD / CREATE
+// 11. GROUPS: LOAD / CREATE
 // =====================================
 async function loadGroups(){
-  if(!currentUser) return;
-
+  if(!currentUser)return;
   try{
-    const {data,error} = await db.from("word_groups")
-      .select("*")
-      .eq("user_id",currentUser.id)
-      .order("created_at",{ascending:true});
-
-    if(error) throw error;
-
-    groups = data || [];
-
-    renderGroups();
-    updateSaveGroupOptions();
-
+    const {data,error}=await db.from("word_groups").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:true});
+    if(error)throw error;
+    groups=data||[];renderGroups();updateSaveGroupOptions();
   }catch(error){
     console.error("Groups error:",error);
-    document.getElementById("groupTabs").textContent =
-      "Guruhlarni yuklashda xatolik: "+error.message;
+    document.getElementById("groupTabs").textContent="Guruhlarni yuklashda xatolik: "+error.message;
   }
 }
-
 async function createGroup(){
-  const name = prompt("Yangi guruh nomini kiriting:");
-
-  if(name===null) return;
-
-  const cleanName = name.trim();
-
-  if(!cleanName){
-    alert("Guruh nomini kiriting.");
-    return;
+  const name=prompt("Yangi guruh nomini kiriting:");
+  if(name===null)return;
+  const cleanName=name.trim();
+  if(!cleanName){alert("Guruh nomini kiriting.");return}
+  if(cleanName.length>40){alert("Guruh nomi 40 belgidan oshmasin.");return}
+  if(groups.some(group=>group.language===dictionaryLanguage&&normalizeText(group.name)===normalizeText(cleanName))){
+    alert("Bu nomdagi guruh allaqachon mavjud.");return;
   }
-
-  if(cleanName.length>40){
-    alert("Guruh nomi 40 belgidan oshmasin.");
-    return;
-  }
-
-  const exists = groups.some(group=>
-    group.language===dictionaryLanguage &&
-    normalizeText(group.name)===normalizeText(cleanName)
-  );
-
-  if(exists){
-    alert("Bu nomdagi guruh allaqachon mavjud.");
-    return;
-  }
-
   try{
-    const {error} = await db.from("word_groups").insert({
-      user_id:currentUser.id,
-      language:dictionaryLanguage,
-      name:cleanName
-    });
-
-    if(error) throw error;
-
-    await loadGroups();
-    renderGroups();
-
-  }catch(error){
-    alert("Guruh yaratishda xatolik: "+error.message);
-  }
+    const {error}=await db.from("word_groups").insert({user_id:currentUser.id,language:dictionaryLanguage,name:cleanName});
+    if(error)throw error;
+    await loadGroups();renderGroups();
+  }catch(error){alert("Guruh yaratishda xatolik: "+error.message)}
 }
 
 // =====================================
-// 11. GROUPS: RENDER / SELECT
+// 12. GROUPS: RENDER / SELECT
 // =====================================
 function renderGroups(){
-  const container = document.getElementById("groupTabs");
-  container.innerHTML = "";
-
-  const languageGroups = groups.filter(group=>
-    group.language===dictionaryLanguage
-  );
-
-  const allButton = document.createElement("button");
-  allButton.className = "group-tab"+(selectedGroupId==="all"?" selected":"");
-  allButton.textContent = "Barchasi";
-  allButton.onclick = ()=>selectGroup("all");
-  container.append(allButton);
-
+  const container=document.getElementById("groupTabs");
+  container.innerHTML="";
+  const languageGroups=groups.filter(group=>group.language===dictionaryLanguage);
+  const allButton=document.createElement("button");
+  allButton.className="group-tab"+(selectedGroupId==="all"?" selected":"");
+  allButton.textContent="Barchasi";allButton.onclick=()=>selectGroup("all");container.append(allButton);
   languageGroups.forEach(group=>{
-    const button = document.createElement("button");
-    button.className = "group-tab"+(selectedGroupId===group.id?" selected":"");
-    button.textContent = group.name;
-    button.onclick = ()=>selectGroup(group.id);
-    container.append(button);
+    const button=document.createElement("button");
+    button.className="group-tab"+(selectedGroupId===group.id?" selected":"");
+    button.textContent=group.name;button.onclick=()=>selectGroup(group.id);container.append(button);
   });
-
-  const selectedGroup = languageGroups.find(group=>group.id===selectedGroupId);
+  const selectedGroup=languageGroups.find(group=>group.id===selectedGroupId);
   document.getElementById("groupActions").classList.toggle("hidden",!selectedGroup);
-
   updateSaveGroupOptions();
 }
-
-function selectGroup(groupId){
-  selectedGroupId = groupId;
-  renderGroups();
-  renderDictionary();
-}
-
+function selectGroup(groupId){selectedGroupId=groupId;renderGroups();renderDictionary()}
 function selectDictionaryLanguage(language,button){
-  dictionaryLanguage = language;
-  selectedGroupId = "all";
-
-  document.querySelectorAll(".language-tab").forEach(tab=>{
-    tab.classList.remove("selected");
-  });
-
-  button.classList.add("selected");
-
-  renderGroups();
-  renderDictionary();
+  dictionaryLanguage=language;selectedGroupId="all";
+  document.querySelectorAll(".language-tab").forEach(tab=>tab.classList.remove("selected"));
+  button.classList.add("selected");renderGroups();renderDictionary();
 }
 
 // =====================================
-// 12. GROUPS: RENAME / DELETE
+// 13. GROUPS: RENAME / DELETE
 // =====================================
 async function renameGroup(){
-  const group = groups.find(item=>item.id===selectedGroupId);
-  if(!group) return;
-
-  const name = prompt("Yangi guruh nomi:",group.name);
-  if(name===null) return;
-
-  const cleanName = name.trim();
-
-  if(!cleanName){
-    alert("Guruh nomini kiriting.");
-    return;
-  }
-
-  if(cleanName.length>40){
-    alert("Guruh nomi 40 belgidan oshmasin.");
-    return;
-  }
-
+  const group=groups.find(item=>item.id===selectedGroupId);
+  if(!group)return;
+  const name=prompt("Yangi guruh nomi:",group.name);
+  if(name===null)return;
+  const cleanName=name.trim();
+  if(!cleanName){alert("Guruh nomini kiriting.");return}
+  if(cleanName.length>40){alert("Guruh nomi 40 belgidan oshmasin.");return}
   try{
-    const {error} = await db.from("word_groups")
-      .update({name:cleanName})
-      .eq("id",group.id)
-      .eq("user_id",currentUser.id);
-
-    if(error) throw error;
-
-    await loadGroups();
-    renderGroups();
-
-  }catch(error){
-    alert("Nomni o‘zgartirishda xatolik: "+error.message);
-  }
+    const {error}=await db.from("word_groups").update({name:cleanName}).eq("id",group.id).eq("user_id",currentUser.id);
+    if(error)throw error;
+    await loadGroups();renderGroups();
+  }catch(error){alert("Nomni o‘zgartirishda xatolik: "+error.message)}
 }
-
 async function deleteGroup(){
-  const group = groups.find(item=>item.id===selectedGroupId);
-  if(!group) return;
-
-  const confirmed = confirm(
-    '"' + group.name + '" guruhini o‘chirasizmi?\n\nGuruh ichidagi so‘zlar lug‘atda qoladi, faqat guruhdan ajraladi.'
-  );
-
-  if(!confirmed) return;
-
+  const group=groups.find(item=>item.id===selectedGroupId);
+  if(!group)return;
+  const confirmed=confirm('"'+group.name+'" guruhini o‘chirasizmi?\n\nGuruh ichidagi so‘zlar lug‘atda qoladi, faqat guruhdan ajraladi.');
+  if(!confirmed)return;
   try{
-    const {error:wordError} = await db.from("words")
-      .update({group_id:null})
-      .eq("group_id",group.id)
-      .eq("user_id",currentUser.id);
-
-    if(wordError) throw wordError;
-
-    const {error} = await db.from("word_groups")
-      .delete()
-      .eq("id",group.id)
-      .eq("user_id",currentUser.id);
-
-    if(error) throw error;
-
-    selectedGroupId = "all";
-    await loadGroups();
-    await loadWords();
-
-  }catch(error){
-    alert("Guruhni o‘chirishda xatolik: "+error.message);
-  }
+    const {error:wordError}=await db.from("words").update({group_id:null}).eq("group_id",group.id).eq("user_id",currentUser.id);
+    if(wordError)throw wordError;
+    const {error}=await db.from("word_groups").delete().eq("id",group.id).eq("user_id",currentUser.id);
+    if(error)throw error;
+    selectedGroupId="all";await loadGroups();await loadWords();
+  }catch(error){alert("Guruhni o‘chirishda xatolik: "+error.message)}
 }
 
 // =====================================
-// 13. STATISTICS
+// 14. STATISTICS
 // =====================================
 function updateStats(){
-  document.getElementById("totalWords").textContent = words.length;
-  document.getElementById("learnedWords").textContent = words.length;
-
-  const today = new Date().toDateString();
-
-  const count = words.filter(word=>
-    word.created_at &&
-    new Date(word.created_at).toDateString()===today
-  ).length;
-
-  document.getElementById("todayWords").textContent = count;
+  document.getElementById("totalWords").textContent=words.length;
+  document.getElementById("learnedWords").textContent=words.length;
+  const today=new Date().toDateString();
+  const count=words.filter(word=>word.created_at&&new Date(word.created_at).toDateString()===today).length;
+  document.getElementById("todayWords").textContent=count;
 }
 
 // =====================================
-// 14. DICTIONARY
+// 15. DICTIONARY
 // =====================================
 function renderDictionary(){
-  const search = normalizeText(document.getElementById("searchWord").value);
-  const list = document.getElementById("dictionaryList");
-
-  list.innerHTML = "";
-
-  let filtered = words.filter(word=>
-    getWordLanguage(word)===dictionaryLanguage
+  const search=normalizeText(document.getElementById("searchWord").value);
+  const list=document.getElementById("dictionaryList");
+  list.innerHTML="";
+  let filtered=words.filter(word=>getWordLanguage(word)===dictionaryLanguage);
+  if(selectedGroupId!=="all")filtered=filtered.filter(word=>word.group_id===selectedGroupId);
+  if(search)filtered=filtered.filter(word=>
+    normalizeText(getWordOriginal(word)).includes(search)||
+    normalizeText(getWordTranslation(word)).includes(search)
   );
-
-  if(selectedGroupId!=="all"){
-    filtered = filtered.filter(word=>word.group_id===selectedGroupId);
-  }
-
-  if(search){
-    filtered = filtered.filter(word=>
-      normalizeText(getWordOriginal(word)).includes(search) ||
-      normalizeText(getWordTranslation(word)).includes(search)
-    );
-  }
-
   if(!filtered.length){
-    const empty = document.createElement("div");
-    empty.className = "group-empty";
-    empty.textContent = search
-      ? "Bu qidiruv bo‘yicha so‘z topilmadi."
-      : "Bu bo‘limda hozircha so‘z yo‘q. Tarjimondan so‘z qo‘shishingiz mumkin.";
-    list.append(empty);
-    return;
+    const empty=document.createElement("div");
+    empty.className="group-empty";
+    empty.textContent=search?"Bu qidiruv bo‘yicha so‘z topilmadi.":"Bu bo‘limda hozircha so‘z yo‘q. Tarjimondan so‘z qo‘shishingiz mumkin.";
+    list.append(empty);return;
   }
-
   filtered.forEach(word=>{
-    const div = document.createElement("div");
-    div.className = "word";
-
-    const info = document.createElement("div");
-    const strong = document.createElement("strong");
-    strong.textContent = getWordOriginal(word);
-
-    const small = document.createElement("small");
-    small.textContent = getWordTranslation(word);
-
-    const group = groups.find(item=>item.id===word.group_id);
-
-    const meta = document.createElement("small");
-    meta.textContent =
-      (group ? "📁 "+group.name : "Guruhsiz")+
-      " · "+(LANGUAGES[getWordSourceLanguage(word)]?.name || "Til");
-
+    const div=document.createElement("div");div.className="word";
+    const info=document.createElement("div");
+    const strong=document.createElement("strong");strong.textContent=getWordOriginal(word);
+    const small=document.createElement("small");small.textContent=getWordTranslation(word);
+    const group=groups.find(item=>item.id===word.group_id);
+    const meta=document.createElement("small");
+    meta.textContent=(group?"📁 "+group.name:"Guruhsiz")+" · "+(LANGUAGES[getWordSourceLanguage(word)]?.name||"Til");
     info.append(strong,small,meta);
-
-    const del = document.createElement("button");
-    del.className = "danger small";
-    del.textContent = "O‘chirish";
-    del.onclick = ()=>deleteWord(word.id);
-
-    div.append(info,del);
-    list.append(div);
+    const del=document.createElement("button");del.className="danger small";del.textContent="O‘chirish";del.onclick=()=>deleteWord(word.id);
+    div.append(info,del);list.append(div);
   });
 }
-
 async function deleteWord(id){
-  if(!confirm("Bu so‘zni lug‘atdan o‘chirasizmi?")) return;
-
+  if(!confirm("Bu so‘zni lug‘atdan o‘chirasizmi?"))return;
   try{
-    const {error} = await db.from("words").delete()
-      .eq("id",id).eq("user_id",currentUser.id);
-
-    if(error) throw error;
-
+    const {error}=await db.from("words").delete().eq("id",id).eq("user_id",currentUser.id);
+    if(error)throw error;
     await loadWords();
-
-  }catch(error){
-    alert("Xatolik: "+error.message);
-  }
+  }catch(error){alert("Xatolik: "+error.message)}
 }
 
 // =====================================
-// 15. QUIZ SYSTEM
+// 16. QUIZ SYSTEM
 // =====================================
-let quizQuestions = [];
-let quizIndex = 0;
-let quizScore = 0;
-let quizAnswered = false;
-let quizFinished = false;
-
+let quizQuestions=[],quizIndex=0,quizScore=0,quizAnswered=false,quizFinished=false;
 function shuffleArray(array){
-  const result = [...array];
-
+  const result=[...array];
   for(let i=result.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [result[i],result[j]]=[result[j],result[i]];
   }
-
   return result;
 }
-
 function getQuizWords(){
-  let available = words.filter(word=>
-    getWordLanguage(word)===dictionaryLanguage
-  );
-
-  if(selectedGroupId!=="all"){
-    available=available.filter(word=>
-      word.group_id===selectedGroupId
-    );
-  }
-
-  return available.filter(word=>
-    getWordOriginal(word).trim() &&
-    getWordTranslation(word).trim()
-  );
+  let available=words.filter(word=>getWordLanguage(word)===dictionaryLanguage);
+  if(selectedGroupId!=="all")available=available.filter(word=>word.group_id===selectedGroupId);
+  return available.filter(word=>getWordOriginal(word).trim()&&getWordTranslation(word).trim());
 }
-
 function startQuiz(){
-  const mode = document.getElementById("quizMode").value;
-  const available = getQuizWords();
-
-  if(available.length<1){
-    alert("Test boshlash uchun bu bo‘limda so‘zlar yo‘q.");
-    return;
-  }
-
-  if(mode==="choice" && available.length<2){
-    alert("Variantli test uchun kamida 2 ta so‘z kerak.");
-    return;
-  }
-
-  if(mode==="listen" && !("speechSynthesis" in window)){
-    alert("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");
-    return;
-  }
-
-  quizQuestions=shuffleArray(available);
-  quizIndex=0;
-  quizScore=0;
-  quizAnswered=false;
-  quizFinished=false;
-
-  document.getElementById("quizArea").classList.remove("hidden");
-
-  showQuizQuestion();
+  const mode=document.getElementById("quizMode").value;
+  const available=getQuizWords();
+  if(available.length<1){alert("Test boshlash uchun bu bo‘limda so‘zlar yo‘q.");return}
+  if(mode==="choice"&&available.length<2){alert("Variantli test uchun kamida 2 ta so‘z kerak.");return}
+  if(mode==="listen"&&!("speechSynthesis"in window)){alert("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");return}
+  quizQuestions=shuffleArray(available);quizIndex=0;quizScore=0;quizAnswered=false;quizFinished=false;
+  document.getElementById("quizArea").classList.remove("hidden");showQuizQuestion();
 }
-
 function showQuizQuestion(){
-  if(quizIndex>=quizQuestions.length){
-    finishQuiz();
-    return;
-  }
-
-  quizAnswered=false;
-  quizFinished=false;
-
+  if(quizIndex>=quizQuestions.length){finishQuiz();return}
+  quizAnswered=false;quizFinished=false;
   const mode=document.getElementById("quizMode").value;
   const word=quizQuestions[quizIndex];
-
-  const original=getWordOriginal(word);
-  const translation=getWordTranslation(word);
-
-  const question=document.getElementById("quizQuestion");
-  const answers=document.getElementById("quizAnswers");
-
-  answers.innerHTML="";
-  document.getElementById("quizFeedback").textContent="";
+  const original=getWordOriginal(word),translation=getWordTranslation(word);
+  const question=document.getElementById("quizQuestion"),answers=document.getElementById("quizAnswers");
+  answers.innerHTML="";document.getElementById("quizFeedback").textContent="";
   document.getElementById("quizNext").classList.add("hidden");
-
-  document.getElementById("quizProgress").textContent=
-    `Savol ${quizIndex+1} / ${quizQuestions.length} · Ball: ${quizScore}`;
-
-  if(mode==="reverse"){
-    question.textContent=translation;
-    createTypingAnswer(original);
-  }
-  else if(mode==="type"){
-    question.textContent=original;
-    createTypingAnswer(translation);
-  }
+  document.getElementById("quizProgress").textContent=`Savol ${quizIndex+1} / ${quizQuestions.length} · Ball: ${quizScore}`;
+  if(mode==="reverse"){question.textContent=translation;createTypingAnswer(original)}
+  else if(mode==="type"){question.textContent=original;createTypingAnswer(translation)}
   else if(mode==="listen"){
-    question.textContent="🔊 So‘zni tinglang va tarjimasini toping";
-    createChoiceAnswers(translation,word);
-
+    question.textContent="🔊 So‘zni tinglang va tarjimasini toping";createChoiceAnswers(translation,word);
     const utterance=new SpeechSynthesisUtterance(original);
-    utterance.lang=getSpeechLanguage(getWordSourceLanguage(word));
-    utterance.rate=0.85;
-
-    setTimeout(()=>{
-      if(!quizAnswered && !quizFinished){
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
-      }
-    },300);
-  }
-  else if(mode==="choice"){
-    question.textContent=original;
-    createChoiceAnswers(translation,word);
-  }
-  else{
-    question.textContent=original;
-    createTypingAnswer(translation);
-  }
+    utterance.lang=getSpeechLanguage(getWordSourceLanguage(word));utterance.rate=.85;
+    setTimeout(()=>{if(!quizAnswered&&!quizFinished){window.speechSynthesis.cancel();window.speechSynthesis.speak(utterance)}},300);
+  }else if(mode==="choice"){question.textContent=original;createChoiceAnswers(translation,word)}
+  else{question.textContent=original;createTypingAnswer(translation)}
 }
-
-function getSpeechLanguage(code){
-  const languages={
-    en:"en-US",
-    uz:"uz-UZ",
-    ru:"ru-RU"
-  };
-
-  return languages[code] || "en-US";
-}
-
+function getSpeechLanguage(code){return{en:"en-US",uz:"uz-UZ",ru:"ru-RU"}[code]||"en-US"}
 function createChoiceAnswers(correct,word){
   const answers=document.getElementById("quizAnswers");
-
-  const others=quizQuestions
-    .filter(item=>item.id!==word.id)
-    .map(item=>getWordTranslation(item))
-    .filter(value=>value && normalizeText(value)!==normalizeText(correct));
-
+  const others=quizQuestions.filter(item=>item.id!==word.id).map(item=>getWordTranslation(item)).filter(value=>value&&normalizeText(value)!==normalizeText(correct));
   const uniqueOthers=[...new Set(others)];
-  const options=shuffleArray([
-    correct,
-    ...shuffleArray(uniqueOthers).slice(0,3)
-  ]);
-
+  const options=shuffleArray([correct,...shuffleArray(uniqueOthers).slice(0,3)]);
   options.forEach(option=>{
-    const button=document.createElement("button");
-    button.className="quiz-option";
-    button.textContent=option;
-
-    button.onclick=()=>{
-      checkQuizAnswer(option,correct,button);
-    };
-
-    answers.append(button);
+    const button=document.createElement("button");button.className="quiz-option";button.textContent=option;
+    button.onclick=()=>checkQuizAnswer(option,correct,button);answers.append(button);
   });
 }
-
 function createTypingAnswer(correct){
   const answers=document.getElementById("quizAnswers");
-
-  const input=document.createElement("input");
-  input.placeholder="Javobingizni yozing...";
-  input.id="quizTypingInput";
-  input.autocomplete="off";
-
-  const button=document.createElement("button");
-  button.textContent="Tekshirish";
-  button.style.width="100%";
-
-  button.onclick=()=>{
-    checkQuizAnswer(input.value,correct,null);
-  };
-
-  input.addEventListener("keydown",event=>{
-    if(event.key==="Enter"){
-      button.click();
-    }
-  });
-
-  answers.append(input,button);
-  input.focus();
+  const input=document.createElement("input");input.placeholder="Javobingizni yozing...";input.id="quizTypingInput";input.autocomplete="off";
+  const button=document.createElement("button");button.textContent="Tekshirish";button.style.width="100%";
+  button.onclick=()=>checkQuizAnswer(input.value,correct,null);
+  input.addEventListener("keydown",event=>{if(event.key==="Enter")button.click()});
+  answers.append(input,button);input.focus();
 }
-
 function checkQuizAnswer(answer,correct,selectedButton){
-  if(quizAnswered || quizFinished) return;
-
-  if(!String(answer || "").trim()){
-    document.getElementById("quizFeedback").textContent=
-      "Avval javob kiriting.";
-    return;
-  }
-
+  if(quizAnswered||quizFinished)return;
+  if(!String(answer||"").trim()){document.getElementById("quizFeedback").textContent="Avval javob kiriting.";return}
   quizAnswered=true;
-
-  const feedback=document.getElementById("quizFeedback");
-  const next=document.getElementById("quizNext");
-
-  const isCorrect=
-    normalizeText(answer)===normalizeText(correct);
-
-  if(isCorrect){
-    quizScore++;
-    feedback.textContent="✓ To‘g‘ri javob!";
-    feedback.style.color="var(--green)";
-  }else{
-    feedback.textContent="✗ Noto‘g‘ri. To‘g‘ri javob: "+correct;
-    feedback.style.color="var(--red)";
-  }
-
+  const feedback=document.getElementById("quizFeedback"),next=document.getElementById("quizNext");
+  const isCorrect=normalizeText(answer)===normalizeText(correct);
+  if(isCorrect){quizScore++;feedback.textContent="✓ To‘g‘ri javob!";feedback.style.color="var(--green)"}
+  else{feedback.textContent="✗ Noto‘g‘ri. To‘g‘ri javob: "+correct;feedback.style.color="var(--red)"}
   document.querySelectorAll(".quiz-option").forEach(button=>{
     button.disabled=true;
-
-    if(normalizeText(button.textContent)===normalizeText(correct)){
-      button.classList.add("correct");
-    }
+    if(normalizeText(button.textContent)===normalizeText(correct))button.classList.add("correct");
   });
-
-  if(selectedButton && !isCorrect){
-    selectedButton.classList.add("wrong");
-  }
-
-  const input=document.getElementById("quizTypingInput");
-  if(input) input.disabled=true;
-
-  document.querySelectorAll("#quizAnswers button").forEach(button=>{
-    button.disabled=true;
-  });
-
-  next.classList.remove("hidden");
-  next.textContent=quizIndex===quizQuestions.length-1
-    ? "Natijani ko‘rish"
-    : "Keyingi savol →";
+  if(selectedButton&&!isCorrect)selectedButton.classList.add("wrong");
+  const input=document.getElementById("quizTypingInput");if(input)input.disabled=true;
+  document.querySelectorAll("#quizAnswers button").forEach(button=>button.disabled=true);
+  next.classList.remove("hidden");next.textContent=quizIndex===quizQuestions.length-1?"Natijani ko‘rish":"Keyingi savol →";
 }
-
 function nextQuizQuestion(){
-  if(!quizAnswered) return;
-
+  if(!quizAnswered)return;
   quizIndex++;
-
-  if(quizIndex>=quizQuestions.length){
-    finishQuiz();
-  }else{
-    showQuizQuestion();
-  }
+  if(quizIndex>=quizQuestions.length)finishQuiz();else showQuizQuestion();
 }
-
 function finishQuiz(){
-  quizFinished=true;
-  quizAnswered=true;
-
-  if("speechSynthesis" in window){
-    window.speechSynthesis.cancel();
-  }
-
-  const total=quizQuestions.length;
-  const percent=total ? Math.round(quizScore/total*100) : 0;
-
-  document.getElementById("quizProgress").textContent=
-    "Test yakunlandi!";
-
-  document.getElementById("quizQuestion").innerHTML=
-    '<div class="quiz-result">🏆<div class="quiz-result-score">'+
-    quizScore+' / '+total+'</div><div>'+percent+'% to‘g‘ri javob</div></div>';
-
+  quizFinished=true;quizAnswered=true;
+  if("speechSynthesis"in window)window.speechSynthesis.cancel();
+  const total=quizQuestions.length,percent=total?Math.round(quizScore/total*100):0;
+  document.getElementById("quizProgress").textContent="Test yakunlandi!";
+  document.getElementById("quizQuestion").innerHTML='<div class="quiz-result">🏆<div class="quiz-result-score">'+quizScore+' / '+total+'</div><div>'+percent+'% to‘g‘ri javob</div></div>';
   document.getElementById("quizAnswers").innerHTML="";
-
   const feedback=document.getElementById("quizFeedback");
-
-  if(percent>=80){
-    feedback.textContent="Ajoyib natija! 🎉";
-    feedback.style.color="var(--green)";
-  }else if(percent>=50){
-    feedback.textContent="Yaxshi! Yana mashq qiling.";
-    feedback.style.color="#c19aff";
-  }else{
-    feedback.textContent="Ko‘proq takrorlash kerak. Davom eting!";
-    feedback.style.color="var(--red)";
-  }
-
+  if(percent>=80){feedback.textContent="Ajoyib natija! 🎉";feedback.style.color="var(--green)"}
+  else if(percent>=50){feedback.textContent="Yaxshi! Yana mashq qiling.";feedback.style.color="#c19aff"}
+  else{feedback.textContent="Ko‘proq takrorlash kerak. Davom eting!";feedback.style.color="var(--red)"}
   document.getElementById("quizNext").classList.add("hidden");
 }
-
 function closeQuiz(){
   document.getElementById("quizArea").classList.add("hidden");
-
-  if("speechSynthesis" in window){
-    window.speechSynthesis.cancel();
-  }
-
-  quizQuestions=[];
-  quizIndex=0;
-  quizScore=0;
-  quizAnswered=false;
-  quizFinished=false;
+  if("speechSynthesis"in window)window.speechSynthesis.cancel();
+  quizQuestions=[];quizIndex=0;quizScore=0;quizAnswered=false;quizFinished=false;
 }
 
 // =====================================
-// 16. SPEAKING LEVEL
+// 17. SPEAKING LEVEL
 // =====================================
 function selectLevel(level,button){
-  selectedLevel = level;
-
-  document.querySelectorAll(".level-btn").forEach(btn=>{
-    btn.classList.remove("selected");
-  });
-
-  button.classList.add("selected");
-  setSpeakingStatus("Daraja: "+level);
+  selectedLevel=level;
+  document.querySelectorAll(".level-btn").forEach(btn=>btn.classList.remove("selected"));
+  button.classList.add("selected");setSpeakingStatus("Daraja: "+level);
 }
-
 function setSpeakingMode(mode){
-  speakingMode = mode;
-
+  speakingMode=mode;
   document.getElementById("textModeBtn").classList.toggle("selected",mode==="text");
   document.getElementById("voiceModeBtn").classList.toggle("selected",mode==="voice");
-
   document.getElementById("textModeBtn").classList.toggle("secondary",mode!=="text");
   document.getElementById("voiceModeBtn").classList.toggle("secondary",mode!=="voice");
-
   document.getElementById("micBtn").classList.toggle("hidden",mode!=="voice");
-
-  if(mode==="text"){
-    stopSpeaking();
-    setSpeakingStatus("Matnli suhbat rejimi.");
-  }else{
-    setSpeakingStatus("Ovozli suhbat rejimi. Mikrofon tugmasini bosing.");
-  }
+  if(mode==="text"){stopSpeaking();setSpeakingStatus("Matnli suhbat rejimi.")}
+  else setSpeakingStatus("Ovozli suhbat rejimi. Mikrofon tugmasini bosing.");
 }
 
 // =====================================
-// 17. CHAT MESSAGES
+// 18. CHAT MESSAGES
 // =====================================
 function addChatMessage(role,content){
-  const box = document.getElementById("chatBox");
-
-  const message = document.createElement("div");
-  message.className = "chat-message "+role;
-
-  const who = document.createElement("div");
-  who.className = "who";
-  who.textContent = role==="user" ? "SIZ" : "VOCABMASTER AI";
-
-  const body = document.createElement("div");
-  body.textContent = content;
-
-  message.append(who,body);
-  box.append(message);
-  box.scrollTop = box.scrollHeight;
+  const box=document.getElementById("chatBox");
+  const message=document.createElement("div");message.className="chat-message "+role;
+  const who=document.createElement("div");who.className="who";who.textContent=role==="user"?"SIZ":"VOCABMASTER AI";
+  const body=document.createElement("div");body.textContent=content;
+  message.append(who,body);box.append(message);box.scrollTop=box.scrollHeight;
 }
-
-function setSpeakingStatus(message){
-  document.getElementById("speakingStatus").textContent = message;
-}
+function setSpeakingStatus(message){document.getElementById("speakingStatus").textContent=message}
 
 // =====================================
-// 18. AI CHAT
+// 19. AI CHAT
 // =====================================
 async function sendSpeakingMessage(voiceText){
-  if(!currentUser){
-    setSpeakingStatus("Avval tizimga kiring.");
-    return;
-  }
-
-  if(speakingBusy) return;
-
-  const input = document.getElementById("speakingInput");
-  const message = (typeof voiceText==="string" ? voiceText : input.value).trim();
-
-  if(!message){
-    setSpeakingStatus("Avval xabar yozing yoki mikrofon orqali gapiring.");
-    return;
-  }
-
-  if(message.length>1200){
-    setSpeakingStatus("Xabar 1200 belgidan oshmasligi kerak.");
-    return;
-  }
-
-  speakingBusy = true;
-  input.value = "";
-  input.disabled = true;
-
-  const sendBtn = document.getElementById("sendSpeakingBtn");
-  sendBtn.disabled = true;
-  sendBtn.textContent = "Kutilmoqda...";
-
-  addChatMessage("user",message);
-  setSpeakingStatus("AI javob tayyorlamoqda...");
-
+  if(!currentUser){setSpeakingStatus("Avval tizimga kiring.");return}
+  if(speakingBusy)return;
+  const input=document.getElementById("speakingInput");
+  const message=(typeof voiceText==="string"?voiceText:input.value).trim();
+  if(!message){setSpeakingStatus("Avval xabar yozing yoki mikrofon orqali gapiring.");return}
+  if(message.length>1200){setSpeakingStatus("Xabar 1200 belgidan oshmasligi kerak.");return}
+  speakingBusy=true;input.value="";input.disabled=true;
+  const sendBtn=document.getElementById("sendSpeakingBtn");
+  sendBtn.disabled=true;sendBtn.textContent="Kutilmoqda...";
+  addChatMessage("user",message);setSpeakingStatus("AI javob tayyorlamoqda...");
   try{
-    const {data,error} = await db.functions.invoke("speaking-chat",{
-      body:{
-        message,
-        history:speakingHistory.slice(-10),
-        level:selectedLevel
-      }
+    const {data,error}=await db.functions.invoke("speaking-chat",{
+      body:{message,history:speakingHistory.slice(-10),level:selectedLevel}
     });
-
     if(error){
-      let detail = error.message || "Server bilan bog‘lanib bo‘lmadi.";
-
-      try{
-        if(error.context && typeof error.context.json==="function"){
-          const body = await error.context.json();
-          if(body.error) detail = body.error;
-        }
-      }catch(_){}
-
+      let detail=error.message||"Server bilan bog‘lanib bo‘lmadi.";
+      try{if(error.context&&typeof error.context.json==="function"){const body=await error.context.json();if(body.error)detail=body.error}}catch(_){}
       throw new Error(detail);
     }
-
-    if(data?.error) throw new Error(data.error);
-    if(!data?.reply) throw new Error("AI javobi kelmadi.");
-
-    const reply = data.reply;
-    addChatMessage("assistant",reply);
-
-    speakingHistory.push(
-      {role:"user",content:message},
-      {role:"assistant",content:reply}
-    );
-
-    speakingHistory = speakingHistory.slice(-10);
-
-    if(speakingMode==="voice") speakReply(reply);
-
+    if(data?.error)throw new Error(data.error);
+    if(!data?.reply)throw new Error("AI javobi kelmadi.");
+    const reply=data.reply;addChatMessage("assistant",reply);
+    speakingHistory.push({role:"user",content:message},{role:"assistant",content:reply});
+    speakingHistory=speakingHistory.slice(-10);
+    if(speakingMode==="voice")speakReply(reply);
     setSpeakingStatus("Javob tayyor.");
-
   }catch(error){
     console.error("Speaking AI error:",error);
-    setSpeakingStatus("Xatolik: "+(error.message || "AI bilan bog‘lanib bo‘lmadi."));
+    setSpeakingStatus("Xatolik: "+(error.message||"AI bilan bog‘lanib bo‘lmadi."));
   }finally{
-    speakingBusy = false;
-    input.disabled = false;
-    sendBtn.disabled = false;
-    sendBtn.textContent = "Yuborish";
-    input.focus();
+    speakingBusy=false;input.disabled=false;sendBtn.disabled=false;sendBtn.textContent="Yuborish";input.focus();
   }
 }
 
 // =====================================
-// 19. TEXT TO SPEECH
+// 20. TEXT TO SPEECH
 // =====================================
 function speakReply(text){
-  if(!("speechSynthesis" in window)){
-    setSpeakingStatus("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");
-    return;
-  }
-
+  if(!("speechSynthesis"in window)){setSpeakingStatus("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");return}
   window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US";
-  utterance.rate = 0.9;
-  utterance.pitch = 1;
-
-  utterance.onerror = ()=>{
-    setSpeakingStatus("Ovoz chiqarishda xatolik yuz berdi.");
-  };
-
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang="en-US";utterance.rate=.9;utterance.pitch=1;
+  utterance.onerror=()=>setSpeakingStatus("Ovoz chiqarishda xatolik yuz berdi.");
   window.speechSynthesis.speak(utterance);
 }
 
 // =====================================
-// 20. STOP SPEAKING
+// 21. STOP SPEAKING
 // =====================================
 function stopSpeaking(){
-  if("speechSynthesis" in window){
-    window.speechSynthesis.cancel();
-  }
-
-  if(recognition && isListening){
-    try{recognition.stop();}catch(_){}
-  }
-
-  isListening = false;
-
-  const mic = document.getElementById("micBtn");
-
-  if(mic){
-    mic.classList.remove("listening");
-    mic.textContent = "🎙";
-  }
+  if("speechSynthesis"in window)window.speechSynthesis.cancel();
+  if(recognition&&isListening){try{recognition.stop()}catch(_){}}
+  isListening=false;
+  const mic=document.getElementById("micBtn");
+  if(mic){mic.classList.remove("listening");mic.textContent="🎙"}
 }
 
 // =====================================
-// 21. MICROPHONE
+// 22. MICROPHONE
 // =====================================
 async function toggleMicrophone(){
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if(!SpeechRecognition){
-    setSpeakingStatus(
-      "Bu brauzer nutqni matnga aylantirishni qo‘llab-quvvatlamaydi. Chrome brauzerida sinab ko‘ring."
-    );
-    return;
-  }
-
-  if(!window.isSecureContext){
-    setSpeakingStatus("Mikrofon uchun sayt HTTPS orqali ochilishi kerak.");
-    return;
-  }
-
-  if(isListening && recognition){
-    recognition.stop();
-    return;
-  }
-
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){setSpeakingStatus("Bu brauzer nutqni matnga aylantirishni qo‘llab-quvvatlamaydi. Chrome brauzerida sinab ko‘ring.");return}
+  if(!window.isSecureContext){setSpeakingStatus("Mikrofon uchun sayt HTTPS orqali ochilishi kerak.");return}
+  if(isListening&&recognition){recognition.stop();return}
   try{
-    recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.onstart = ()=>{
-      isListening = true;
-
-      const mic = document.getElementById("micBtn");
-      mic.classList.add("listening");
-      mic.textContent = "⏹";
-
+    recognition=new SpeechRecognition();
+    recognition.lang="en-US";recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=1;
+    recognition.onstart=()=>{
+      isListening=true;
+      const mic=document.getElementById("micBtn");mic.classList.add("listening");mic.textContent="⏹";
       setSpeakingStatus("Tinglayapman... Ingliz tilida gapiring.");
     };
-
-    recognition.onresult = event=>{
-      const transcript = event.results[0][0].transcript;
-
-      document.getElementById("speakingInput").value = transcript;
+    recognition.onresult=event=>{
+      const transcript=event.results[0][0].transcript;
+      document.getElementById("speakingInput").value=transcript;
       setSpeakingStatus("Siz aytdingiz: "+transcript);
-
       sendSpeakingMessage(transcript);
     };
-
-    recognition.onerror = event=>{
-      setSpeakingStatus("Mikrofon xatosi: "+event.error);
+    recognition.onerror=event=>setSpeakingStatus("Mikrofon xatosi: "+event.error);
+    recognition.onend=()=>{
+      isListening=false;
+      const mic=document.getElementById("micBtn");mic.classList.remove("listening");mic.textContent="🎙";
     };
-
-    recognition.onend = ()=>{
-      isListening = false;
-
-      const mic = document.getElementById("micBtn");
-      mic.classList.remove("listening");
-      mic.textContent = "🎙";
-    };
-
     recognition.start();
-
-  }catch(error){
-    setSpeakingStatus("Mikrofonni ishga tushirib bo‘lmadi: "+error.message);
-  }
+  }catch(error){setSpeakingStatus("Mikrofonni ishga tushirib bo‘lmadi: "+error.message)}
 }
 
 // =====================================
-// 22. CLEAR CHAT
+// 23. CLEAR CHAT
 // =====================================
 function clearSpeakingChat(){
-  stopSpeaking();
-  speakingHistory = [];
-
-  const box = document.getElementById("chatBox");
-  box.innerHTML = "";
-
-  addChatMessage(
-    "assistant",
-    "Hello! Let's practice English together. What did you do today?"
-  );
-
+  stopSpeaking();speakingHistory=[];
+  const box=document.getElementById("chatBox");box.innerHTML="";
+  addChatMessage("assistant","Hello! Let's practice English together. What did you do today?");
   setSpeakingStatus("Yangi suhbat boshlandi.");
 }
 
 // =====================================
-// 23. START APP
+// 24. START APP
 // =====================================
 renderDailyWord();
 updateLanguageButtons();
 checkSession();
-
 </script>
 </body>
-  </html>
+        </html>
