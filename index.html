@@ -1,3 +1,28 @@
+
+function showReviewQuestion(){
+  if(reviewIndex>=reviewQueue.length){
+    finishSmartReview();
+    return;
+  }
+
+  const word=reviewQueue[reviewIndex];
+  reviewAnswerShown=false;
+
+  document.getElementById("reviewProgress").textContent=
+    "So‘z "+(reviewIndex+1)+" / "+reviewQueue.length;
+
+  document.getElementById("reviewWord").textContent=getWordOriginal(word);
+  document.getElementById("reviewTranslation").textContent=getWordTranslation(word);
+
+  document.getElementById("reviewAnswerArea").classList.add("hidden");
+  document.getElementById("reviewShowBtn").classList.remove("hidden");
+  document.getElementById("reviewStatus").textContent="";
+
+  // MUHIM: Keyingi so‘z uchun tugmalarni qayta yoqish
+  document.querySelectorAll(".review-rating button").forEach(button=>{
+    button.disabled=false;
+  });
+}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -1079,25 +1104,32 @@ function startQuiz(){
   document.getElementById("quizArea").classList.remove("hidden");showQuizQuestion();
 }
 function showQuizQuestion(){
-  if(quizIndex>=quizQuestions.length){finishQuiz();return}
-  quizAnswered=false;quizFinished=false;
-  const mode=document.getElementById("quizMode").value;
-  const word=quizQuestions[quizIndex];
-  const original=getWordOriginal(word),translation=getWordTranslation(word);
-  const question=document.getElementById("quizQuestion"),answers=document.getElementById("quizAnswers");
-  answers.innerHTML="";document.getElementById("quizFeedback").textContent="";
-  document.getElementById("quizNext").classList.add("hidden");
-  document.getElementById("quizProgress").textContent=`Savol ${quizIndex+1} / ${quizQuestions.length} · Ball: ${quizScore}`;
-  if(mode==="reverse"){question.textContent=translation;createTypingAnswer(original)}
-  else if(mode==="type"){question.textContent=original;createTypingAnswer(translation)}
-  else if(mode==="listen"){
-    question.textContent="🔊 So‘zni tinglang va tarjimasini toping";createChoiceAnswers(translation,word);
-    const utterance=new SpeechSynthesisUtterance(original);
-    utterance.lang=getSpeechLanguage(getWordSourceLanguage(word));utterance.rate=.85;
-    setTimeout(()=>{if(!quizAnswered&&!quizFinished){window.speechSynthesis.cancel();window.speechSynthesis.speak(utterance)}},300);
-  }else if(mode==="choice"){question.textContent=original;createChoiceAnswers(translation,word)}
-  else{question.textContent=original;createTypingAnswer(translation)}
+
+function showReviewQuestion(){
+  if(reviewIndex>=reviewQueue.length){
+    finishSmartReview();
+    return;
+  }
+
+  const word=reviewQueue[reviewIndex];
+  reviewAnswerShown=false;
+
+  document.getElementById("reviewProgress").textContent=
+    "So‘z "+(reviewIndex+1)+" / "+reviewQueue.length;
+
+  document.getElementById("reviewWord").textContent=getWordOriginal(word);
+  document.getElementById("reviewTranslation").textContent=getWordTranslation(word);
+
+  document.getElementById("reviewAnswerArea").classList.add("hidden");
+  document.getElementById("reviewShowBtn").classList.remove("hidden");
+  document.getElementById("reviewStatus").textContent="";
+
+  // MUHIM: Keyingi so‘z uchun tugmalarni qayta yoqish
+  document.querySelectorAll(".review-rating button").forEach(button=>{
+    button.disabled=false;
+  });
 }
+
 function getSpeechLanguage(code){return{en:"en-US",uz:"uz-UZ",ru:"ru-RU"}[code]||"en-US"}
 function createChoiceAnswers(correct,word){
   const answers=document.getElementById("quizAnswers");
