@@ -165,6 +165,78 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
   border:1px solid #23785e!important;
 }
 
+/* DAILY WORD */
+.daily-word-card{
+  background:linear-gradient(135deg,#2b1948,#171126 75%);
+  border:1px solid #7045a8;
+  border-radius:20px;
+  padding:20px;
+  margin:18px 0;
+  position:relative;
+  overflow:hidden;
+}
+.daily-word-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:17px;
+}
+.daily-word-label{
+  color:#d4baff;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+.daily-word-date{
+  font-size:11px;
+  color:var(--muted);
+}
+.daily-word-title{
+  font-size:32px;
+  color:#d2b4ff;
+  margin:8px 0;
+  overflow-wrap:anywhere;
+}
+.daily-word-translation{
+  font-size:18px;
+  color:white;
+  margin:0 0 18px;
+}
+.daily-word-example{
+  background:#100b1d;
+  border:1px solid var(--border);
+  padding:13px;
+  border-radius:13px;
+  margin:12px 0;
+}
+.daily-word-example strong{
+  display:block;
+  color:#d2b4ff;
+  font-size:13px;
+  margin-bottom:7px;
+}
+.daily-word-example p{
+  margin:0;
+  color:#f7f2ff;
+  font-size:14px;
+}
+.daily-word-example small{
+  display:block;
+  color:var(--muted);
+  margin-top:7px;
+  line-height:1.5;
+}
+.daily-word-actions{
+  display:flex;
+  gap:9px;
+  margin-top:15px;
+}
+.daily-word-actions button{
+  flex:1;
+  min-width:0;
+}
+
 /* QUIZ */
 .quiz-panel{
   background:#100b1d;
@@ -288,6 +360,8 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
   .chat-input-row button{flex:1}
   .nav-item{font-size:9px}
   .nav-icon{font-size:19px}
+  .daily-word-title{font-size:28px}
+  .daily-word-actions{flex-direction:column}
 }
 </style>
 </head>
@@ -335,6 +409,28 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <section id="translate" class="page active">
   <h1 class="page-title">Tarjimon</h1>
   <p class="page-subtitle">So‘z va gaplarni tarjima qiling.</p>
+
+  <!-- DAILY WORD -->
+  <div class="daily-word-card">
+    <div class="daily-word-top">
+      <span class="daily-word-label">✨ KUN SO‘ZI</span>
+      <span class="daily-word-date" id="dailyWordDate"></span>
+    </div>
+
+    <h2 class="daily-word-title" id="dailyWordTitle">Improve</h2>
+    <p class="daily-word-translation" id="dailyWordTranslation">Yaxshilamoq</p>
+
+    <div class="daily-word-example">
+      <strong>📖 Misol</strong>
+      <p id="dailyWordExample">I want to improve my English.</p>
+      <small id="dailyWordExampleTranslation">Men ingliz tilimni yaxshilamoqchiman.</small>
+    </div>
+
+    <div class="daily-word-actions">
+      <button class="secondary" onclick="speakDailyWord()">🔊 Eshitish</button>
+      <button id="dailyWordSaveBtn" onclick="saveDailyWord()">＋ Lug‘atga saqlash</button>
+    </div>
+  </div>
 
   <div class="card">
     <div class="language-section">
@@ -640,7 +736,334 @@ function findDuplicate(item){
 }
 
 // =====================================
-// 2. AUTH
+// 2. DAILY WORD
+// =====================================
+const DAILY_WORDS = [
+  {
+    word:"Improve",
+    translation:"Yaxshilamoq",
+    example:"I want to improve my English.",
+    exampleTranslation:"Men ingliz tilimni yaxshilamoqchiman."
+  },
+  {
+    word:"Achieve",
+    translation:"Erishmoq",
+    example:"You can achieve your goals.",
+    exampleTranslation:"Siz maqsadlaringizga erisha olasiz."
+  },
+  {
+    word:"Brave",
+    translation:"Jasur",
+    example:"She is a brave girl.",
+    exampleTranslation:"U jasur qiz."
+  },
+  {
+    word:"Careful",
+    translation:"Ehtiyotkor",
+    example:"Be careful when you cross the road.",
+    exampleTranslation:"Yo‘lni kesib o‘tayotganda ehtiyot bo‘ling."
+  },
+  {
+    word:"Discover",
+    translation:"Kashf qilmoq",
+    example:"I want to discover new places.",
+    exampleTranslation:"Men yangi joylarni kashf qilmoqchiman."
+  },
+  {
+    word:"Effort",
+    translation:"Harakat, sa'y-harakat",
+    example:"Success needs effort.",
+    exampleTranslation:"Muvaffaqiyat uchun harakat kerak."
+  },
+  {
+    word:"Freedom",
+    translation:"Erkinlik",
+    example:"Everyone wants freedom.",
+    exampleTranslation:"Har kim erkinlikni xohlaydi."
+  },
+  {
+    word:"Generous",
+    translation:"Saxiy",
+    example:"My friend is very generous.",
+    exampleTranslation:"Do‘stim juda saxiy."
+  },
+  {
+    word:"Honest",
+    translation:"Halol, rostgo‘y",
+    example:"Always be honest.",
+    exampleTranslation:"Har doim rostgo‘y bo‘ling."
+  },
+  {
+    word:"Knowledge",
+    translation:"Bilim",
+    example:"Knowledge is important.",
+    exampleTranslation:"Bilim muhim."
+  },
+  {
+    word:"Opportunity",
+    translation:"Imkoniyat",
+    example:"This is a good opportunity.",
+    exampleTranslation:"Bu yaxshi imkoniyat."
+  },
+  {
+    word:"Patient",
+    translation:"Sabrli",
+    example:"Be patient and keep learning.",
+    exampleTranslation:"Sabrli bo‘ling va o‘rganishda davom eting."
+  },
+  {
+    word:"Purpose",
+    translation:"Maqsad",
+    example:"What is your purpose?",
+    exampleTranslation:"Maqsadingiz nima?"
+  },
+  {
+    word:"Reliable",
+    translation:"Ishonchli",
+    example:"He is a reliable person.",
+    exampleTranslation:"U ishonchli inson."
+  },
+  {
+    word:"Success",
+    translation:"Muvaffaqiyat",
+    example:"Hard work brings success.",
+    exampleTranslation:"Qattiq mehnat muvaffaqiyat olib keladi."
+  },
+  {
+    word:"Thought",
+    translation:"Fikr, o‘y",
+    example:"That is an interesting thought.",
+    exampleTranslation:"Bu qiziqarli fikr."
+  },
+  {
+    word:"Understand",
+    translation:"Tushunmoq",
+    example:"I understand the lesson.",
+    exampleTranslation:"Men darsni tushunaman."
+  },
+  {
+    word:"Valuable",
+    translation:"Qimmatli",
+    example:"Time is valuable.",
+    exampleTranslation:"Vaqt qimmatli."
+  },
+  {
+    word:"Wisdom",
+    translation:"Donolik",
+    example:"Wisdom comes with experience.",
+    exampleTranslation:"Donolik tajriba bilan keladi."
+  },
+  {
+    word:"Wonder",
+    translation:"Hayron bo‘lmoq",
+    example:"I wonder why he is late.",
+    exampleTranslation:"Nega u kechikayotganiga hayronman."
+  },
+  {
+    word:"Challenge",
+    translation:"Qiyinchilik, sinov",
+    example:"Learning a language is a challenge.",
+    exampleTranslation:"Til o‘rganish bir sinovdir."
+  },
+  {
+    word:"Confident",
+    translation:"O‘ziga ishongan",
+    example:"Be confident when you speak.",
+    exampleTranslation:"Gapirganingizda o‘zingizga ishoning."
+  },
+  {
+    word:"Develop",
+    translation:"Rivojlantirmoq",
+    example:"I want to develop my skills.",
+    exampleTranslation:"Men ko‘nikmalarimni rivojlantirmoqchiman."
+  },
+  {
+    word:"Encourage",
+    translation:"Ruhlantirmoq",
+    example:"My teacher encourages me.",
+    exampleTranslation:"O‘qituvchim meni ruhlantiradi."
+  },
+  {
+    word:"Experience",
+    translation:"Tajriba",
+    example:"Experience helps us learn.",
+    exampleTranslation:"Tajriba bizga o‘rganishga yordam beradi."
+  },
+  {
+    word:"Focus",
+    translation:"Diqqatni jamlamoq",
+    example:"Focus on your studies.",
+    exampleTranslation:"O‘qishingizga diqqat qarating."
+  },
+  {
+    word:"Habit",
+    translation:"Odat",
+    example:"Reading is a good habit.",
+    exampleTranslation:"Kitob o‘qish yaxshi odat."
+  },
+  {
+    word:"Imagine",
+    translation:"Tasavvur qilmoq",
+    example:"Imagine your future.",
+    exampleTranslation:"Kelajagingizni tasavvur qiling."
+  },
+  {
+    word:"Progress",
+    translation:"Rivojlanish",
+    example:"I can see your progress.",
+    exampleTranslation:"Men sizning rivojlanishingizni ko‘ryapman."
+  },
+  {
+    word:"Successful",
+    translation:"Muvaffaqiyatli",
+    example:"She is a successful student.",
+    exampleTranslation:"U muvaffaqiyatli o‘quvchi."
+  }
+];
+
+let currentDailyWord = null;
+
+function getDailyWordIndex(){
+  const now = new Date();
+  const start = new Date(now.getFullYear(),0,0);
+  const difference = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(difference / oneDay);
+
+  return dayOfYear % DAILY_WORDS.length;
+}
+
+function renderDailyWord(){
+  currentDailyWord = DAILY_WORDS[getDailyWordIndex()];
+
+  const now = new Date();
+
+  document.getElementById("dailyWordDate").textContent =
+    now.toLocaleDateString("uz-UZ",{
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
+
+  document.getElementById("dailyWordTitle").textContent =
+    currentDailyWord.word;
+
+  document.getElementById("dailyWordTranslation").textContent =
+    currentDailyWord.translation;
+
+  document.getElementById("dailyWordExample").textContent =
+    currentDailyWord.example;
+
+  document.getElementById("dailyWordExampleTranslation").textContent =
+    currentDailyWord.exampleTranslation;
+
+  updateDailyWordButton();
+}
+
+function getDailyWordItem(){
+  if(!currentDailyWord) return null;
+
+  return {
+    original:currentDailyWord.translation,
+    translation:currentDailyWord.word,
+    source:"uz",
+    target:"en"
+  };
+}
+
+function updateDailyWordButton(){
+  const button = document.getElementById("dailyWordSaveBtn");
+  if(!button) return;
+
+  const item = getDailyWordItem();
+
+  if(!item){
+    button.disabled = true;
+    return;
+  }
+
+  const duplicate = findDuplicate(item);
+
+  if(duplicate){
+    button.disabled = true;
+    button.classList.add("saved-button");
+    button.textContent = "✓ Lug‘atga kiritilgan";
+  }else{
+    button.disabled = false;
+    button.classList.remove("saved-button");
+    button.textContent = "＋ Lug‘atga saqlash";
+  }
+}
+
+function speakDailyWord(){
+  if(!currentDailyWord) return;
+
+  if(!("speechSynthesis" in window)){
+    alert("Brauzeringiz ovoz chiqarishni qo‘llab-quvvatlamaydi.");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(
+    currentDailyWord.word
+  );
+
+  utterance.lang = "en-US";
+  utterance.rate = 0.85;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+async function saveDailyWord(){
+  if(!currentUser || !currentDailyWord){
+    alert("Avval akkauntingizga kiring.");
+    return;
+  }
+
+  const item = getDailyWordItem();
+
+  if(findDuplicate(item)){
+    updateDailyWordButton();
+    return;
+  }
+
+  const button = document.getElementById("dailyWordSaveBtn");
+
+  button.disabled = true;
+  button.textContent = "Saqlanmoqda...";
+
+  try{
+    const record = {
+      user_id:currentUser.id,
+      english:currentDailyWord.word,
+      uzbek:currentDailyWord.translation,
+      source_language:"uz",
+      target_language:"en",
+      original_text:currentDailyWord.translation,
+      translated_text:currentDailyWord.word,
+      group_id:null
+    };
+
+    const {error} = await db.from("words").insert(record);
+
+    if(error) throw error;
+
+    await loadWords();
+    updateDailyWordButton();
+
+  }catch(error){
+    console.error("Daily Word save error:",error);
+
+    alert("So‘zni saqlashda xatolik: "+error.message);
+
+    button.disabled = false;
+    button.textContent = "＋ Lug‘atga saqlash";
+  }
+}
+
+// =====================================
+// 3. AUTH
 // =====================================
 function toggleAuth(){
   isLogin = !isLogin;
@@ -727,7 +1150,7 @@ async function logout(){
 }
 
 // =====================================
-// 3. NAVIGATION
+// 4. NAVIGATION
 // =====================================
 function showPage(id,button){
   document.querySelectorAll(".page").forEach(page=>{
@@ -746,7 +1169,7 @@ function showPage(id,button){
 }
 
 // =====================================
-// 4. LANGUAGE PICKER
+// 5. LANGUAGE PICKER
 // =====================================
 function updateLanguageButtons(){
   document.querySelectorAll("#sourceLanguages .language-option").forEach(btn=>{
@@ -785,7 +1208,7 @@ function resetTranslation(){
 }
 
 // =====================================
-// 5. TRANSLATOR
+// 6. TRANSLATOR
 // =====================================
 async function translateWord(){
   const input = document.getElementById("sourceWord").value.trim();
@@ -839,7 +1262,7 @@ async function translateWord(){
 }
 
 // =====================================
-// 6. SAVE BUTTON / DUPLICATE CHECK
+// 7. SAVE BUTTON / DUPLICATE CHECK
 // =====================================
 function updateSaveButton(){
   const button = document.getElementById("saveBtn");
@@ -886,7 +1309,7 @@ function updateSaveGroupOptions(){
 }
 
 // =====================================
-// 7. SAVE WORD
+// 8. SAVE WORD
 // =====================================
 async function saveWord(){
   if(!currentUser || !translated) return;
@@ -952,7 +1375,7 @@ async function saveWord(){
 }
 
 // =====================================
-// 8. LOAD WORDS
+// 9. LOAD WORDS
 // =====================================
 async function loadWords(){
   if(!currentUser) return;
@@ -969,6 +1392,7 @@ async function loadWords(){
     updateStats();
     renderDictionary();
     updateSaveButton();
+    updateDailyWordButton();
 
   }catch(error){
     console.error(error);
@@ -978,7 +1402,7 @@ async function loadWords(){
 }
 
 // =====================================
-// 9. GROUPS: LOAD / CREATE
+// 10. GROUPS: LOAD / CREATE
 // =====================================
 async function loadGroups(){
   if(!currentUser) return;
@@ -1048,7 +1472,7 @@ async function createGroup(){
 }
 
 // =====================================
-// 10. GROUPS: RENDER / SELECT
+// 11. GROUPS: RENDER / SELECT
 // =====================================
 function renderGroups(){
   const container = document.getElementById("groupTabs");
@@ -1099,7 +1523,7 @@ function selectDictionaryLanguage(language,button){
 }
 
 // =====================================
-// 11. GROUPS: RENAME / DELETE
+// 12. GROUPS: RENAME / DELETE
 // =====================================
 async function renameGroup(){
   const group = groups.find(item=>item.id===selectedGroupId);
@@ -1171,7 +1595,7 @@ async function deleteGroup(){
 }
 
 // =====================================
-// 12. STATISTICS
+// 13. STATISTICS
 // =====================================
 function updateStats(){
   document.getElementById("totalWords").textContent = words.length;
@@ -1188,7 +1612,7 @@ function updateStats(){
 }
 
 // =====================================
-// 13. DICTIONARY
+// 14. DICTIONARY
 // =====================================
 function renderDictionary(){
   const search = normalizeText(document.getElementById("searchWord").value);
@@ -1268,7 +1692,7 @@ async function deleteWord(id){
 }
 
 // =====================================
-// 14. QUIZ SYSTEM
+// 15. QUIZ SYSTEM
 // =====================================
 let quizQuestions = [];
 let quizIndex = 0;
@@ -1569,7 +1993,7 @@ function closeQuiz(){
 }
 
 // =====================================
-// 15. SPEAKING LEVEL
+// 16. SPEAKING LEVEL
 // =====================================
 function selectLevel(level,button){
   selectedLevel = level;
@@ -1602,7 +2026,7 @@ function setSpeakingMode(mode){
 }
 
 // =====================================
-// 16. CHAT MESSAGES
+// 17. CHAT MESSAGES
 // =====================================
 function addChatMessage(role,content){
   const box = document.getElementById("chatBox");
@@ -1627,7 +2051,7 @@ function setSpeakingStatus(message){
 }
 
 // =====================================
-// 17. AI CHAT
+// 18. AI CHAT
 // =====================================
 async function sendSpeakingMessage(voiceText){
   if(!currentUser){
@@ -1713,7 +2137,7 @@ async function sendSpeakingMessage(voiceText){
 }
 
 // =====================================
-// 18. TEXT TO SPEECH
+// 19. TEXT TO SPEECH
 // =====================================
 function speakReply(text){
   if(!("speechSynthesis" in window)){
@@ -1736,7 +2160,7 @@ function speakReply(text){
 }
 
 // =====================================
-// 19. STOP SPEAKING
+// 20. STOP SPEAKING
 // =====================================
 function stopSpeaking(){
   if("speechSynthesis" in window){
@@ -1758,7 +2182,7 @@ function stopSpeaking(){
 }
 
 // =====================================
-// 20. MICROPHONE
+// 21. MICROPHONE
 // =====================================
 async function toggleMicrophone(){
   const SpeechRecognition =
@@ -1828,7 +2252,7 @@ async function toggleMicrophone(){
 }
 
 // =====================================
-// 21. CLEAR CHAT
+// 22. CLEAR CHAT
 // =====================================
 function clearSpeakingChat(){
   stopSpeaking();
@@ -1846,8 +2270,9 @@ function clearSpeakingChat(){
 }
 
 // =====================================
-// 22. START APP
+// 23. START APP
 // =====================================
+renderDailyWord();
 updateLanguageButtons();
 checkSession();
 
