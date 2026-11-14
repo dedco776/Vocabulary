@@ -636,21 +636,30 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <span class="tag">Keyingi bosqichda ishlab chiqiladi</span>
 </div>
 </section>
+<section id="learning" class="page">
+<h1 class="page-title">O‘rganish</h1>
+<p class="muted">Ingliz tilini turli usullarda mashq qiling.</p>
+<div class="feature-card"><div class="feature-icon">📖</div><h3>Grammar</h3><p>Grammatika qoidalari va mashqlar.</p><button onclick="showPage('grammar')">Ochish →</button></div>
+<div class="feature-card"><div class="feature-icon">📘</div><h3>Reading</h3><p>Matnlarni o‘qish va tushunishni rivojlantirish.</p><button onclick="showPage('reading')">Ochish →</button></div>
+<div class="feature-card"><div class="feature-icon">🎧</div><h3>Listening</h3><p>Audio tinglang va eshitganingizni tekshiring.</p><button onclick="showPage('listening')">Ochish →</button></div>
+</section>
+<section id="more" class="page">
+<h1 class="page-title">Boshqa bo‘limlar</h1>
+<div class="feature-card"><div class="feature-icon">📈</div><h3>Progress</h3><p>O‘rganish natijalaringiz.</p><button onclick="showPage('progress')">Ochish →</button></div>
+<div class="feature-card"><div class="feature-icon">👥</div><h3>Community</h3><p>Boshqa o‘rganuvchilar bilan aloqa.</p><button onclick="showPage('community')">Ochish →</button></div>
+<div class="feature-card"><div class="feature-icon">⚙️</div><h3>Sozlamalar</h3><p>Ilova sozlamalari va akkaunt.</p><button onclick="showPage('settings')">Ochish →</button></div>
+</section>
 </main>
 
 <footer>VOCABMASTER © 2026 — Learn something new every day.</footer>
 </div>
 
 <nav class="bottom-nav hidden" id="bottomNav">
-<button class="nav-item active" onclick="showPage('translate',this)"><span class="nav-icon">⇄</span><span>Tarjimon</span></button>
-<button class="nav-item" onclick="showPage('dictionary',this)"><span class="nav-icon">📚</span><span>Lug‘at</span></button>
-<button class="nav-item" onclick="showPage('grammar',this)"><span class="nav-icon">📖</span><span>Grammar</span></button>
-<button class="nav-item" onclick="showPage('reading',this)"><span class="nav-icon">📘</span><span>Reading</span></button>
-<button class="nav-item" onclick="showPage('listening',this)"><span class="nav-icon">🎧</span><span>Listening</span></button>
-<button class="nav-item" onclick="showPage('speaking',this)"><span class="nav-icon">🎙</span><span>Speaking</span></button>
-<button class="nav-item" onclick="showPage('progress',this)"><span class="nav-icon">📈</span><span>Progress</span></button>
-<button class="nav-item" onclick="showPage('community',this)"><span class="nav-icon">👥</span><span>Community</span></button>
-<button class="nav-item" onclick="showPage('settings',this)"><span class="nav-icon">⚙️</span><span>Sozlama</span></button>
+<button class="nav-item active" data-nav="translate" onclick="showPage('translate',this)"><span class="nav-icon">⇄</span><span>Tarjimon</span></button>
+<button class="nav-item" data-nav="dictionary" onclick="showPage('dictionary',this)"><span class="nav-icon">📚</span><span>Lug‘at</span></button>
+<button class="nav-item" data-nav="learning" onclick="showPage('learning',this)"><span class="nav-icon">🎓</span><span>O‘rganish</span></button>
+<button class="nav-item" data-nav="speaking" onclick="showPage('speaking',this)"><span class="nav-icon">🎙</span><span>Speaking</span></button>
+<button class="nav-item" data-nav="more" onclick="showPage('more',this)"><span class="nav-icon">☰</span><span>Boshqa</span></button>
 </nav>
 
 <script>
@@ -664,6 +673,7 @@ const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null,isLogin=false,words=[],groups=[],translated=null;
 let sourceLanguage="en",targetLanguage="uz",dictionaryLanguage="en",selectedGroupId="all";
 let selectedLevel="A1",speakingMode="text",speakingHistory=[],recognition=null,isListening=false,speakingBusy=false;
+let listeningAudio=null,listeningAudioChunks=[],listeningAudioIndex=0,listeningAudioPaused=false;
 
 const LANGUAGES={en:{name:"English",flag:"🇬🇧"},uz:{name:"O‘zbekcha",flag:"🇺🇿"},ru:{name:"Русский",flag:"🇷🇺"}};
 
@@ -813,9 +823,11 @@ async function logout(){stopSpeaking();await db.auth.signOut();location.reload()
 // =====================================
 function showPage(id,button){
 document.querySelectorAll(".page").forEach(page=>page.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+const page=document.getElementById(id);if(!page)return;page.classList.add("active");
 document.querySelectorAll(".nav-item").forEach(btn=>btn.classList.remove("active"));
-if(button)button.classList.add("active");
+const navGroup=["grammar","reading","listening"].includes(id)?"learning":["progress","community","settings"].includes(id)?"more":id;
+const activeButton=button||document.querySelector('.nav-item[data-nav="'+navGroup+'"]');
+if(activeButton)activeButton.classList.add("active");
 if(id==="dictionary"){renderDictionary();updateReviewDueCount()}
 }
 
@@ -1695,9 +1707,31 @@ function renderListeningProgress(){const total=listeningResults.length,average=t
 function selectListeningLevel(level,button){stopListeningAudio();listeningLevel=level;document.querySelectorAll(".listening-level").forEach(item=>item.classList.remove("selected"));button.classList.add("selected");document.getElementById("listeningLevelTitle").textContent=LISTENING_DATA[level].title;document.getElementById("listeningLevelDescription").textContent=LISTENING_DATA[level].description;document.getElementById("listeningDetail").classList.add("hidden");document.getElementById("listeningQuizArea").classList.add("hidden");document.getElementById("listeningLevelCard").classList.remove("hidden");renderListeningList()}
 function renderListeningList(){const container=document.getElementById("listeningExerciseList");container.innerHTML="";LISTENING_DATA[listeningLevel].exercises.forEach((item,index)=>{const card=document.createElement("div");card.className="listening-exercise";const title=document.createElement("h3");title.textContent="🎧 "+item.title;const info=document.createElement("p");info.textContent="3 ta savol · Audio va matn";const button=document.createElement("button");button.textContent="Mashqni boshlash →";button.style.width="100%";button.onclick=()=>openListeningExercise(index);card.append(title,info,button);container.append(card)})}
 function openListeningExercise(index){stopListeningAudio();currentListening=LISTENING_DATA[listeningLevel].exercises[index];document.getElementById("listeningLevelCard").classList.add("hidden");document.getElementById("listeningQuizArea").classList.add("hidden");document.getElementById("listeningDetail").classList.remove("hidden");document.getElementById("listeningTitle").textContent=currentListening.title;document.getElementById("listeningLevelTag").textContent=listeningLevel;document.getElementById("listeningTranscript").textContent=currentListening.text;document.getElementById("listeningTranscriptArea").classList.add("hidden");document.getElementById("listeningTranscriptButton").textContent="Matnni ko‘rish";document.getElementById("listeningAudioStatus").textContent="Audio tayyor.";document.getElementById("listeningAudioHint").textContent="Avval matnga qaramasdan tinglashga harakat qiling."}
-function playListeningAudio(){if(!currentListening)return;if(!("speechSynthesis"in window)||!("SpeechSynthesisUtterance"in window)){document.getElementById("listeningAudioStatus").textContent="Brauzeringiz audio o‘qishni qo‘llab-quvvatlamaydi.";return}window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(currentListening.text);utterance.lang="en-US";utterance.rate=Number(document.getElementById("listeningSpeed").value)||0.9;utterance.pitch=1;utterance.onstart=()=>document.getElementById("listeningAudioStatus").textContent="Audio ijro etilmoqda...";utterance.onend=()=>document.getElementById("listeningAudioStatus").textContent="Audio tugadi. Yana tinglashingiz mumkin.";utterance.onerror=()=>document.getElementById("listeningAudioStatus").textContent="Audio ijrosida xatolik yuz berdi.";window.speechSynthesis.speak(utterance)}
-function pauseListeningAudio(){if("speechSynthesis"in window){if(window.speechSynthesis.speaking&&!window.speechSynthesis.paused){window.speechSynthesis.pause();document.getElementById("listeningAudioStatus").textContent="Audio pauzada."}else if(window.speechSynthesis.paused){window.speechSynthesis.resume();document.getElementById("listeningAudioStatus").textContent="Audio davom etmoqda..."}}}
-function stopListeningAudio(){if("speechSynthesis"in window)window.speechSynthesis.cancel()}
+function splitListeningText(text,maxLength=180){
+const sentences=String(text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[String(text||"")];
+const chunks=[];let current="";
+for(const sentence of sentences){const part=sentence.trim();if(!part)continue;if((current+" "+part).trim().length<=maxLength){current=(current+" "+part).trim();continue}if(current)chunks.push(current);if(part.length<=maxLength){current=part;continue}const words=part.split(/\s+/);current="";let piece="";for(const word of words){if((piece+" "+word).trim().length>maxLength){if(piece)chunks.push(piece);piece=word}else piece=(piece+" "+word).trim()}current=piece}
+if(current)chunks.push(current);return chunks;
+}
+function playListeningChunk(){
+if(listeningAudioIndex>=listeningAudioChunks.length){listeningAudio=null;listeningAudioPaused=false;document.getElementById("listeningAudioStatus").textContent="Audio tugadi. Yana tinglashingiz mumkin.";return}
+const text=listeningAudioChunks[listeningAudioIndex];
+const url="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q="+encodeURIComponent(text);
+const audio=new Audio(url);listeningAudio=audio;audio.preload="auto";audio.playbackRate=Number(document.getElementById("listeningSpeed").value)||0.9;
+audio.onended=()=>{if(listeningAudio!==audio)return;listeningAudioIndex++;playListeningChunk()};
+audio.onerror=()=>{if(listeningAudio!==audio)return;listeningAudio=null;document.getElementById("listeningAudioStatus").textContent="Audio yuklanmadi. Internet aloqasini tekshirib, qayta urinib ko‘ring."};
+audio.play().then(()=>{document.getElementById("listeningAudioStatus").textContent="Audio ijro etilmoqda..."}).catch(error=>{console.warn("Listening audio:",error);if(listeningAudio===audio)document.getElementById("listeningAudioStatus").textContent="Audio boshlanmadi. Qayta tinglash tugmasini bosing."});
+}
+function playListeningAudio(){
+if(!currentListening)return;stopListeningAudio();listeningAudioChunks=splitListeningText(currentListening.text);listeningAudioIndex=0;listeningAudioPaused=false;
+if(!listeningAudioChunks.length){document.getElementById("listeningAudioStatus").textContent="Audio matni topilmadi.";return}playListeningChunk();
+}
+function pauseListeningAudio(){
+if(!listeningAudio)return;
+if(listeningAudio.paused){listeningAudio.play().then(()=>{listeningAudioPaused=false;document.getElementById("listeningAudioStatus").textContent="Audio davom etmoqda..."}).catch(()=>{document.getElementById("listeningAudioStatus").textContent="Audio davom ettirilmadi. Qayta tinglashni bosing."})}
+else{listeningAudio.pause();listeningAudioPaused=true;document.getElementById("listeningAudioStatus").textContent="Audio pauzada."}
+}
+function stopListeningAudio(){if(listeningAudio){listeningAudio.onended=null;listeningAudio.onerror=null;listeningAudio.pause();listeningAudio.currentTime=0;listeningAudio=null}listeningAudioChunks=[];listeningAudioIndex=0;listeningAudioPaused=false}
 function replayListeningAudio(){playListeningAudio()}
 function toggleListeningTranscript(){const area=document.getElementById("listeningTranscriptArea");area.classList.toggle("hidden");document.getElementById("listeningTranscriptButton").textContent=area.classList.contains("hidden")?"Matnni ko‘rish":"Matnni yashirish"}
 function startListeningQuiz(){if(!currentListening)return;stopListeningAudio();listeningQuestionIndex=0;listeningScore=0;listeningAnswered=false;document.getElementById("listeningDetail").classList.add("hidden");document.getElementById("listeningQuizArea").classList.remove("hidden");document.getElementById("listeningQuizResult").classList.add("hidden");document.getElementById("listeningQuizNext").classList.add("hidden");showListeningQuestion()}
