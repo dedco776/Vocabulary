@@ -140,6 +140,28 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 .feature-card{background:linear-gradient(135deg,#26173d,#171126);border:1px solid var(--border);border-radius:18px;padding:22px}
 .feature-card h3{margin-bottom:8px}
 .tag{display:inline-block;background:#34204d;color:#c9a9ff;border-radius:20px;padding:6px 11px;font-size:11px}
+
+/* GRAMMAR */
+.grammar-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}
+.grammar-level{background:var(--panel2);border:1px solid var(--border);padding:13px 5px}
+.grammar-level.selected{background:#5830a0;border:1px solid #bd9aff}
+.grammar-lesson{background:#100b1d;border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0}
+.grammar-lesson h3{color:#d2b4ff;margin-bottom:8px}
+.grammar-lesson p{font-size:14px}
+.grammar-rule{background:#251b38;border-left:3px solid var(--purple);padding:13px;border-radius:9px;margin:12px 0;color:white;line-height:1.7;white-space:pre-line}
+.grammar-example{background:#100b1d;border:1px solid var(--border);padding:12px;border-radius:10px;margin:9px 0}
+.grammar-example strong{color:#c5a5ff}
+.grammar-example small{display:block;color:var(--muted);margin-top:6px}
+.grammar-option{display:block;width:100%;text-align:left;margin:9px 0;background:var(--panel2);border:1px solid var(--border)}
+.grammar-option.correct{background:#164c3d;border-color:var(--green)}
+.grammar-option.wrong{background:#572033;border-color:var(--red)}
+.grammar-feedback{min-height:25px;text-align:center;margin:15px 0;font-weight:bold}
+.grammar-lesson-actions{display:flex;gap:8px;margin-top:15px}
+.grammar-lesson-actions button{flex:1}
+.grammar-back{margin-bottom:12px}
+.grammar-intro{background:linear-gradient(135deg,#2b1948,#171126);border:1px solid #7045a8;border-radius:16px;padding:17px;margin:15px 0}
+.grammar-intro h3{color:#d2b4ff;margin-bottom:6px}
+.grammar-empty{text-align:center;padding:20px;background:#100b1d;border-radius:13px;color:var(--muted)}
 @media(max-width:600px){
 .app{padding:13px 13px 105px}.logo{font-size:22px}.card{padding:19px}
 .page-title{font-size:23px}.row{flex-direction:column}.stats{gap:7px}
@@ -149,7 +171,9 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 .chat-input-row{flex-wrap:wrap}.chat-input-row textarea{flex-basis:100%}
 .chat-input-row button{flex:1}.nav-item{font-size:9px}
 .nav-icon{font-size:19px}.daily-word-title{font-size:28px}
-.daily-word-actions{flex-direction:column}.review-rating{grid-template-columns:1fr}
+.daily-word-actions{flex-direction:column}
+.review-rating{grid-template-columns:1fr}
+.grammar-lesson-actions{flex-direction:column}
 }
 </style>
 </head>
@@ -279,9 +303,7 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <button onclick="startSmartReview()" style="width:100%">▶ Takrorlashni boshlash</button>
 </div>
 <div id="reviewArea" class="hidden">
-<div class="review-progress-track">
-<div class="review-progress-fill" id="reviewProgressFill"></div>
-</div>
+<div class="review-progress-track"><div class="review-progress-fill" id="reviewProgressFill"></div></div>
 <div class="review-count" id="reviewProgress">So‘z 1 / 1</div>
 <div class="review-question">
 <div class="review-word" id="reviewWord"></div>
@@ -300,11 +322,7 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <button class="secondary" onclick="closeSmartReview()" style="width:100%;margin-top:10px">Takrorlashni yopish</button>
 </div>
 <div id="reviewFinished" class="hidden">
-<div class="review-summary">
-🏆 <strong id="reviewFinishedCount">0</strong>
-Bugungi takrorlash yakunlandi!
-<p id="reviewFinishedMessage">Ajoyib! Davom eting.</p>
-</div>
+<div class="review-summary">🏆 <strong id="reviewFinishedCount">0</strong>Bugungi takrorlash yakunlandi!<p id="reviewFinishedMessage">Ajoyib! Davom eting.</p></div>
 <button class="secondary" onclick="resetSmartReviewView()" style="width:100%;margin-top:10px">Yopish</button>
 </div>
 </div>
@@ -331,6 +349,51 @@ Bugungi takrorlash yakunlandi!
 <button onclick="closeQuiz()" class="secondary" style="width:100%;margin-top:9px">Testni yopish</button>
 </div>
 </div>
+</div>
+</section>
+
+<!-- GRAMMAR -->
+<section id="grammar" class="page">
+<h1 class="page-title">Grammar</h1>
+<p class="page-subtitle">Ingliz tili grammatikasini bosqichma-bosqich o‘rganing.</p>
+
+<div class="grammar-intro">
+<h3>📖 Grammar Academy</h3>
+<p style="margin:0">Darajangizni tanlang, darsni o‘qing va test orqali bilimingizni tekshiring.</p>
+</div>
+
+<div class="card" id="grammarLevelCard">
+<h3>Darajani tanlang</h3>
+<div class="grammar-levels">
+<button class="grammar-level selected" onclick="selectGrammarLevel('A1',this)">A1<br><small>Boshlang‘ich</small></button>
+<button class="grammar-level" onclick="selectGrammarLevel('A2',this)">A2<br><small>Elementary</small></button>
+<button class="grammar-level" onclick="selectGrammarLevel('B1',this)">B1<br><small>Intermediate</small></button>
+<button class="grammar-level" onclick="selectGrammarLevel('B2',this)">B2<br><small>Upper</small></button>
+<button class="grammar-level" onclick="selectGrammarLevel('C1',this)">C1<br><small>Advanced</small></button>
+<button class="grammar-level" onclick="selectGrammarLevel('C2',this)">C2<br><small>Mastery</small></button>
+</div>
+<h3 id="grammarLevelTitle">A1 — Boshlang‘ich</h3>
+<p id="grammarLevelDescription">Ingliz tilining asosiy grammatik qoidalari.</p>
+<div id="grammarLessons"></div>
+</div>
+
+<div class="card hidden" id="grammarLessonArea">
+<button class="secondary small grammar-back" onclick="closeGrammarLesson()">← Darslar ro‘yxati</button>
+<div id="grammarLessonContent"></div>
+<div class="grammar-lesson-actions">
+<button onclick="startGrammarQuiz()">📝 Testni boshlash</button>
+<button class="secondary" onclick="closeGrammarLesson()">Yopish</button>
+</div>
+</div>
+
+<div class="card hidden" id="grammarQuizArea">
+<h3 id="grammarQuizTitle">Grammar test</h3>
+<div class="quiz-progress" id="grammarQuizProgress"></div>
+<div class="quiz-question" id="grammarQuizQuestion"></div>
+<div id="grammarQuizAnswers"></div>
+<div class="grammar-feedback" id="grammarQuizFeedback"></div>
+<button id="grammarQuizNext" class="hidden" onclick="nextGrammarQuestion()" style="width:100%">Keyingi savol →</button>
+<button class="secondary" onclick="closeGrammarQuiz()" style="width:100%;margin-top:10px">Testni yopish</button>
 </div>
 </section>
 
@@ -415,6 +478,7 @@ Bugungi takrorlash yakunlandi!
 <nav class="bottom-nav hidden" id="bottomNav">
 <button class="nav-item active" onclick="showPage('translate',this)"><span class="nav-icon">⇄</span><span>Tarjimon</span></button>
 <button class="nav-item" onclick="showPage('dictionary',this)"><span class="nav-icon">📚</span><span>Lug‘at</span></button>
+<button class="nav-item" onclick="showPage('grammar',this)"><span class="nav-icon">📖</span><span>Grammar</span></button>
 <button class="nav-item" onclick="showPage('speaking',this)"><span class="nav-icon">🎙</span><span>Speaking</span></button>
 <button class="nav-item" onclick="showPage('progress',this)"><span class="nav-icon">📈</span><span>Progress</span></button>
 <button class="nav-item" onclick="showPage('community',this)"><span class="nav-icon">👥</span><span>Community</span></button>
@@ -816,29 +880,23 @@ getWordOriginal(word).trim()&&getWordTranslation(word).trim()
 if(selectedGroupId!=="all")available=available.filter(word=>word.group_id===selectedGroupId);
 return available;
 }
-
 function isReviewDue(word){
 if(!word.next_review_at)return true;
 return new Date(word.next_review_at).getTime()<=Date.now();
 }
-
 function updateReviewDueCount(){
 const count=getReviewWords().filter(isReviewDue).length;
 const label=document.getElementById("reviewDueCount");
 if(label)label.textContent=count+" ta takrorlash kerak";
 }
-
 function startSmartReview(){
 if(!currentUser)return;
 const available=getReviewWords();
 reviewQueue=shuffleArray(available.filter(isReviewDue));
-reviewIndex=0;
-reviewAnswerShown=false;
-reviewSaving=false;
+reviewIndex=0;reviewAnswerShown=false;reviewSaving=false;
 document.getElementById("reviewFinished").classList.add("hidden");
 document.getElementById("reviewStartArea").classList.add("hidden");
 document.getElementById("reviewArea").classList.remove("hidden");
-
 if(!reviewQueue.length){
 document.getElementById("reviewArea").classList.add("hidden");
 document.getElementById("reviewStartArea").classList.remove("hidden");
@@ -847,16 +905,10 @@ return;
 }
 showReviewQuestion();
 }
-
 function showReviewQuestion(){
-if(reviewIndex>=reviewQueue.length){
-finishSmartReview();
-return;
-}
+if(reviewIndex>=reviewQueue.length){finishSmartReview();return}
 const word=reviewQueue[reviewIndex];
-reviewAnswerShown=false;
-reviewSaving=false;
-
+reviewAnswerShown=false;reviewSaving=false;
 document.getElementById("reviewProgress").textContent="So‘z "+(reviewIndex+1)+" / "+reviewQueue.length;
 document.getElementById("reviewProgressFill").style.width=(reviewIndex/reviewQueue.length*100)+"%";
 document.getElementById("reviewWord").textContent=getWordOriginal(word);
@@ -865,13 +917,8 @@ document.getElementById("reviewAnswerArea").classList.add("hidden");
 document.getElementById("reviewShowBtn").classList.remove("hidden");
 document.getElementById("reviewRating").classList.add("hidden");
 document.getElementById("reviewStatus").textContent="";
-
-// Keyingi savol uchun baholash tugmalarini qayta yoqamiz
-document.querySelectorAll(".review-rating button").forEach(button=>{
-button.disabled=false;
-});
+document.querySelectorAll(".review-rating button").forEach(button=>button.disabled=false);
 }
-
 function showReviewAnswer(){
 if(reviewAnswerShown)return;
 reviewAnswerShown=true;
@@ -879,53 +926,37 @@ document.getElementById("reviewAnswerArea").classList.remove("hidden");
 document.getElementById("reviewShowBtn").classList.add("hidden");
 document.getElementById("reviewRating").classList.remove("hidden");
 }
-
 async function rateReview(rating){
 if(reviewSaving||!reviewAnswerShown)return;
-const word=reviewQueue[reviewIndex];
-if(!word)return;
+const word=reviewQueue[reviewIndex];if(!word)return;
 reviewSaving=true;
-
 const buttons=document.querySelectorAll(".review-rating button");
 buttons.forEach(button=>button.disabled=true);
 document.getElementById("reviewStatus").textContent="Javob saqlanmoqda...";
-
 const days={hard:1,good:3,easy:7};
 const nextDate=new Date(Date.now()+days[rating]*24*60*60*1000);
 const correctCount=Number(word.review_correct||0)+(rating==="hard"?0:1);
 const stage=Number(word.review_stage||0)+1;
-
 try{
 const {error}=await db.from("words").update({
-review_stage:stage,
-review_correct:correctCount,
-last_reviewed_at:new Date().toISOString(),
-next_review_at:nextDate.toISOString()
+review_stage:stage,review_correct:correctCount,
+last_reviewed_at:new Date().toISOString(),next_review_at:nextDate.toISOString()
 }).eq("id",word.id).eq("user_id",currentUser.id);
-
 if(error)throw error;
-
-word.review_stage=stage;
-word.review_correct=correctCount;
-word.last_reviewed_at=new Date().toISOString();
-word.next_review_at=nextDate.toISOString();
-
+word.review_stage=stage;word.review_correct=correctCount;
+word.last_reviewed_at=new Date().toISOString();word.next_review_at=nextDate.toISOString();
 document.getElementById("reviewStatus").textContent="✓ Saqlandi!";
 reviewIndex++;
 setTimeout(()=>{
 if(document.getElementById("reviewArea").classList.contains("hidden"))return;
-showReviewQuestion();
-updateReviewDueCount();
+showReviewQuestion();updateReviewDueCount();
 },350);
-
 }catch(error){
 console.error("Review save error:",error);
 document.getElementById("reviewStatus").textContent="Xatolik: "+error.message;
-reviewSaving=false;
-buttons.forEach(button=>button.disabled=false);
+reviewSaving=false;buttons.forEach(button=>button.disabled=false);
 }
 }
-
 function finishSmartReview(){
 document.getElementById("reviewArea").classList.add("hidden");
 document.getElementById("reviewFinished").classList.remove("hidden");
@@ -934,31 +965,25 @@ document.getElementById("reviewFinishedMessage").textContent="Barcha so‘zlarni
 document.getElementById("reviewProgressFill").style.width="100%";
 updateReviewDueCount();
 }
-
 function closeSmartReview(){
 document.getElementById("reviewArea").classList.add("hidden");
 document.getElementById("reviewStartArea").classList.remove("hidden");
 reviewQueue=[];reviewIndex=0;reviewAnswerShown=false;reviewSaving=false;
 updateReviewDueCount();
 }
-
 function resetSmartReviewView(){
 document.getElementById("reviewFinished").classList.add("hidden");
 document.getElementById("reviewStartArea").classList.remove("hidden");
-reviewQueue=[];reviewIndex=0;
-updateReviewDueCount();
+reviewQueue=[];reviewIndex=0;updateReviewDueCount();
 }
 
 // =====================================
 // 14. QUIZ SYSTEM
 // =====================================
 let quizQuestions=[],quizIndex=0,quizScore=0,quizAnswered=false,quizFinished=false;
-
 function shuffleArray(array){
 const result=[...array];
-for(let i=result.length-1;i>0;i--){
-const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];
-}
+for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]]}
 return result;
 }
 function getQuizWords(){
@@ -1026,10 +1051,7 @@ const input=document.getElementById("quizTypingInput");if(input)input.disabled=t
 document.querySelectorAll("#quizAnswers button").forEach(button=>button.disabled=true);
 next.classList.remove("hidden");next.textContent=quizIndex===quizQuestions.length-1?"Natijani ko‘rish":"Keyingi savol →";
 }
-function nextQuizQuestion(){
-if(!quizAnswered)return;quizIndex++;
-if(quizIndex>=quizQuestions.length)finishQuiz();else showQuizQuestion();
-}
+function nextQuizQuestion(){if(!quizAnswered)return;quizIndex++;if(quizIndex>=quizQuestions.length)finishQuiz();else showQuizQuestion()}
 function finishQuiz(){
 quizFinished=true;quizAnswered=true;
 if("speechSynthesis"in window)window.speechSynthesis.cancel();
@@ -1050,11 +1072,408 @@ quizQuestions=[];quizIndex=0;quizScore=0;quizAnswered=false;quizFinished=false;
 }
 
 // =====================================
-// 15. SPEAKING LEVEL
+// 15. GRAMMAR DATA
+// =====================================
+const GRAMMAR_DATA={
+A1:{
+title:"A1 — Boshlang‘ich",
+description:"Eng asosiy grammatik qoidalar. Oddiy gaplar tuzishni o‘rganing.",
+lessons:[
+{
+title:"To be — am / is / are",
+description:"To be fe’li: bo‘lmoq.",
+rule:"I am\nHe / She / It is\nYou / We / They are\n\nInkor: am not / is not / are not\nSavol: Am / Is / Are + ega?",
+examples:[
+["I am a student.","Men o‘quvchiman."],
+["She is happy.","U xursand."],
+["They are at home.","Ular uyda."]
+],
+questions:[
+{q:"I ___ a student.",options:["am","is","are"],answer:"am",why:"I bilan am ishlatiladi."},
+{q:"She ___ my sister.",options:["am","is","are"],answer:"is",why:"She bilan is ishlatiladi."},
+{q:"They ___ friends.",options:["am","is","are"],answer:"are",why:"They bilan are ishlatiladi."}
+]
+},
+{
+title:"Present Simple",
+description:"Doimiy ishlar va odatlar haqida gapirish.",
+rule:"I / You / We / They + verb\nHe / She / It + verb + s/es\n\nInkor: do not / does not + verb\nSavol: Do / Does + ega + verb?",
+examples:[
+["I play football every day.","Men har kuni futbol o‘ynayman."],
+["She works at school.","U maktabda ishlaydi."],
+["He does not like coffee.","U qahvani yoqtirmaydi."]
+],
+questions:[
+{q:"He ___ to school every day.",options:["go","goes","going"],answer:"goes",why:"He bilan fe’lga -s yoki -es qo‘shiladi."},
+{q:"I ___ English.",options:["study","studies","studying"],answer:"study",why:"I bilan fe’lning oddiy shakli ishlatiladi."},
+{q:"___ you like music?",options:["Does","Do","Are"],answer:"Do",why:"You bilan savolda Do ishlatiladi."}
+]
+},
+{
+title:"Present Continuous",
+description:"Hozir sodir bo‘layotgan harakatlar.",
+rule:"Ega + am / is / are + verb-ing\n\nI am working.\nShe is reading.\nThey are playing.",
+examples:[
+["I am learning English now.","Men hozir ingliz tilini o‘rganyapman."],
+["He is watching TV.","U televizor ko‘ryapti."],
+["We are studying.","Biz o‘qiyapmiz."]
+],
+questions:[
+{q:"She ___ reading now.",options:["am","is","are"],answer:"is",why:"She bilan is ishlatiladi."},
+{q:"They are ___ football.",options:["play","plays","playing"],answer:"playing",why:"Present Continuous da fe’l -ing bilan keladi."},
+{q:"I ___ sleeping.",options:["am","is","are"],answer:"am",why:"I bilan am ishlatiladi."}
+]
+},
+{
+title:"Articles — a / an",
+description:"Birlikdagi sanaladigan otlar oldidan ishlatiladi.",
+rule:"A — undosh tovush bilan boshlanadigan so‘zlar oldidan.\nAn — unli tovush bilan boshlanadigan so‘zlar oldidan.\n\na book, a car, an apple, an egg",
+examples:[
+["I have a book.","Menda kitob bor."],
+["She eats an apple.","U olma yeydi."],
+["He is a teacher.","U o‘qituvchi."]
+],
+questions:[
+{q:"I have ___ apple.",options:["a","an","the"],answer:"an",why:"Apple unli tovush bilan boshlanadi."},
+{q:"He has ___ car.",options:["a","an","are"],answer:"a",why:"Car undosh tovush bilan boshlanadi."},
+{q:"She is ___ engineer.",options:["a","an","the"],answer:"an",why:"Engineer unli tovush bilan boshlanadi."}
+]
+}
+]
+},
+A2:{
+title:"A2 — Elementary",
+description:"O‘tgan zamon, kelasi zamon va boshqa kundalik grammatik mavzular.",
+lessons:[
+{
+title:"Past Simple",
+description:"O‘tmishda tugagan ish-harakatlar.",
+rule:"Darak: Ega + V2 yoki verb-ed\nInkor: did not + V1\nSavol: Did + ega + V1?\n\nRegular: work → worked\nIrregular: go → went",
+examples:[
+["I watched a film yesterday.","Men kecha film ko‘rdim."],
+["She went to school.","U maktabga bordi."],
+["Did you call me?","Siz menga qo‘ng‘iroq qildingizmi?"]
+],
+questions:[
+{q:"Yesterday I ___ football.",options:["play","played","playing"],answer:"played",why:"Yesterday o‘tgan zamonni bildiradi."},
+{q:"She ___ to London last year.",options:["go","went","goes"],answer:"went",why:"Go fe’lining V2 shakli went."},
+{q:"Did you ___ him?",options:["saw","see","seen"],answer:"see",why:"Did dan keyin V1 ishlatiladi."}
+]
+},
+{
+title:"Future Simple — will",
+description:"Kelajakdagi qarorlar va taxminlar.",
+rule:"Darak: Ega + will + V1\nInkor: Ega + will not + V1\nSavol: Will + ega + V1?\n\nWill barcha shaxslar bilan ishlatiladi.",
+examples:[
+["I will call you tomorrow.","Men ertaga sizga qo‘ng‘iroq qilaman."],
+["She will help us.","U bizga yordam beradi."],
+["Will they come?","Ular kelishadimi?"]
+],
+questions:[
+{q:"I ___ visit you tomorrow.",options:["will","am","did"],answer:"will",why:"Future Simple da will ishlatiladi."},
+{q:"She will ___ English.",options:["studies","studying","study"],answer:"study",why:"Will dan keyin V1 keladi."},
+{q:"___ you help me?",options:["Do","Will","Did"],answer:"Will",why:"Kelajak haqidagi savol Will bilan boshlanadi."}
+]
+}
+]
+},
+B1:{
+title:"B1 — Intermediate",
+description:"Murakkabroq zamonlar va gap tuzilmalarini o‘rganing.",
+lessons:[
+{
+title:"Present Perfect",
+description:"O‘tmishda sodir bo‘lgan va hozirga aloqasi bor ishlar.",
+rule:"Ega + have / has + V3\n\nI / You / We / They → have\nHe / She / It → has\n\nFor — qancha vaqtdan beri.\nSince — qachondan beri.",
+examples:[
+["I have finished my homework.","Men uy vazifamni tugatdim."],
+["She has lived here for two years.","U bu yerda ikki yildan beri yashaydi."],
+["Have you ever been to London?","Siz hech Londonda bo‘lganmisiz?"]
+],
+questions:[
+{q:"I ___ finished my work.",options:["has","have","am"],answer:"have",why:"I bilan have ishlatiladi."},
+{q:"She has ___ her keys.",options:["lose","lost","losing"],answer:"lost",why:"Lose fe’lining V3 shakli lost."},
+{q:"Have you ever ___ sushi?",options:["eat","ate","eaten"],answer:"eaten",why:"Have dan keyin V3 ishlatiladi."}
+]
+}
+]
+},
+B2:{
+title:"B2 — Upper Intermediate",
+description:"Shart gaplar, murakkab zamonlar va tabiiy nutq tuzilmalari.",
+lessons:[
+{
+title:"First Conditional",
+description:"Kelajakda ro‘y berishi mumkin bo‘lgan shartlar.",
+rule:"If + Present Simple, will + V1\n\nIf it rains, I will stay home.\n\nIf qismi gap boshida kelsa, vergul qo‘yiladi.",
+examples:[
+["If I study, I will pass the exam.","Agar o‘qisam, imtihondan o‘taman."],
+["If it is sunny, we will go out.","Agar havo quyoshli bo‘lsa, tashqariga chiqamiz."],
+["You will be late if you don't hurry.","Shoshilmasangiz, kech qolasiz."]
+],
+questions:[
+{q:"If it rains, we ___ at home.",options:["stay","will stay","stayed"],answer:"will stay",why:"Natija qismida will + V1 ishlatiladi."},
+{q:"If she ___ hard, she will succeed.",options:["works","will work","worked"],answer:"works",why:"If qismida Present Simple ishlatiladi."},
+{q:"If I see him, I ___ him.",options:["told","will tell","tell yesterday"],answer:"will tell",why:"Kelajakdagi natija will bilan ifodalanadi."}
+]
+}
+]
+},
+C1:{
+title:"C1 — Advanced",
+description:"Murakkab grammatik tuzilmalar va rasmiy ingliz tili.",
+lessons:[
+{
+title:"Inversion",
+description:"Urg‘u berish uchun yordamchi fe’lni gap boshiga chiqarish.",
+rule:"Oddiy: I had never seen such a place.\nInversion: Never had I seen such a place.\n\nNever, Rarely, Seldom kabi so‘zlardan keyin yordamchi fe’l egadan oldin keladi.",
+examples:[
+["Never have I seen such beauty.","Men hech qachon bunday go‘zallikni ko‘rmaganman."],
+["Rarely does he make mistakes.","U kamdan-kam xato qiladi."],
+["Not only did she sing, but she also danced.","U nafaqat kuyladi, balki raqs ham tushdi."]
+],
+questions:[
+{q:"Never ___ I seen such a thing.",options:["have","has","did"],answer:"have",why:"I bilan Present Perfect inversion shaklida have ishlatiladi."},
+{q:"Rarely ___ he complain.",options:["do","does","is"],answer:"does",why:"He bilan does ishlatiladi."},
+{q:"Not only did she ___, but she also danced.",options:["sing","sang","sung"],answer:"sing",why:"Did dan keyin V1 keladi."}
+]
+}
+]
+},
+C2:{
+title:"C2 — Mastery",
+description:"Yuqori darajadagi nozik grammatik farqlar va murakkab tuzilmalar.",
+lessons:[
+{
+title:"Advanced Modal Structures",
+description:"Modal fe’llarning o‘tmish haqidagi taxmin va xulosalarda ishlatilishi.",
+rule:"Must have + V3 — kuchli taxmin.\nMight have + V3 — ehtimol.\nCan't have + V3 — bo‘lishi mumkin emas.\nShould have + V3 — qilish kerak edi, ammo qilinmadi.",
+examples:[
+["She must have forgotten.","U unutgan bo‘lsa kerak."],
+["They might have missed the bus.","Ular avtobusga kechikkan bo‘lishi mumkin."],
+["You should have told me.","Siz menga aytishingiz kerak edi."]
+],
+questions:[
+{q:"He ___ have forgotten the meeting. I am sure.",options:["must","might","can't"],answer:"must",why:"I am sure kuchli taxminni bildiradi."},
+{q:"She might have ___ the message.",options:["miss","missed","missing"],answer:"missed",why:"Modal perfect tuzilmasida have + V3 ishlatiladi."},
+{q:"You should have ___ earlier.",options:["come","came","coming"],answer:"come",why:"Come fe’lining V3 shakli ham come."}
+]
+}
+]
+}
+};
+
+let grammarLevel="A1";
+let currentGrammarLesson=null;
+let grammarQuestionIndex=0;
+let grammarScore=0;
+let grammarAnswered=false;
+
+function selectGrammarLevel(level,button){
+grammarLevel=level;
+document.querySelectorAll(".grammar-level").forEach(item=>item.classList.remove("selected"));
+button.classList.add("selected");
+document.getElementById("grammarLevelTitle").textContent=GRAMMAR_DATA[level].title;
+document.getElementById("grammarLevelDescription").textContent=GRAMMAR_DATA[level].description;
+document.getElementById("grammarLessonArea").classList.add("hidden");
+document.getElementById("grammarQuizArea").classList.add("hidden");
+document.getElementById("grammarLevelCard").classList.remove("hidden");
+renderGrammarLessons();
+}
+
+function renderGrammarLessons(){
+const container=document.getElementById("grammarLessons");
+container.innerHTML="";
+const lessons=GRAMMAR_DATA[grammarLevel].lessons;
+
+lessons.forEach((lesson,index)=>{
+const card=document.createElement("div");
+card.className="grammar-lesson";
+
+const title=document.createElement("h3");
+title.textContent=(index+1)+". "+lesson.title;
+
+const description=document.createElement("p");
+description.textContent=lesson.description;
+
+const button=document.createElement("button");
+button.textContent="Darsni o‘rganish →";
+button.style.width="100%";
+button.onclick=()=>openGrammarLesson(index);
+
+card.append(title,description,button);
+container.append(card);
+});
+}
+
+function openGrammarLesson(index){
+currentGrammarLesson=GRAMMAR_DATA[grammarLevel].lessons[index];
+if(!currentGrammarLesson)return;
+
+document.getElementById("grammarLevelCard").classList.add("hidden");
+document.getElementById("grammarQuizArea").classList.add("hidden");
+document.getElementById("grammarLessonArea").classList.remove("hidden");
+
+const container=document.getElementById("grammarLessonContent");
+container.innerHTML="";
+
+const title=document.createElement("h2");
+title.textContent=currentGrammarLesson.title;
+
+const description=document.createElement("p");
+description.textContent=currentGrammarLesson.description;
+
+const ruleTitle=document.createElement("h3");
+ruleTitle.textContent="📌 Qoida";
+
+const rule=document.createElement("div");
+rule.className="grammar-rule";
+rule.textContent=currentGrammarLesson.rule;
+
+const examplesTitle=document.createElement("h3");
+examplesTitle.textContent="📖 Misollar";
+
+container.append(title,description,ruleTitle,rule,examplesTitle);
+
+currentGrammarLesson.examples.forEach(example=>{
+const box=document.createElement("div");
+box.className="grammar-example";
+
+const english=document.createElement("strong");
+english.textContent=example[0];
+
+const uzbek=document.createElement("small");
+uzbek.textContent=example[1];
+
+box.append(english,uzbek);
+container.append(box);
+});
+}
+
+function closeGrammarLesson(){
+document.getElementById("grammarLessonArea").classList.add("hidden");
+document.getElementById("grammarQuizArea").classList.add("hidden");
+document.getElementById("grammarLevelCard").classList.remove("hidden");
+}
+
+function startGrammarQuiz(){
+if(!currentGrammarLesson)return;
+grammarQuestionIndex=0;
+grammarScore=0;
+grammarAnswered=false;
+
+document.getElementById("grammarLessonArea").classList.add("hidden");
+document.getElementById("grammarQuizArea").classList.remove("hidden");
+document.getElementById("grammarQuizTitle").textContent=currentGrammarLesson.title+" — Test";
+showGrammarQuestion();
+}
+
+function showGrammarQuestion(){
+const questions=currentGrammarLesson.questions;
+
+if(grammarQuestionIndex>=questions.length){
+finishGrammarQuiz();
+return;
+}
+
+grammarAnswered=false;
+const question=questions[grammarQuestionIndex];
+
+document.getElementById("grammarQuizProgress").textContent=
+"Savol "+(grammarQuestionIndex+1)+" / "+questions.length+" · Ball: "+grammarScore;
+
+document.getElementById("grammarQuizQuestion").textContent=question.q;
+document.getElementById("grammarQuizFeedback").textContent="";
+document.getElementById("grammarQuizNext").classList.add("hidden");
+
+const answers=document.getElementById("grammarQuizAnswers");
+answers.innerHTML="";
+
+shuffleArray(question.options).forEach(option=>{
+const button=document.createElement("button");
+button.className="grammar-option";
+button.textContent=option;
+button.onclick=()=>checkGrammarAnswer(option,button);
+answers.append(button);
+});
+}
+
+function checkGrammarAnswer(answer,button){
+if(grammarAnswered)return;
+grammarAnswered=true;
+
+const question=currentGrammarLesson.questions[grammarQuestionIndex];
+const correct=answer===question.answer;
+const feedback=document.getElementById("grammarQuizFeedback");
+
+if(correct){
+grammarScore++;
+feedback.textContent="✓ To‘g‘ri! "+question.why;
+feedback.style.color="var(--green)";
+}else{
+feedback.textContent="✗ To‘g‘ri javob: "+question.answer+". "+question.why;
+feedback.style.color="var(--red)";
+}
+
+document.querySelectorAll(".grammar-option").forEach(option=>{
+option.disabled=true;
+if(option.textContent===question.answer)option.classList.add("correct");
+});
+
+if(!correct)button.classList.add("wrong");
+
+const next=document.getElementById("grammarQuizNext");
+next.classList.remove("hidden");
+next.textContent=grammarQuestionIndex===currentGrammarLesson.questions.length-1?"Natijani ko‘rish":"Keyingi savol →";
+}
+
+function nextGrammarQuestion(){
+if(!grammarAnswered)return;
+grammarQuestionIndex++;
+showGrammarQuestion();
+}
+
+function finishGrammarQuiz(){
+const total=currentGrammarLesson.questions.length;
+const percent=Math.round(grammarScore/total*100);
+
+document.getElementById("grammarQuizProgress").textContent="Test yakunlandi!";
+document.getElementById("grammarQuizQuestion").innerHTML=
+'<div class="quiz-result">🏆<div class="quiz-result-score">'+grammarScore+' / '+total+'</div><div>'+percent+'% to‘g‘ri javob</div></div>';
+
+document.getElementById("grammarQuizAnswers").innerHTML="";
+
+const feedback=document.getElementById("grammarQuizFeedback");
+if(percent===100){
+feedback.textContent="Ajoyib! Barcha savollarga to‘g‘ri javob berdingiz!";
+feedback.style.color="var(--green)";
+}else if(percent>=60){
+feedback.textContent="Yaxshi natija! Qoidani yana bir marta ko‘rib chiqing.";
+feedback.style.color="#c19aff";
+}else{
+feedback.textContent="Darsni qayta o‘qib, yana urinib ko‘ring.";
+feedback.style.color="var(--red)";
+}
+
+document.getElementById("grammarQuizNext").classList.add("hidden");
+}
+
+function closeGrammarQuiz(){
+document.getElementById("grammarQuizArea").classList.add("hidden");
+document.getElementById("grammarLevelCard").classList.remove("hidden");
+grammarQuestionIndex=0;
+grammarScore=0;
+grammarAnswered=false;
+}
+
+// =====================================
+// 16. SPEAKING LEVEL
 // =====================================
 function selectLevel(level,button){
-selectedLevel=level;document.querySelectorAll(".level-btn").forEach(btn=>btn.classList.remove("selected"));
-button.classList.add("selected");setSpeakingStatus("Daraja: "+level);
+selectedLevel=level;
+document.querySelectorAll(".level-btn").forEach(btn=>btn.classList.remove("selected"));
+button.classList.add("selected");
+setSpeakingStatus("Daraja: "+level);
 }
 function setSpeakingMode(mode){
 speakingMode=mode;
@@ -1068,7 +1487,7 @@ else setSpeakingStatus("Ovozli suhbat rejimi. Mikrofon tugmasini bosing.");
 }
 
 // =====================================
-// 16. CHAT MESSAGES
+// 17. CHAT MESSAGES
 // =====================================
 function addChatMessage(role,content){
 const box=document.getElementById("chatBox");
@@ -1080,7 +1499,7 @@ message.append(who,body);box.append(message);box.scrollTop=box.scrollHeight;
 function setSpeakingStatus(message){document.getElementById("speakingStatus").textContent=message}
 
 // =====================================
-// 17. AI CHAT
+// 18. AI CHAT
 // =====================================
 async function sendSpeakingMessage(voiceText){
 if(!currentUser){setSpeakingStatus("Avval tizimga kiring.");return}
@@ -1102,17 +1521,22 @@ throw new Error(detail);
 }
 if(data?.error)throw new Error(data.error);
 if(!data?.reply)throw new Error("AI javobi kelmadi.");
-const reply=data.reply;addChatMessage("assistant",reply);
+const reply=data.reply;
+addChatMessage("assistant",reply);
 speakingHistory.push({role:"user",content:message},{role:"assistant",content:reply});
 speakingHistory=speakingHistory.slice(-10);
 if(speakingMode==="voice")speakReply(reply);
 setSpeakingStatus("Javob tayyor.");
-}catch(error){console.error("Speaking AI error:",error);setSpeakingStatus("Xatolik: "+(error.message||"AI bilan bog‘lanib bo‘lmadi."))}
-finally{speakingBusy=false;input.disabled=false;sendBtn.disabled=false;sendBtn.textContent="Yuborish";input.focus()}
+}catch(error){
+console.error("Speaking AI error:",error);
+setSpeakingStatus("Xatolik: "+(error.message||"AI bilan bog‘lanib bo‘lmadi."));
+}finally{
+speakingBusy=false;input.disabled=false;sendBtn.disabled=false;sendBtn.textContent="Yuborish";input.focus();
+}
 }
 
 // =====================================
-// 18. TEXT TO SPEECH
+// 19. TEXT TO SPEECH
 // =====================================
 function speakReply(text){
 if(!("speechSynthesis"in window)){setSpeakingStatus("Bu brauzer ovoz chiqarishni qo‘llab-quvvatlamaydi.");return}
@@ -1124,7 +1548,7 @@ window.speechSynthesis.speak(utterance);
 }
 
 // =====================================
-// 19. STOP SPEAKING
+// 20. STOP SPEAKING
 // =====================================
 function stopSpeaking(){
 if("speechSynthesis"in window)window.speechSynthesis.cancel();
@@ -1135,7 +1559,7 @@ if(mic){mic.classList.remove("listening");mic.textContent="🎙"}
 }
 
 // =====================================
-// 20. MICROPHONE
+// 21. MICROPHONE
 // =====================================
 async function toggleMicrophone(){
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1143,26 +1567,35 @@ if(!SpeechRecognition){setSpeakingStatus("Bu brauzer nutqni matnga aylantirishni
 if(!window.isSecureContext){setSpeakingStatus("Mikrofon uchun sayt HTTPS orqali ochilishi kerak.");return}
 if(isListening&&recognition){recognition.stop();return}
 try{
-recognition=new SpeechRecognition();recognition.lang="en-US";recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=1;
+recognition=new SpeechRecognition();
+recognition.lang="en-US";
+recognition.continuous=false;
+recognition.interimResults=false;
+recognition.maxAlternatives=1;
 recognition.onstart=()=>{
-isListening=true;const mic=document.getElementById("micBtn");mic.classList.add("listening");mic.textContent="⏹";
+isListening=true;
+const mic=document.getElementById("micBtn");
+mic.classList.add("listening");mic.textContent="⏹";
 setSpeakingStatus("Tinglayapman... Ingliz tilida gapiring.");
 };
 recognition.onresult=event=>{
 const transcript=event.results[0][0].transcript;
 document.getElementById("speakingInput").value=transcript;
-setSpeakingStatus("Siz aytdingiz: "+transcript);sendSpeakingMessage(transcript);
+setSpeakingStatus("Siz aytdingiz: "+transcript);
+sendSpeakingMessage(transcript);
 };
 recognition.onerror=event=>setSpeakingStatus("Mikrofon xatosi: "+event.error);
 recognition.onend=()=>{
-isListening=false;const mic=document.getElementById("micBtn");mic.classList.remove("listening");mic.textContent="🎙";
+isListening=false;
+const mic=document.getElementById("micBtn");
+mic.classList.remove("listening");mic.textContent="🎙";
 };
 recognition.start();
 }catch(error){setSpeakingStatus("Mikrofonni ishga tushirib bo‘lmadi: "+error.message)}
 }
 
 // =====================================
-// 21. CLEAR CHAT
+// 22. CLEAR CHAT
 // =====================================
 function clearSpeakingChat(){
 stopSpeaking();speakingHistory=[];
@@ -1172,10 +1605,11 @@ setSpeakingStatus("Yangi suhbat boshlandi.");
 }
 
 // =====================================
-// 22. START APP
+// 23. START APP
 // =====================================
 renderDailyWord();
 updateLanguageButtons();
+renderGrammarLessons();
 checkSession();
 </script>
 </body>
