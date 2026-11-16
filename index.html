@@ -6,6 +6,9 @@
 <meta name="theme-color" content="#100b20">
 <title>VocabMaster</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.supabase||document.write('<script src="https://fastly.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>')</script>
+<script>window.supabase||document.write('<script src="https://gcore.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>')</script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
 
 <style>
 :root{--bg:#0c0817;--panel:#171126;--panel2:#211936;--purple:#925cff;--purple2:#7138df;--text:#f7f2ff;--muted:#a99bbf;--border:#35264e;--green:#27dba0;--red:#e64c70}
@@ -688,7 +691,9 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 // =====================================
 const SUPABASE_URL="https://rmcewweppablchrtctkw.supabase.co";
 const SUPABASE_KEY="sb_publishable_AK9tPpB7kLB8AV9Y1sVANQ_63M8Iu4n";
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const LIB_ERROR="Xatolik: kerakli kutubxona yuklanmadi. Internetni yoki VPN/reklama bloklagichni tekshirib, sahifani qayta yuklang.";
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+if(!db){const m=document.getElementById("authMessage");if(m)m.textContent=LIB_ERROR}
 
 let currentUser=null,isLogin=false,words=[],groups=[],translated=null;
 let sourceLanguage="en",targetLanguage="uz",dictionaryLanguage="en",selectedGroupId="all";
@@ -811,6 +816,7 @@ const password=document.getElementById("password").value;
 const name=document.getElementById("name").value.trim();
 if(!email||!password||(!isLogin&&!name))return authMessage("Barcha maydonlarni to‘ldiring.");
 if(password.length<6)return authMessage("Parol kamida 6 ta belgidan iborat bo‘lsin.");
+if(!db)return authMessage(LIB_ERROR);
 authMessage("Kutib turing...");
 try{
 let result;
@@ -1539,4 +1545,4 @@ texts:[
 {q:"What does learning a language require?",options:["Only money","Time, patience and practice","A new phone"],answer:"Time, patience and practice"},
 {q:"What is often more effective?",options:["Short daily practice","Studying once a month","Avoiding mistakes"],answer:"Short daily practice"},
 {q:"According to the text, mistakes are...",options:["A problem","A natural part of learning","Always dangerous"],answer:"A natural part of learning"}]},
-{title:"Protecting the Environment",text:"The environment is an important part of our lives. People depend on clean water, fresh air and healthy forests. Unfortunately, pollution and waste can damage nature. Everyone can help by saving water, recycling materials and using less plastic. Small actions may seem unimportant, but together they can make a real difference.",translation:"Atrof-muhit hayotimizning muhim qismidir. Odamlar toza suv, sof havo va sog‘lom o‘rmonlarga bog‘liq. Afsuski, ifloslanish va chiqindilar tabiatga zarar yetkazishi mumkin. Har kim suvni tejash, materiallarni qayta ishlash va plastikdan kamroq foydalanish orqali yordam bera oladi. Kichik haraka
+{title:"Protec
