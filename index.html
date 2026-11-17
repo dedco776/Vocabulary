@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#100b20">
 <title>VocabMaster</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lib/supabase.js"></script>
+<script>window.supabase||document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>')</script>
 <script>window.supabase||document.write('<script src="https://fastly.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>')</script>
 <script>window.supabase||document.write('<script src="https://gcore.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>')</script>
 <script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
@@ -275,6 +276,7 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 <button id="authBtn" onclick="authenticate()">Ro‘yxatdan o‘tish</button>
 <button class="secondary" onclick="toggleAuth()" id="toggleBtn" style="width:100%;margin-top:10px">Akkauntingiz bormi? Kirish</button>
 <p id="authMessage" class="message"></p>
+<p id="diag" style="font-size:12px;opacity:.6;margin-top:14px;word-break:break-word"></p>
 </div>
 </div>
 </section>
@@ -692,7 +694,41 @@ footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 const SUPABASE_URL="https://rmcewweppablchrtctkw.supabase.co";
 const SUPABASE_KEY="sb_publishable_AK9tPpB7kLB8AV9Y1sVANQ_63M8Iu4n";
 const LIB_ERROR="Xatolik: kerakli kutubxona yuklanmadi. Internetni yoki VPN/reklama bloklagichni tekshirib, sahifani qayta yuklang.";
-const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+const APP_VERSION="v5";
+// Supabase so'rovlari avval o'z saytingiz orqali (/sb), bo'lmasa to'g'ridan-to'g'ri yuboriladi.
+const PROXY_BASE=(location.protocol==="https:"||location.protocol==="http:")?location.origin+"/sb":null;
+let proxyState="unknown";
+function proxyResponseOk(r){return r.status!==404||(r.headers.get("content-type")||"").includes("json")}
+async function smartFetch(input,init){
+ const url=typeof input==="string"?input:(input&&input.url)||String(input);
+ if(!PROXY_BASE||!url.startsWith(SUPABASE_URL))return fetch(input,init);
+ const proxied=PROXY_BASE+url.slice(SUPABASE_URL.length);
+ if(proxyState!=="bad"){
+  try{
+   const r=await fetch(proxied,init);
+   if(proxyResponseOk(r)){proxyState="ok";return r}
+   proxyState="bad";
+  }catch(e){/* tarmoq xatosi: to'g'ridan-to'g'ri urinib ko'ramiz */}
+ }
+ try{return await fetch(url,init)}
+ catch(e){
+  if(proxyState==="bad"){try{const r=await fetch(proxied,init);if(proxyResponseOk(r)){proxyState="ok";return r}}catch(_){}}
+  throw e;
+ }
+}
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{global:{fetch:smartFetch}}):null;
+async function runDiag(){
+ const el=document.getElementById("diag");if(!el)return;
+ const lib=window.supabase?"✓":"✗";
+ el.textContent=APP_VERSION+" · kutubxona "+lib+" · server tekshirilmoqda...";
+ let server;
+ try{
+  const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),8000);
+  const r=await smartFetch(SUPABASE_URL+"/auth/v1/health",{headers:{apikey:SUPABASE_KEY},signal:ctl.signal});
+  clearTimeout(timer);server=r.ok?"✓":"✗ ("+r.status+")";
+ }catch(e){server="✗ ("+(e.name==="AbortError"?"vaqt tugadi":e.message)+")"}
+ el.textContent=APP_VERSION+" · kutubxona "+lib+" · server "+server+" · "+(proxyState==="ok"?"sayt orqali":"to'g'ridan-to'g'ri");
+}
 if(!db){const m=document.getElementById("authMessage");if(m)m.textContent=LIB_ERROR}
 
 let currentUser=null,isLogin=false,words=[],groups=[],translated=null;
@@ -1533,16 +1569,4 @@ texts:[
 {q:"When did they visit the museum?",options:["Last Friday","Last Saturday","Last Sunday"],answer:"Last Saturday"},
 {q:"What did the younger brother enjoy?",options:["Paintings","Photographs","Dinosaur exhibition"],answer:"Dinosaur exhibition"},
 {q:"How long did they stay?",options:["One hour","Two hours","Three hours"],answer:"Three hours"}]},
-{title:"A New Hobby",text:"A few months ago, I decided to learn how to cook. At first, it was difficult because I did not know many recipes. My mother helped me prepare simple meals. Now I can make soup, pasta and several desserts. Cooking has become my favourite hobby because I enjoy creating something useful for my family.",translation:"Bir necha oy oldin ovqat pishirishni o‘rganishga qaror qildim. Avvaliga bu qiyin edi, chunki ko‘p retseptlarni bilmasdim. Onam menga oddiy taomlar tayyorlashda yordam berdi. Hozir sho‘rva, makaron va bir nechta shirinlik tayyorlay olaman. Ovqat pishirish sevimli mashg‘ulotimga aylandi, chunki oilam uchun foydali narsa yaratishni yoqtiraman.",words:[["decide","qaror qilmoq"],["recipe","retsept"],["prepare","tayyorlamoq"],["dessert","shirinlik"],["hobby","mashg‘ulot"]],questions:[
-{q:"When did the writer start learning to cook?",options:["A few days ago","A few months ago","Last year"],answer:"A few months ago"},
-{q:"Who helped the writer?",options:["A friend","A teacher","Their mother"],answer:"Their mother"},
-{q:"Why does the writer enjoy cooking?",options:["It is expensive","It is useful for the family","It takes no time"],answer:"It is useful for the family"}]}
-]},
-B1:{
-title:"B1 — Intermediate",description:"Kengroq mavzular va o‘rta darajadagi matnlar.",
-texts:[
-{title:"The Power of Learning",text:"Learning a new language requires time, patience and regular practice. Some students believe that studying for many hours once a week is enough. However, short daily practice is often more effective. Reading, listening and speaking can help learners improve their communication skills. Making mistakes is also a natural part of learning.",translation:"Yangi tilni o‘rganish vaqt, sabr va muntazam mashqni talab qiladi. Ba'zi o‘quvchilar haftada bir marta ko‘p soat o‘qish yetarli deb hisoblashadi. Biroq har kuni qisqa vaqt mashq qilish ko‘pincha samaraliroq. O‘qish, tinglash va gapirish o‘rganuvchilarga muloqot ko‘nikmalarini yaxshilashga yordam beradi. Xato qilish ham o‘rganishning tabiiy bir qismidir.",words:[["require","talab qilmoq"],["regular","muntazam"],["effective","samarali"],["communication","muloqot"],["natural","tabiiy"]],questions:[
-{q:"What does learning a language require?",options:["Only money","Time, patience and practice","A new phone"],answer:"Time, patience and practice"},
-{q:"What is often more effective?",options:["Short daily practice","Studying once a month","Avoiding mistakes"],answer:"Short daily practice"},
-{q:"According to the text, mistakes are...",options:["A problem","A natural part of learning","Always dangerous"],answer:"A natural part of learning"}]},
-{title:"Protec
+{title:"A New Hobby",text:"A few months ago, I decided to learn how to cook. At first, it was difficult because I did not know many recipes. My mother helped me prepare simple meals. Now I can make soup, pasta and several desserts. Cooking has become my favourite hobby because I enjoy creating something useful for my family.",translation:"Bir necha oy oldin ovqat pishirishni o‘rganishga qaror qildim. Avvaliga bu qiyin edi, chunki ko‘p retseptlarni bilmasdim. Onam menga oddiy taomlar tayyorlashda yordam berdi. Hozir sho‘rva, makaron va bir nechta shirinlik tayyorlay olaman. Ovqat pishirish sevimli mashg‘ulotimga aylandi, chunki oilam uchun foydali narsa yaratishni yoqtiraman.",words:[["decide","qaror qilmoq"],["recipe","retsept"],["prepare","tayyorlamoq"],["dessert","shiri
