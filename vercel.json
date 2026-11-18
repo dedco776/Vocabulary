@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/sb/:path*", "destination": "https://rmcewweppablchrtctkw.supabase.co/:path*" },
-    { "source": "/lib/supabase.js", "destination": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" }
+    {
+      "source": "/sb/:path*",
+      "destination": "https://rmcewweppablchrtctkw.supabase.co/:path*"
+    },
+    {
+      "source": "/gt/:path*",
+      "destination": "https://translate.googleapis.com/:path*"
+    },
+    {
+      "source": "/lib/supabase.js",
+      "destination": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    }
   ]
 }
