@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vocabmaster.app",
+      "sha256_cert_fingerprints": [
+        "AB:F5:81:D6:05:86:EE:32:CE:B0:21:07:DF:23:55:F4:B1:61:BB:7C:0D:C3:F5:1D:C6:E1:A1:51:BF:BD:91:72"
+      ]
+    }
+  }
+]
