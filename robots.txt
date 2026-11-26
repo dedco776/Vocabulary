@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /sb/
+Disallow: /gt/
+Sitemap: https://vocabmasterr.vercel.app/sitemap.xml
