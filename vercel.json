@@ -1,12 +1,74 @@
 {
   "rewrites": [
-    { "source": "/sb/:path*", "destination": "https://rmcewweppablchrtctkw.supabase.co/:path*" },
-    { "source": "/gt/:path*", "destination": "https://translate.googleapis.com/:path*" },
-    { "source": "/lib/supabase.js", "destination": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" }
+    {
+      "source": "/sb/:path*",
+      "destination": "https://rmcewweppablchrtctkw.supabase.co/:path*"
+    },
+    {
+      "source": "/gt/:path*",
+      "destination": "https://translate.googleapis.com/:path*"
+    },
+    {
+      "source": "/lib/supabase.js",
+      "destination": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    }
   ],
   "headers": [
-    { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
-    { "source": "/manifest.webmanifest", "headers": [{ "key": "Content-Type", "value": "application/manifest+json" }] },
-    { "source": "/.well-known/assetlinks.json", "headers": [{ "key": "Content-Type", "value": "application/json" }] }
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gcore.jsdelivr.net https://fastly.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' https://rmcewweppablchrtctkw.supabase.co https://api.dictionaryapi.dev https://translate.googleapis.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "microphone=(self), camera=(), geolocation=(), payment=()"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/assetlinks.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
   ]
 }
